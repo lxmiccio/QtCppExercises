@@ -5,16 +5,16 @@
 
 class counter
 {
-protected:
+  private:
     int value;
 
-public:
+  public:
     int getValue() const { return value; }
 
-public slots:
+  public slots:
     void setValue(int value);
 
-signals:
+  signals:
     void valueChanged(counter* c);
 };
 
