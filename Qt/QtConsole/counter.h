@@ -9,13 +9,13 @@ protected:
     int value;
 
 public:
-    int const getValue() { return value; }
+    int getValue() const { return value; }
 
 public slots:
     void setValue(int value);
 
 signals:
-    void valueChanged(int value);
+    void valueChanged(counter* c);
 };
 
 #endif // COUNTER_H

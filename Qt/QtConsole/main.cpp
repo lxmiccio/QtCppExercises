@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <QCoreApplication>
 
 #include "counter.h"
@@ -8,7 +10,11 @@ int main(int argc, char *argv[])
 
     counter c;
 
-    c.setValue(5);
+    int x {0};
+    std::cout << "Enter a value: ";
+    std::cin >> x;
+
+    c.setValue(x);
 
     return a.exec();
 }
