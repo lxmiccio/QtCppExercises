@@ -9,7 +9,7 @@
 #include <game.h>
 
 #define DEBUG 1
-#define PERFORMANCE 0
+#define PERFORMANCE 1
 
 int main(int argc, char *argv[])
 {
@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 
   QVector<Game> games;
 
-  games.push_back(Game(new QString("Bloodborne"), 44.99, 10, new QStringList {"Action", "Rpg"}, new QStringList {"PlayStation 4"}));
-  games.push_back(Game(new QString("Call Of Duty"), 59.99, 25, new QStringList {"Action", "Fps"}, new QStringList {"Pc", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One"}));
+  games.push_back(Game(new QString("Bloodborne"), 44.99, 10, new QStringList {"Action", "Rpg"}, new QStringList {"PlayStation 4"}, QPixmap {"bloodborne.png"}));
+  games.push_back(Game(new QString("Call Of Duty"), 59.99, 25, new QStringList {"Action", "Fps"}, new QStringList {"Pc", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One"}, QPixmap {"call_pf_duty.png"}));
 
   QStringList genres;
   QStringList platforms;

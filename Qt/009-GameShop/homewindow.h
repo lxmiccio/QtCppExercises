@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QStringList>
 #include <QWidget>
 
 #include <stackedwidget.h>
@@ -13,14 +14,12 @@ class HomeWindow : public QWidget
 protected:
   StackedWidget* stackedWidget;
   QLabel* logo;
-  QComboBox* cmbGenres;
-  QStringList* genres;
-  QComboBox* cmbPlatforms;
-  QStringList* platforms;
-  QComboBox* cmbGames;
-  QStringList* games;
+  QComboBox* genres;
+  QComboBox* platforms;
+  QComboBox* games;
   QComboBox* amount;
   QLabel* price;
+  QLabel* cover;
   QPushButton* addToCart;
   QPushButton* goToCart;
 
