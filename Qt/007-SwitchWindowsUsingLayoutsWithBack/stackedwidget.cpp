@@ -21,3 +21,32 @@ void StackedWidget::widgetChanged(int index)
         currentWidget->setFocus();
     }
 }
+
+int StackedWidget::previousView()
+{
+    int ret = -1;
+        QString currentName = stack->currentWidget()->metaObject()->className();
+        QString previous;
+
+        int count = stack->count();
+        for (int i=stack->count()-1;i>=0;i--)
+            {
+            QWidget* w = stack->widget(i);
+            if (w->metaObject()->className()==currentName)
+                {
+
+                    {
+                    i--;
+                    previous = stack->widget(i)->metaObject()->className();
+                    ret = 0;
+                    stack->setCurrentWidget(stack->widget(i));
+                    stack->removeWidget(w);
+                    delete w;
+                    // Activate prevous widget
+                    //activateWidget(previous);
+                    }
+                break;
+                }
+            }
+       return ret;
+}
