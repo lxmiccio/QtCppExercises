@@ -11,6 +11,7 @@ class SecondWidget : public BaseWidget
 protected:
     QLabel* message;
     QPushButton* button0;
+    QPushButton* button1;
 
 public:
     explicit SecondWidget(StackedWidget* stackedWidget, QWidget* parent = 0);

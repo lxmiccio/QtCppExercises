@@ -18,7 +18,8 @@ public:
 
 public slots:
     void goToNewWidget(int index);
-    int returnToPreviousWidget();
+    void returnToMainWidget();
+    void returnToPreviousWidget();
 };
 
 #endif // STACKWIDGET_H

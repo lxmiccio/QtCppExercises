@@ -2,6 +2,8 @@
 
 #include "basewidget.h"
 #include "mainwidget.h"
+#include <QDebug>
+#include <iostream>
 
 StackedWidget::StackedWidget(QWidget *parent) : QMainWindow(parent)
 {
@@ -22,34 +24,38 @@ void StackedWidget::goToNewWidget(int index)
     }
 }
 
-int StackedWidget::returnToPreviousWidget()
+void StackedWidget::returnToPreviousWidget()
 {
-    int result = -1;
-
     QString currentWidgetName = this->qStackedWidget->currentWidget()->metaObject()->className();
-    QString previousWidgetName;
 
-    for(int i {this->qStackedWidget->count() - 1}; i >= 0; --i)
+    bool exit {false};
+
+    for(int i {this->qStackedWidget->count() - 1}; i >= 0 and not exit; --i)
     {
         QWidget* widget = this->qStackedWidget->widget(i);
 
         if(widget->metaObject()->className() == currentWidgetName) {
-            {
-                --i;
-
-                previousWidgetName = this->qStackedWidget->widget(i)->metaObject()->className();
-
-                this->qStackedWidget->setCurrentWidget(this->qStackedWidget->widget(i));
-                this->qStackedWidget->removeWidget(widget);
-
-                delete widget;
-
-                result = 0;
-            }
-
-            break;
+            this->qStackedWidget->removeWidget(widget);
+            delete widget;
+        } else {
+            this->qStackedWidget->setCurrentWidget(this->qStackedWidget->widget(i));
+            exit = true;
         }
     }
-
-    return result;
 }
+
+void StackedWidget::returnToMainWidget()
+{
+    QString currentWidgetName = this->qStackedWidget->currentWidget()->metaObject()->className();
+
+    for(int i {this->qStackedWidget->count() - 1}; i > 0; --i)
+    {
+        QWidget* widget = this->qStackedWidget->widget(i);
+
+        this->qStackedWidget->removeWidget(widget);
+        delete widget;
+    }
+
+    this->qStackedWidget->setCurrentWidget(this->qStackedWidget->widget(0));
+}
+
