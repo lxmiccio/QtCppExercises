@@ -12,8 +12,12 @@ TARGET = 009-GameShop
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-    game.cpp
+SOURCES += main.cpp \
+    game.cpp \
+    stackedwidget.cpp \
+    homewindow.cpp
 
 HEADERS  += \
-    game.h
+    game.h \
+    stackedwidget.h \
+    homewindow.h

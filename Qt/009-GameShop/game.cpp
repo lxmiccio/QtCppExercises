@@ -2,9 +2,10 @@
 
 Game::Game()
 {
+
 }
 
-Game::Game(QString* title, double price, int amount, QVector<QString>* genres, QVector<QString>* platforms)
+Game::Game(QString* title, double price, int amount, QStringList* genres,QStringList* platforms)
 {
   this->title = title;
   this->price = price;

@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <QString>
+#include <QStringList>
 #include <QVector>
 
 class Game
@@ -11,18 +12,18 @@ protected:
   double price;
   int amount;
 
-  QVector<QString>* genres;
-  QVector<QString>* platforms;
+  QStringList* genres;
+  QStringList* platforms;
 
 public:
   Game();
-  Game(QString* title, double price, int amount, QVector<QString>* genres, QVector<QString>* platforms);
+  Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms);
 
   QString* getTitle() { return this->title; }
   double getPrince() { return this->price; }
   int getAmount() { return this->amount; }
-  QVector<QString>* getGenres() { return this->genres; }
-  QVector<QString>* getPlatforms() { return this->platforms; }
+  QStringList* getGenres() { return this->genres; }
+  QStringList* getPlatforms() { return this->platforms; }
 
   void setAmount(int amount) { this->amount = amount; }
 };

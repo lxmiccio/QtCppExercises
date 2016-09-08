@@ -2,8 +2,10 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QStringList>
 #include <QVector>
 
+#include <stackedwidget.h>
 #include <game.h>
 
 #define DEBUG 1
@@ -15,20 +17,20 @@ int main(int argc, char *argv[])
 
   QVector<Game> games;
 
-  games.push_back(Game(new QString("Bloodborne"), 44.99, 10, new QVector<QString> {"Action", "Rpg"}, new QVector<QString> {"PlayStation 4"}));
-  games.push_back(Game(new QString("Call Of Duty"), 59.99, 25, new QVector<QString> {"Action", "Fps"}, new QVector<QString> {"Pc", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One"}));
+  games.push_back(Game(new QString("Bloodborne"), 44.99, 10, new QStringList {"Action", "Rpg"}, new QStringList {"PlayStation 4"}));
+  games.push_back(Game(new QString("Call Of Duty"), 59.99, 25, new QStringList {"Action", "Fps"}, new QStringList {"Pc", "PlayStation 3", "PlayStation 4", "Xbox 360", "Xbox One"}));
 
-  QVector<QString> genres;
-  QVector<QString> platforms;
+  QStringList genres;
+  QStringList platforms;
 
   if(PERFORMANCE) {
     for(QVector<Game>::iterator game {games.begin()}; game != games.end(); game++) {
-      for(QVector<QString>::iterator genre {game->getGenres()->begin()}; genre != game->getGenres()->end(); genre++) {
+      for(QStringList::iterator genre {game->getGenres()->begin()}; genre != game->getGenres()->end(); genre++) {
         if(genres.indexOf(*genre) == -1) {
           genres.append(*genre);
         }
       }
-      for(QVector<QString>::iterator platform {game->getPlatforms()->begin()}; platform != game->getPlatforms()->end(); platform++) {
+      for(QStringList::iterator platform {game->getPlatforms()->begin()}; platform != game->getPlatforms()->end(); platform++) {
         if(platforms.indexOf(*platform) == -1) {
           platforms.append(*platform);
         }
@@ -64,8 +66,8 @@ int main(int argc, char *argv[])
     }
   }
 
-  MainWindow w;
-  w.show();
+  StackedWidget stackedWidget(&games, &genres, &platforms);
+  stackedWidget.show();
 
   return a.exec();
 }
