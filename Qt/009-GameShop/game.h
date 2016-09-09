@@ -21,7 +21,7 @@ public:
   Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms, QPixmap pixmap);
 
   QString* getTitle() { return this->title; }
-  double getPrince() { return this->price; }
+  double getPrice() { return this->price; }
   int getAmount() { return this->amount; }
   QStringList* getGenres() { return this->genres; }
   QStringList* getPlatforms() { return this->platforms; }

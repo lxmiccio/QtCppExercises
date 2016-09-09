@@ -11,6 +11,8 @@
 
 class HomeWindow : public QWidget
 {
+    Q_OBJECT
+
 protected:
   StackedWidget* stackedWidget;
   QLabel* logo;
@@ -27,7 +29,8 @@ public:
   HomeWindow(StackedWidget* stackedWidget, QWidget* parent = 0);
 
 public slots:
-  // TO DO
+  void filterChanged();
+  void gameChanged();
 };
 
 #endif // HOMEWINDOW_H
