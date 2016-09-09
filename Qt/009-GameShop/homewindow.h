@@ -24,6 +24,7 @@ protected:
   QLabel* cover;
   QPushButton* addToCart;
   QPushButton* goToCart;
+  QVector<Game>* cart;
 
 public:
   HomeWindow(StackedWidget* stackedWidget, QWidget* parent = 0);
@@ -32,6 +33,7 @@ public slots:
   void filterChanged();
   void gameChanged();
   void amountChanged();
+  void addToCartClicked();
 };
 
 #endif // HOMEWINDOW_H

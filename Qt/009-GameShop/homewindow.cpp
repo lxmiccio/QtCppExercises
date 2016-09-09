@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <QDebug>
 
+#define DEBUG 1
+
 HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(parent)
 {
     this->stackedWidget = stackedWidget;
@@ -44,6 +46,7 @@ HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(
     this->cover->setPixmap(game.getPixmap());
 
     this->addToCart = new QPushButton("Add to Cart");
+    QObject::connect(this->addToCart, SIGNAL(clicked()), this, SLOT(addToCartClicked()));
 
     this->goToCart = new QPushButton("Go to Cart");
 
@@ -59,6 +62,8 @@ HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(
     gridLayout->addWidget(this->goToCart, 6, 0, 1, 1);
 
     this->setLayout(gridLayout);
+
+    this->cart = new QVector<Game>();
 }
 
 void HomeWindow::filterChanged()
@@ -125,6 +130,39 @@ void HomeWindow::amountChanged()
     for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
         if(*game->getTitle() == this->games->currentText()) {
             this->price->setText(QString("Price: € %1").arg(game->getPrice() * (this->amount->currentIndex()+ 1)));
+        }
+    }
+}
+
+void HomeWindow::addToCartClicked()
+{
+    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+        if(*game->getTitle() == this->games->currentText()) {
+            bool found {false};
+
+            for(QVector<Game>::iterator iter {this->cart->begin()}; iter != this->cart->end(); iter++) {
+                if(*iter->getTitle() == *game->getTitle()) {
+                    game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
+                    iter->setAmount(iter->getAmount() + amount->currentIndex() + 1);
+
+                    found = true;
+                }
+            }
+
+            if(not found) {
+                game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
+                Game g = *game;
+                g.setAmount(amount->currentIndex() + 1);
+                qDebug() << g.getAmount();
+                this->cart->push_back(*game);
+            }
+        }
+    }
+
+    if(DEBUG) {
+        for(QVector<Game>::iterator game {this->cart->begin()}; game != this->cart->end(); game++) {
+            qDebug() << *game->getTitle();
+            qDebug() << game->getAmount();
         }
     }
 }
