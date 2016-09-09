@@ -12,8 +12,6 @@ StackedWidget::StackedWidget(QVector<Game>* games, QStringList* genres, QStringL
   this->qStackedWidget->addWidget(new HomeWindow(this));
 
   setCentralWidget(this->qStackedWidget);
-
-  QObject::connect(this->qStackedWidget, SIGNAL(currentChanged(int)), this, SLOT(goToNewWindow(int)));
 }
 
 void StackedWidget::goToNewWindow(int index)

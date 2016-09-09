@@ -5,8 +5,8 @@
 #include <QStringList>
 #include <QVector>
 
-#include <stackedwidget.h>
 #include <game.h>
+#include <stackedwidget.h>
 
 #define DEBUG 1
 #define PERFORMANCE 1

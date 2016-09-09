@@ -15,9 +15,11 @@ TEMPLATE = app
 SOURCES += main.cpp \
     game.cpp \
     stackedwidget.cpp \
-    homewindow.cpp
+    homewindow.cpp \
+    cartwindow.cpp
 
 HEADERS  += \
     game.h \
     stackedwidget.h \
-    homewindow.h
+    homewindow.h \
+    cartwindow.h

@@ -11,7 +11,7 @@
 
 class HomeWindow : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 protected:
   StackedWidget* stackedWidget;
@@ -34,6 +34,7 @@ public slots:
   void gameChanged();
   void amountChanged();
   void addToCartClicked();
+  void goToCartClicked();
 };
 
 #endif // HOMEWINDOW_H
