@@ -31,6 +31,7 @@ public:
 public slots:
   void filterChanged();
   void gameChanged();
+  void amountChanged();
 };
 
 #endif // HOMEWINDOW_H

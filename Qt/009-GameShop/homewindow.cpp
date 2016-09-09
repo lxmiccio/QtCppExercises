@@ -3,8 +3,8 @@
 #include <QGridLayout>
 #include <QStringList>
 #include <QPixmap>
-
 #include <QDebug>
+
 HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(parent)
 {
     this->stackedWidget = stackedWidget;
@@ -18,20 +18,22 @@ HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(
     this->genres = new QComboBox();
     this->genres->addItem("All Genres");
     this->genres->addItems(*this->stackedWidget->getGenres());
-    QObject::connect(this->genres, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged(int)));
+    QObject::connect(this->genres, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged()));
 
     this->platforms = new QComboBox();
     this->platforms->addItem("All Platforms");
     this->platforms->addItems(*this->stackedWidget->getPlatforms());
-    QObject::connect(this->platforms, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged(int)));
+    QObject::connect(this->platforms, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged()));
 
     this->games = new QComboBox();
+    this->games->addItem("Games");
     for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
         this->games->addItem(*game->getTitle());
     }
     QObject::connect(this->games, SIGNAL(currentIndexChanged(int)), this, SLOT(gameChanged()));
 
     this->amount = new QComboBox();
+    QObject::connect(this->amount, SIGNAL(currentIndexChanged(int)), this, SLOT(amountChanged()));
 
     this->price = new QLabel("Price: € 0");
     this->price->setAlignment(Qt::AlignCenter);
@@ -62,6 +64,7 @@ HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(
 void HomeWindow::filterChanged()
 {
     this->games->clear();
+    this->games->addItem("Games");
 
     QStringList* gamesList = new QStringList();
 
@@ -100,5 +103,28 @@ void HomeWindow::filterChanged()
 
 void HomeWindow::gameChanged()
 {
-    // qDebug() << "sdaaf";
+    this->amount->clear();
+
+    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+        if(*game->getTitle() == this->games->currentText()) {
+            QStringList* numbers = new QStringList();
+
+            for(int i = 1; i <= game->getAmount(); i++) {
+                numbers->push_back(QString("%1").arg(i));
+            }
+
+            this->amount->addItems(*numbers);
+
+            this->price->setText(QString("Price: € %1").arg(game->getPrice()));
+        }
+    }
+}
+
+void HomeWindow::amountChanged()
+{
+    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+        if(*game->getTitle() == this->games->currentText()) {
+            this->price->setText(QString("Price: € %1").arg(game->getPrice() * (this->amount->currentIndex()+ 1)));
+        }
+    }
 }
