@@ -9,7 +9,7 @@
 
 #include <cartwindow.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(parent)
 {
@@ -145,7 +145,12 @@ void HomeWindow::gameChanged(QString title)
         this->amount->clear();
         this->amount->addItems(*numbers);
 
-        this->price->setText(QString("Price: € %1").arg(game->getPrice()));
+        if(game->getAmount() == 0) {
+          this->price->setText("Price: € 0");
+        }
+        else {
+          this->price->setText(QString("Price: € %1").arg(game->getPrice()));
+        }
 
         this->cover->setPixmap(game->getPixmap()->scaled(QSize(260, 320), Qt::IgnoreAspectRatio, Qt::FastTransformation));
       }

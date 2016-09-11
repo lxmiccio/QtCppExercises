@@ -16,6 +16,7 @@ public:
 
 public slots:
     void widgetChanged(int index);
+    int previousView();
 };
 
 #endif // STACKWIDGET_H

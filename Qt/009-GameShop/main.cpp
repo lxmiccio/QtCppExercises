@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
 
   if(DEBUG) {
     qDebug() << "*** Genres List";
-    for(QString genre : *genres) {
-      qDebug() << "***" << genre;
+    for(QStringList::iterator genre {genres->begin()}; genre != genres->end(); genre++) {
+      qDebug() << "***" << *genre;
     }
     qDebug() << "\n";
     qDebug() << "*** Platforms List";
-    for(QString platform : *platforms) {
-      qDebug() << "***" << platform;
+    for(QStringList::iterator platform {platforms->begin()}; platform != platforms->end(); platform++) {
+      qDebug() << "***" << *platform;
     }
   }
 

@@ -28,8 +28,7 @@ public:
   QStackedWidget* getQStackedWidget() { return this->qStackedWidget; }
 
 public slots:
-  void goToNewWindow(int index);
-  void returnToPreviousWindow();
+  void previousView();
 };
 
 #endif // STACKWIDGET_H

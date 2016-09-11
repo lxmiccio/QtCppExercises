@@ -10,6 +10,8 @@ CartWindow::CartWindow(StackedWidget* stackedWidget, QVector<Game>* selectedGame
 
   this->games = new QVector<QLabel*>();
 
+  this->goBack = new QPushButton("Go Back");
+
   QGridLayout* gridLayout = new QGridLayout();
 
   for(QVector<Game>::iterator game {this->selectedGames->begin()}; game != this->selectedGames->end(); game++) {
@@ -22,6 +24,9 @@ CartWindow::CartWindow(StackedWidget* stackedWidget, QVector<Game>* selectedGame
   for(QVector<QLabel>::iterator *label {this->games->begin()}; label != this->games->end(); i++, label++) {
     gridLayout->addWidget(*label, i, 0, 1, 1);
   }
+
+  gridLayout->addWidget(this->goBack, i, 0, 1, 1);
+  QObject::connect(this->goBack, SIGNAL(clicked()), this->stackedWidget, SLOT(previousView()));
 
   setLayout(gridLayout);
 }
