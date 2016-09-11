@@ -14,18 +14,18 @@ protected:
   int amount;
   QStringList* genres;
   QStringList* platforms;
-  QPixmap pixmap;
+  QPixmap* pixmap;
 
 public:
   Game();
-  Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms, QPixmap pixmap);
+  Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms, QPixmap* pixmap);
 
   QString* getTitle() { return this->title; }
   double getPrice() { return this->price; }
   int getAmount() { return this->amount; }
   QStringList* getGenres() { return this->genres; }
   QStringList* getPlatforms() { return this->platforms; }
-  QPixmap getPixmap() {return this->pixmap; }
+  QPixmap* getPixmap() {return this->pixmap; }
 
   void setAmount(int amount) { this->amount = amount; }
 };

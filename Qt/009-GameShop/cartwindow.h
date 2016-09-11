@@ -14,11 +14,11 @@ class CartWindow : public QWidget
 
 protected:
   StackedWidget* stackedWidget;
-  QVector<Game>* cart;
+  QVector<Game>* selectedGames;
   QVector<QLabel*>* games;
 
 public:
-  CartWindow(StackedWidget* stackedWidget, QVector<Game>* cart, QWidget* parent = 0);
+  CartWindow(StackedWidget* stackedWidget, QVector<Game>* selectedGames, QWidget* parent = 0);
 };
 
 #endif // CARTWINDOW_H

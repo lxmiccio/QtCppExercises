@@ -2,7 +2,7 @@
 
 Game::Game() {}
 
-Game::Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms, QPixmap pixmap)
+Game::Game(QString* title, double price, int amount, QStringList* genres, QStringList* platforms, QPixmap* pixmap)
 {
   this->title = title;
   this->price = price;

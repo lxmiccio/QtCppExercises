@@ -24,15 +24,17 @@ protected:
   QLabel* cover;
   QPushButton* addToCart;
   QPushButton* goToCart;
-  QVector<Game>* cart;
+  QVector<Game>* selectedGames;
 
 public:
   HomeWindow(StackedWidget* stackedWidget, QWidget* parent = 0);
 
+  // void resizeEvent(QResizeEvent* event ) { };
+
 public slots:
   void filterChanged();
-  void gameChanged();
-  void amountChanged();
+  void gameChanged(QString title);
+  void amountChanged(int index);
   void addToCartClicked();
   void goToCartClicked();
 };
