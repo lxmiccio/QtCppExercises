@@ -1,168 +1,217 @@
 #include "homewindow.h"
 
-#include <QGridLayout>
-#include <QStringList>
-#include <QPixmap>
 #include <QDebug>
+#include <QFont>
+#include <QGridLayout>
+#include <QPixmap>
+#include <QSizePolicy>
+#include <QStringList>
 
-#define DEBUG 1
+#include <cartwindow.h>
+
+#define DEBUG 0
 
 HomeWindow::HomeWindow(StackedWidget* stackedWidget, QWidget* parent) : QWidget(parent)
 {
-    this->stackedWidget = stackedWidget;
+  this->stackedWidget = stackedWidget;
 
-    QPixmap image {"qt_logo.png"};
+  QFont font = QFont();
+  font.setFamily("sniglet");
+  font.setPointSize(30);
 
-    this->logo = new QLabel();
-    this->logo->setAlignment(Qt::AlignCenter);
-    this->logo->setPixmap(image);
 
-    this->genres = new QComboBox();
-    this->genres->addItem("All Genres");
-    this->genres->addItems(*this->stackedWidget->getGenres());
-    QObject::connect(this->genres, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged()));
+  this->logo = new QLabel("GameShop", this);
+  this->logo->setFont(font);
+  this->logo->setAlignment(Qt::AlignCenter);
 
-    this->platforms = new QComboBox();
-    this->platforms->addItem("All Platforms");
-    this->platforms->addItems(*this->stackedWidget->getPlatforms());
-    QObject::connect(this->platforms, SIGNAL(currentIndexChanged(int)), this, SLOT(filterChanged()));
+  this->genres = new QComboBox();
+  this->genres->addItem("All Genres");
+  this->genres->addItems(*this->stackedWidget->getGenres());
+  QObject::connect(this->genres, SIGNAL(currentIndexChanged(QString)), this, SLOT(filterChanged()));
 
-    this->games = new QComboBox();
-    this->games->addItem("Games");
-    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
-        this->games->addItem(*game->getTitle());
-    }
-    QObject::connect(this->games, SIGNAL(currentIndexChanged(int)), this, SLOT(gameChanged()));
+  this->platforms = new QComboBox();
+  this->platforms->addItem("All Platforms");
+  this->platforms->addItems(*this->stackedWidget->getPlatforms());
+  QObject::connect(this->platforms, SIGNAL(currentIndexChanged(QString)), this, SLOT(filterChanged()));
 
-    this->amount = new QComboBox();
-    QObject::connect(this->amount, SIGNAL(currentIndexChanged(int)), this, SLOT(amountChanged()));
+  this->games = new QComboBox();
+  this->games->addItem("Games");
+  for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+    this->games->addItem(*game->getTitle());
+  }
+  QObject::connect(this->games, SIGNAL(currentIndexChanged(QString)), this, SLOT(gameChanged(QString)));
 
-    this->price = new QLabel("Price: € 0");
-    this->price->setAlignment(Qt::AlignCenter);
+  this->amount = new QComboBox();
+  this->amount->addItem("Select a Game");
+  QObject::connect(this->amount, SIGNAL(currentIndexChanged(int)), this, SLOT(amountChanged(int)));
 
-    this->cover = new QLabel();
-    this->cover->setAlignment(Qt::AlignCenter);
-    Game game {stackedWidget->getGames()->at(0)};
-    this->cover->setPixmap(game.getPixmap());
+  this->price = new QLabel("Price: € 0");
+  this->price->setAlignment(Qt::AlignCenter);
 
-    this->addToCart = new QPushButton("Add to Cart");
-    QObject::connect(this->addToCart, SIGNAL(clicked()), this, SLOT(addToCartClicked()));
+  QPixmap* pixmap = new QPixmap {"placeholder.png"};
+  this->cover = new QLabel();
+  this->cover->setAlignment(Qt::AlignCenter);
+  this->cover->setPixmap(pixmap->scaled(QSize(260, 320), Qt::IgnoreAspectRatio, Qt::FastTransformation));
 
-    this->goToCart = new QPushButton("Go to Cart");
+  this->addToCart = new QPushButton("Add to Cart");
+  QObject::connect(this->addToCart, SIGNAL(clicked()), this, SLOT(addToCartClicked()));
 
-    QGridLayout* gridLayout = new QGridLayout();
-    gridLayout->addWidget(this->logo, 0, 0, 1, 2);
-    gridLayout->addWidget(this->genres, 1, 0, 1, 1);
-    gridLayout->addWidget(this->platforms, 1, 1, 1, 1);
-    gridLayout->addWidget(this->games, 2, 0, 1, 1);
-    gridLayout->addWidget(this->amount, 3, 0, 1, 1);
-    gridLayout->addWidget(this->price, 4, 0, 1, 1);
-    gridLayout->addWidget(this->cover, 2, 1, 4, 1);
-    gridLayout->addWidget(this->addToCart, 5, 0, 1, 1);
-    gridLayout->addWidget(this->goToCart, 6, 0, 1, 1);
+  this->goToCart = new QPushButton("Go to Cart");
+  QObject::connect(this->goToCart, SIGNAL(clicked()), this, SLOT(goToCartClicked()));
 
-    this->setLayout(gridLayout);
+  QGridLayout* gridLayout = new QGridLayout();
 
-    this->cart = new QVector<Game>();
+  gridLayout->setSpacing(15);
+
+  gridLayout->addWidget(this->logo, 0, 0, 1, 2);
+  gridLayout->addWidget(this->genres, 1, 0, 1, 1);
+  gridLayout->addWidget(this->platforms, 1, 1, 1, 1);
+  gridLayout->addWidget(this->games, 2, 0, 1, 1);
+  gridLayout->addWidget(this->amount, 3, 0, 1, 1);
+  gridLayout->addWidget(this->price, 4, 0, 1, 1);
+  gridLayout->addWidget(this->cover, 2, 1, 5, 1);
+  gridLayout->addWidget(this->addToCart, 5, 0, 1, 1);
+  gridLayout->addWidget(this->goToCart, 6, 0, 1, 1);
+
+  this->setLayout(gridLayout);
+
+  this->selectedGames = new QVector<Game>();
 }
 
 void HomeWindow::filterChanged()
 {
-    this->games->clear();
-    this->games->addItem("Games");
+  QStringList* gamesList = new QStringList();
 
-    QStringList* gamesList = new QStringList();
+  for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+    bool isSelectedGenre {false};
+    bool isForSelectedPlatform {false};
 
-    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
-        bool isSelectedGenre {false};
-        bool isForSelectedPlatform {false};
-
-        if(this->genres->currentIndex() == 0) {
-            isSelectedGenre = true;
-        } else {
-            qDebug() << this->genres->currentText();
-            for(QStringList::iterator genre {game->getGenres()->begin()}; genre != game->getGenres()->end(); genre++) {
-                if(*genre == this->genres->currentText()) {
-                    isSelectedGenre = true;
-                }
-            }
-        }
-
-        if(this->platforms->currentIndex() == 0) {
-            isForSelectedPlatform = true;
-        } else  {
-            for(QStringList::iterator platform {game->getPlatforms()->begin()}; platform != game->getPlatforms()->end(); platform++) {
-                if(*platform == this->platforms->currentText()) {
-                    isForSelectedPlatform = true;
-                }
-            }
-        }
-
-        if(isSelectedGenre and isForSelectedPlatform) {
-            gamesList->push_back(*game->getTitle());
-        }
+    if(this->genres->currentIndex() == 0) {
+      isSelectedGenre = true;
+    }
+    else {
+      if(game->getGenres()->indexOf(this->genres->currentText()) != -1) {
+        isSelectedGenre = true;
+      }
     }
 
-    this->games->addItems(*gamesList);
+    if(this->platforms->currentIndex() == 0) {
+      isForSelectedPlatform = true;
+    }
+    else  {
+      if(game->getPlatforms()->indexOf(this->platforms->currentText()) != -1) {
+        isForSelectedPlatform = true;
+      }
+    }
+
+    if(isSelectedGenre and isForSelectedPlatform) {
+      gamesList->push_back(*game->getTitle());
+    }
+  }
+
+  this->games->clear();
+  this->games->addItem("Games");
+  this->games->addItems(*gamesList);
+
+  this->amount->clear();
+  this->amount->addItem("Select a Game");
+
+  this->price->setText("Price: € 0");
+
+  QPixmap* pixmap = new QPixmap {"placeholder.png"};
+  this->cover->setPixmap(pixmap->scaled(QSize(260, 320), Qt::IgnoreAspectRatio, Qt::FastTransformation));
 }
 
-void HomeWindow::gameChanged()
+void HomeWindow::gameChanged(QString title)
 {
+  if(this->games->currentIndex() == 0) {
     this->amount->clear();
+    this->amount->addItem("Select a Game");
 
+    this->price->setText("Price: € 0");
+
+    QPixmap* pixmap = new QPixmap {"placeholder.png"};
+    this->cover->setPixmap(pixmap->scaled(QSize(260, 320), Qt::IgnoreAspectRatio, Qt::FastTransformation));
+  }
+  else {
     for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
-        if(*game->getTitle() == this->games->currentText()) {
-            QStringList* numbers = new QStringList();
+      if(*game->getTitle() == title) {
+        QStringList* numbers = new QStringList();
 
-            for(int i = 1; i <= game->getAmount(); i++) {
-                numbers->push_back(QString("%1").arg(i));
-            }
-
-            this->amount->addItems(*numbers);
-
-            this->price->setText(QString("Price: € %1").arg(game->getPrice()));
+        for(int i = 1; i <= game->getAmount(); i++) {
+          numbers->push_back(QString("%1").arg(i));
         }
+
+        this->amount->clear();
+        this->amount->addItems(*numbers);
+
+        if(game->getAmount() == 0) {
+          this->price->setText("Price: € 0");
+        }
+        else {
+          this->price->setText(QString("Price: € %1").arg(game->getPrice()));
+        }
+
+        this->cover->setPixmap(game->getPixmap()->scaled(QSize(260, 320), Qt::IgnoreAspectRatio, Qt::FastTransformation));
+      }
     }
+  }
 }
 
-void HomeWindow::amountChanged()
+void HomeWindow::amountChanged(int index)
 {
-    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
-        if(*game->getTitle() == this->games->currentText()) {
-            this->price->setText(QString("Price: € %1").arg(game->getPrice() * (this->amount->currentIndex()+ 1)));
-        }
+  for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+    if(*game->getTitle() == this->games->currentText()) {
+      this->price->setText(QString("Price: € %1").arg(game->getPrice() * (index + 1)));
     }
+  }
 }
 
 void HomeWindow::addToCartClicked()
 {
-    for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
-        if(*game->getTitle() == this->games->currentText()) {
-            bool found {false};
+  for(QVector<Game>::iterator game {this->stackedWidget->getGames()->begin()}; game != this->stackedWidget->getGames()->end(); game++) {
+    if(*game->getTitle() == this->games->currentText()) {
+      bool found {false};
 
-            for(QVector<Game>::iterator iter {this->cart->begin()}; iter != this->cart->end(); iter++) {
-                if(*iter->getTitle() == *game->getTitle()) {
-                    game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
-                    iter->setAmount(iter->getAmount() + amount->currentIndex() + 1);
+      for(QVector<Game>::iterator selectedGame {this->selectedGames->begin()}; selectedGame != this->selectedGames->end(); selectedGame++) {
+        if(*selectedGame->getTitle() == *game->getTitle()) {
+          game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
+          selectedGame->setAmount(selectedGame->getAmount() + amount->currentIndex() + 1);
 
-                    found = true;
-                }
-            }
-
-            if(not found) {
-                game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
-                Game g = *game;
-                g.setAmount(amount->currentIndex() + 1);
-                qDebug() << g.getAmount();
-                this->cart->push_back(*game);
-            }
+          found = true;
         }
-    }
+      }
 
-    if(DEBUG) {
-        for(QVector<Game>::iterator game {this->cart->begin()}; game != this->cart->end(); game++) {
-            qDebug() << *game->getTitle();
-            qDebug() << game->getAmount();
-        }
+      if(not found) {
+        game->setAmount(game->getAmount() - (amount->currentIndex() + 1));
+
+        Game selectedGame = *game;
+        selectedGame.setAmount(amount->currentIndex() + 1);
+        this->selectedGames->push_back(selectedGame);
+      }
+
+      QStringList* numbers = new QStringList();
+
+      for(int i = 1; i <= game->getAmount(); i++) {
+        numbers->push_back(QString("%1").arg(i));
+      }
+
+      this->amount->clear();
+      this->amount->addItems(*numbers);
     }
+  }
+
+  if(DEBUG) {
+    for(QVector<Game>::iterator game {this->selectedGames->begin()}; game != this->selectedGames->end(); game++) {
+      qDebug() << *game->getTitle() << "   " << game->getAmount();
+    }
+  }
+}
+
+void HomeWindow::goToCartClicked()
+{
+  CartWindow* cart = new CartWindow(this->stackedWidget, this->selectedGames);
+
+  this->stackedWidget->getQStackedWidget()->addWidget(cart);
+  this->stackedWidget->getQStackedWidget()->setCurrentWidget(cart);
 }
