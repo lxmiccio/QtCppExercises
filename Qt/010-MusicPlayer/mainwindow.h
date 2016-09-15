@@ -16,7 +16,8 @@ private:
   QMediaPlayer* mediaPlayer;
   QMediaPlaylist* mediaPlaylist;
   QSlider* musicSlider;
-  QListWidget* listWidget;
+  QSlider* volumeSlider;
+  QListWidget* trackList;
   QPushButton* play;
   QPushButton* stop;
   QPushButton* addSong;
@@ -27,7 +28,11 @@ public:
 
 public slots:
   void mediaPlayerPositionChanged(qint64 position);
-  void musicSliderValueChanged(int value);
+  void musicSliderMoved(int value);
+  void musicSliderPressed();
+  void musicSliderReleased();
+  void volumeSliderMoved(int value);
+  void trackListItemDoubleClicked(QListWidgetItem*);
   void playClicked();
   void stopClicked();
   void addSongClicked();

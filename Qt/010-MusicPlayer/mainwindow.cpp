@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 
-#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
 #include <QGridLayout>
@@ -16,10 +15,19 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
   this->musicSlider = new QSlider();
   this->musicSlider->setOrientation(Qt::Horizontal);
-  this->musicSlider->setRange(0, 100);
-  QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(musicSliderValueChanged(int)));
+  this->musicSlider->setRange(0, 500);
+  QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(musicSliderMoved(int)));
+  QObject::connect(this->musicSlider, SIGNAL(sliderPressed()), this, SLOT(musicSliderPressed()));
+  QObject::connect(this->musicSlider, SIGNAL(sliderReleased()), this, SLOT(musicSliderReleased()));
 
-  this->listWidget = new QListWidget();
+  this->volumeSlider = new QSlider();
+  this->volumeSlider->setOrientation(Qt::Horizontal);
+  this->volumeSlider->setRange(0, 100);
+  this->volumeSlider->setValue(100);
+  QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(volumeSliderMoved(int)));
+
+  this->trackList = new QListWidget();
+  QObject::connect(this->trackList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(trackListItemDoubleClicked(QListWidgetItem*)));
 
   this->play = new QPushButton("Play");
   QObject::connect(this->play, SIGNAL(clicked()), this, SLOT(playClicked()));
@@ -35,8 +43,12 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   QObject::connect(this->addDirectory, SIGNAL(clicked()), this, SLOT(addDirectoryClicked()));
 
   QGridLayout* gridLayout = new QGridLayout();
+
+  gridLayout->setSpacing(10);
+
   gridLayout->addWidget(this->musicSlider, 0, 0, 1, 1);
-  gridLayout->addWidget(this->listWidget, 1, 0, 3, 1);
+  gridLayout->addWidget(this->volumeSlider, 1, 0, 1, 1);
+  gridLayout->addWidget(this->trackList, 2, 0, 3, 1);
   gridLayout->addWidget(this->play, 0, 1, 1, 1);
   gridLayout->addWidget(this->stop, 0, 1, 1, 1);
   gridLayout->addWidget(this->addSong, 1, 1, 1, 1);
@@ -47,19 +59,37 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
 void MainWindow::mediaPlayerPositionChanged(qint64 position)
 {
-  qDebug() << position;
-  qDebug() << this->mediaPlayer->duration();
+
   if(position != 0 and this->mediaPlayer->duration() != 0) {
-    qDebug() << (100 * position / this->mediaPlayer->duration());
-    this->musicSlider->setValue(100 * position / this->mediaPlayer->duration());
-    //this->progressBar->setFormat('%.02f%%' % (100 * progress / this->mediaPlayer->duration()));
+    this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / this->mediaPlayer->duration());
   }
 }
 
-void MainWindow::musicSliderValueChanged(int value)
+void MainWindow::musicSliderMoved(int value)
+{qDebug() << QString("Duration: %1").arg(this->mediaPlayer->duration() );
+  this->mediaPlayer->setPosition((this->mediaPlayer->duration() * value) / (this->musicSlider->maximum() - this->musicSlider->minimum()));
+}
+
+void MainWindow::musicSliderPressed()
 {
-  qDebug() << "toveee";
-  this->mediaPlayer->setPosition((this->mediaPlayer->duration() * value) / 100);
+  QObject::disconnect(this->mediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(mediaPlayerPositionChanged(qint64)));
+}
+
+void MainWindow::musicSliderReleased()
+{
+  QObject::connect(this->mediaPlayer, SIGNAL(positionChanged(qint64)), this, SLOT(mediaPlayerPositionChanged(qint64)));
+}
+
+void MainWindow::volumeSliderMoved(int value)
+{
+    this->mediaPlayer->setVolume(value);
+}
+
+void MainWindow::trackListItemDoubleClicked(QListWidgetItem* item)
+{
+    qDebug() << this->mediaPlaylist->currentIndex();
+    this->mediaPlaylist->next();
+    qDebug() << this->mediaPlaylist->currentIndex() << endl;
 }
 
 void MainWindow::playClicked()
@@ -80,7 +110,19 @@ void MainWindow::stopClicked()
 
 void MainWindow::addSongClicked()
 {
-  // TO DO
+    QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Directory for Files to Import"));
+
+    QList<QMediaContent> files;
+
+    for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
+      files.push_back(QUrl::fromLocalFile(*filename));
+
+      QFileInfo fileInfo {*filename};
+      this->trackList->addItem(fileInfo.fileName());
+    }
+
+    this->mediaPlaylist->addMedia(files);
+    this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex() != -1 ? this->mediaPlaylist->currentIndex() : 0);
 }
 
 void MainWindow::addDirectoryClicked()
@@ -90,14 +132,17 @@ void MainWindow::addDirectoryClicked()
   if(not directory.isEmpty()) {
     QDir dir {directory};
     QStringList filenames = dir.entryList(QStringList() << "*.mp3", QDir::Files);
+
     QList<QMediaContent> files;
 
     for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
       files.push_back(QUrl::fromLocalFile(dir.path() + "/" + *filename));
-      QFileInfo fileInfo(*filename);
-      this->listWidget->addItem(fileInfo.fileName());
+
+      QFileInfo fileInfo {*filename};
+      this->trackList->addItem(fileInfo.fileName());
     }
+
     this->mediaPlaylist->addMedia(files);
-    this->listWidget->setCurrentRow(this->mediaPlaylist->currentIndex() != -1 ? this->mediaPlaylist->currentIndex() : 0);
+    this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex() != -1 ? this->mediaPlaylist->currentIndex() : 0);
   }
 }
