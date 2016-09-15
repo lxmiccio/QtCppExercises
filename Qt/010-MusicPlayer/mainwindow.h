@@ -20,6 +20,8 @@ private:
   QListWidget* trackList;
   QPushButton* play;
   QPushButton* stop;
+  QPushButton* previous;
+  QPushButton* next;
   QPushButton* addSong;
   QPushButton* addDirectory;
 
@@ -35,6 +37,8 @@ public slots:
   void trackListItemDoubleClicked(QListWidgetItem*);
   void playClicked();
   void stopClicked();
+  void previousClicked();
+  void nextClicked();
   void addSongClicked();
   void addDirectoryClicked();
 };

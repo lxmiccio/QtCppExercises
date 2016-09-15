@@ -36,6 +36,12 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   this->stop->hide();
   QObject::connect(this->stop, SIGNAL(clicked()), this, SLOT(stopClicked()));
 
+  this->previous = new QPushButton("Previous");
+  QObject::connect(this->previous, SIGNAL(clicked()), this, SLOT(previousClicked()));
+
+  this->next = new QPushButton("Next");
+  QObject::connect(this->next, SIGNAL(clicked()), this, SLOT(nextClicked()));
+
   this->addSong = new QPushButton("Add Song");
   QObject::connect(this->addSong, SIGNAL(clicked()), this, SLOT(addSongClicked()));
 
@@ -48,18 +54,19 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
 
   gridLayout->addWidget(this->musicSlider, 0, 0, 1, 1);
   gridLayout->addWidget(this->volumeSlider, 1, 0, 1, 1);
-  gridLayout->addWidget(this->trackList, 2, 0, 3, 1);
+  gridLayout->addWidget(this->trackList, 2, 0, 4, 1);
   gridLayout->addWidget(this->play, 0, 1, 1, 1);
   gridLayout->addWidget(this->stop, 0, 1, 1, 1);
-  gridLayout->addWidget(this->addSong, 1, 1, 1, 1);
-  gridLayout->addWidget(this->addDirectory, 2, 1, 1, 1);
+  gridLayout->addWidget(this->previous, 1, 1, 1, 1);
+  gridLayout->addWidget(this->next, 2, 1, 1, 1);
+  gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
+  gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);
 
   this->setLayout(gridLayout);
 }
 
 void MainWindow::mediaPlayerPositionChanged(qint64 position)
 {
-
   if(position != 0 and this->mediaPlayer->duration() != 0) {
     this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / this->mediaPlayer->duration());
   }
@@ -82,14 +89,22 @@ void MainWindow::musicSliderReleased()
 
 void MainWindow::volumeSliderMoved(int value)
 {
-    this->mediaPlayer->setVolume(value);
+  this->mediaPlayer->setVolume(value);
 }
 
 void MainWindow::trackListItemDoubleClicked(QListWidgetItem* item)
 {
-    qDebug() << this->mediaPlaylist->currentIndex();
-    this->mediaPlaylist->next();
-    qDebug() << this->mediaPlaylist->currentIndex() << endl;
+  for(int i {0}; i < this->trackList->count(); i++) {
+    if(item->text() == this->trackList->item(i)->text()) {
+      this->mediaPlaylist->setCurrentIndex(i);
+      this->mediaPlayer->play();
+
+      this->play->hide();
+      this->stop->show();
+
+      break;
+    }
+  }
 }
 
 void MainWindow::playClicked()
@@ -108,21 +123,59 @@ void MainWindow::stopClicked()
   this->play->show();
 }
 
+void MainWindow::previousClicked()
+{
+  this->mediaPlaylist->previous();
+
+  if(this->mediaPlaylist->currentIndex() == -1) {
+    this->play->show();
+    this->stop->hide();
+    this->musicSlider->setValue(0);
+  } else if(this->mediaPlaylist->currentIndex() == 0 || this->mediaPlaylist->currentIndex() == this->trackList->count()) {
+    this->mediaPlayer->play();
+    this->play->hide();
+    this->stop->show();
+  } else {
+    this->mediaPlayer->play();
+  }
+
+  this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex());
+}
+
+void MainWindow::nextClicked()
+{
+  this->mediaPlaylist->next();
+
+  if(this->mediaPlaylist->currentIndex() == -1) {
+    this->play->show();
+    this->stop->hide();
+    this->musicSlider->setValue(0);
+  } else if(this->mediaPlaylist->currentIndex() == 0 || this->mediaPlaylist->currentIndex() == this->trackList->count()) {
+    this->mediaPlayer->play();
+    this->play->hide();
+    this->stop->show();
+  } else {
+    this->mediaPlayer->play();
+  }
+
+  this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex());
+}
+
 void MainWindow::addSongClicked()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Directory for Files to Import"));
+  QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Directory for Files to Import"));
 
-    QList<QMediaContent> files;
+  QList<QMediaContent> files;
 
-    for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
-      files.push_back(QUrl::fromLocalFile(*filename));
+  for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
+    files.push_back(QUrl::fromLocalFile(*filename));
 
-      QFileInfo fileInfo {*filename};
-      this->trackList->addItem(fileInfo.fileName());
-    }
+    QFileInfo fileInfo {*filename};
+    this->trackList->addItem(fileInfo.fileName());
+  }
 
-    this->mediaPlaylist->addMedia(files);
-    this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex() != -1 ? this->mediaPlaylist->currentIndex() : 0);
+  this->mediaPlaylist->addMedia(files);
+  this->trackList->setCurrentRow(this->mediaPlaylist->currentIndex() != -1 ? this->mediaPlaylist->currentIndex() : 0);
 }
 
 void MainWindow::addDirectoryClicked()
