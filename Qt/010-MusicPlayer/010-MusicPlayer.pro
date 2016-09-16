@@ -13,8 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    track.cpp \
+    author.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    track.h \
+    author.h \
+    track.fwd.h \
+    author.fwd.h
 
 FORMS    +=
