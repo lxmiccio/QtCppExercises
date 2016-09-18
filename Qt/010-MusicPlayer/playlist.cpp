@@ -19,3 +19,13 @@ void Playlist::removeTrack(Track &track)
 {
   this->tracks.removeAt(this->tracks.indexOf(track));
 }
+
+void Playlist::savePlaylist()
+{
+  // TO DO
+}
+
+void Playlist::loadPlaylist()
+{
+  // TO DO
+}

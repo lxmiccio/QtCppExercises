@@ -16,6 +16,7 @@ public:
 
   void setPath(QString path);
   QString getPath();
+
   void setMediaContent(QMediaContent mediaContent);
   QMediaContent getMediaContent() const;
 };

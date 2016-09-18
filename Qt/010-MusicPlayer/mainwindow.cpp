@@ -50,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   this->addDirectory = new QPushButton("Add Directory");
   QObject::connect(this->addDirectory, SIGNAL(clicked()), this, SLOT(addDirectoryClicked()));
 
+  this->savePlaylist = new QPushButton("Save Current Playlist");
+  QObject::connect(this->savePlaylist, SIGNAL(clicked()), this, SLOT(savePlaylistClicked()));
+
+  this->addDirectory = new QPushButton("Load Playlist");
+  QObject::connect(this->loadPlaylist, SIGNAL(clicked()), this, SLOT(loadPlaylistClicked()));
+
   QGridLayout* gridLayout = new QGridLayout();
 
   gridLayout->setSpacing(10);
@@ -212,4 +218,14 @@ void MainWindow::addDirectoryClicked()
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(0);
     }
   }
+}
+
+void MainWindow::savePlaylist()
+{
+  // TO DO
+}
+
+void MainWindow::loadPlaylist()
+{
+  // TO DO
 }

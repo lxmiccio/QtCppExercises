@@ -28,6 +28,8 @@ private:
   QPushButton* next;
   QPushButton* addSong;
   QPushButton* addDirectory;
+  QPushButton* savePlaylist;
+  QPushButton* loadPlaylist;
 
 public:
   explicit MainWindow(QWidget *parent = 0);
@@ -46,6 +48,8 @@ public slots:
   void nextClicked();
   void addSongClicked();
   void addDirectoryClicked();
+  void savePlaylistClicked();
+  void loadPlaylistClicked();
 };
 
 #endif // MAINWINDOW_H
