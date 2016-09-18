@@ -8,13 +8,15 @@
 #include <QPushButton>
 #include <QSlider>
 
+#include "musicplayer.h"
+#include "track.h"
+
 class MainWindow : public QWidget
 {
   Q_OBJECT
 
 private:
-  QMediaPlayer* mediaPlayer;
-  QMediaPlaylist* mediaPlaylist;
+  MusicPlayer* musicPlayer;
   QSlider* musicSlider;
   QSlider* volumeSlider;
   QListWidget* trackList;
@@ -34,6 +36,7 @@ public slots:
   void musicSliderPressed();
   void musicSliderReleased();
   void volumeSliderMoved(int value);
+  void volumeValueChanged(int value);
   void trackListItemDoubleClicked(QListWidgetItem*);
   void playClicked();
   void stopClicked();

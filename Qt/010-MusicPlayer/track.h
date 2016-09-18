@@ -1,28 +1,24 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#pragma once
-
-#include <QString>
-
-#include "author.fwd.h"
-#include "track.fwd.h"
+#include <QMediaContent>
 
 class Track
 {
 private:
-    Author* author;
-    QString title;
+  QMediaContent track;
+  QString title;
+  QString album;
+  QString artist;
 
 public:
-    Track();
-    Track(QString title);
-    Track(Author* author, QString title);
+  Track();
+  Track(QMediaContent track);
 
-    void setAuthor(Author* author);
-    Author* getAuthor();
-
-    QString getTitle();
+  QMediaContent* getTrack();
+  QString getTitle();
+  QString getAlbum();
+  QString getArtist();
 };
 
 QDataStream& operator<<(QDataStream& out, Track& track);

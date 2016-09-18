@@ -15,12 +15,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     track.cpp \
-    author.cpp
+    musicplayer.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
-    author.h \
-    track.fwd.h \
-    author.fwd.h
+    musicplayer.h
 
 FORMS    +=

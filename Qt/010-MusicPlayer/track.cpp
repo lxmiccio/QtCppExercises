@@ -1,56 +1,43 @@
 #include "track.h"
 
-#include "author.h"
+#include <QMediaMetaData>
+#include <QMediaPlayerControl>
 
 Track::Track()
 {
 
 }
 
-Track::Track(QString title)
+Track::Track(QMediaContent track)
 {
-    this->title = title;
+  this->track = track;
+
+  QMediaPlayer* mediaPlayer = new QMediaPlayer();
+  mediaPlayer->setMedia(this->track);
+
+  this->title = mediaPlayer->metaData(QMediaMetaData::Title).toString();
+  this->album = mediaPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
+  this->artist = mediaPlayer->metaData(QMediaMetaData::AlbumArtist).toString();
+
+  delete mediaPlayer;
 }
 
-Track::Track(Author *author, QString title)
+QMediaContent* Track::getTrack()
 {
-    this->author = author;
-    this->title = title;
-}
-
-void Track::setAuthor(Author* author)
-{
-    this->author = author;
-}
-
-Author* Track::getAuthor()
-{
-    return this->author;
+  return &this->track;
 }
 
 QString Track::getTitle()
 {
-    return this->title;
+  return this->title;
 }
 
-QDataStream& operator<<(QDataStream& out, Track& track)
+QString Track::getAlbum()
 {
-    out // << track.getAuthor()
-        << track.getTitle();
-
-    return out;
+  return this->album;
 }
 
-QDataStream& operator>>(QDataStream& in, Track& track)
+QString Track::getArtist()
 {
-    Author author;
-    QString title;
-
-    in // >> author;
-       >> title;
-
-    track = Track(&author, title);
-
-    return in;
+  return this->artist;
 }
-
