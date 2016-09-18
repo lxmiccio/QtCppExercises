@@ -2,26 +2,27 @@
 #define TRACK_H
 
 #include <QMediaContent>
+#include <QString>
 
 class Track
 {
 private:
-  QMediaContent track;
-  QString title;
-  QString album;
-  QString artist;
+  QString path;
+  QMediaContent mediaContent;
 
 public:
   Track();
-  Track(QMediaContent track);
+  Track(QString path, QMediaContent mediaContent);
 
-  QMediaContent* getTrack();
-  QString getTitle();
-  QString getAlbum();
-  QString getArtist();
+  void setPath(QString path);
+  QString getPath();
+  void setMediaContent(QMediaContent mediaContent);
+  QMediaContent getMediaContent() const;
 };
 
-QDataStream& operator<<(QDataStream& out, Track& track);
-QDataStream& operator>>(QDataStream& in, Track& track);
+bool operator==(const Track &track1, const Track &track2);
+
+QDataStream &operator<<(QDataStream &out, Track &track);
+QDataStream &operator>>(QDataStream &in, Track &track);
 
 #endif // TRACK_H

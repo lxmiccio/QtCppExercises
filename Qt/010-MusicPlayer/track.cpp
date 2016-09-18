@@ -8,36 +8,52 @@ Track::Track()
 
 }
 
-Track::Track(QMediaContent track)
+Track::Track(QString path, QMediaContent mediaContent)
 {
-  this->track = track;
-
-  QMediaPlayer* mediaPlayer = new QMediaPlayer();
-  mediaPlayer->setMedia(this->track);
-
-  this->title = mediaPlayer->metaData(QMediaMetaData::Title).toString();
-  this->album = mediaPlayer->metaData(QMediaMetaData::AlbumTitle).toString();
-  this->artist = mediaPlayer->metaData(QMediaMetaData::AlbumArtist).toString();
-
-  delete mediaPlayer;
+  this->path = path;
+  this->mediaContent = mediaContent;
 }
 
-QMediaContent* Track::getTrack()
+void Track::setPath(QString path)
 {
-  return &this->track;
+  this->path = path;
 }
 
-QString Track::getTitle()
+QString Track::getPath()
 {
-  return this->title;
+  return this->path;
 }
 
-QString Track::getAlbum()
+void Track::setMediaContent(QMediaContent mediaContent)
 {
-  return this->album;
+  this->mediaContent = mediaContent;
 }
 
-QString Track::getArtist()
+QMediaContent Track::getMediaContent() const
 {
-  return this->artist;
+  return this->mediaContent;
+}
+
+bool operator==(const Track &track1, const Track &track2)
+{
+  return track1.getMediaContent() == track2.getMediaContent();
+}
+
+QDataStream &operator<<(QDataStream &out, Track &track)
+{
+  out << track.getPath();
+
+  return out;
+}
+
+QDataStream &operator>>(QDataStream &in, Track &track)
+{
+  QString path;
+
+  in >> path;
+
+  track.setPath(path);
+  track.setMediaContent(QUrl::fromLocalFile(path));
+
+  return in;
 }

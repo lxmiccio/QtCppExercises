@@ -12,14 +12,17 @@ class MusicPlayer
 private:
   QMediaPlayer* mediaPlayer;
   QMediaPlaylist* mediaPlaylist;
-  QVector<Track> tracks;
 
 public:
   MusicPlayer();
 
   QMediaPlayer* getMediaPlayer();
+
+  void addTrack(Track& track);
+  void addTracks(QVector<Track> &tracks);
+  void removeTrack(Track& track);
+  void removeAllTracks();
   QMediaPlaylist* getMediaPlaylist();
-  QVector<Track>* getTracks();
 };
 
 #endif // MUSICPLAYER_H

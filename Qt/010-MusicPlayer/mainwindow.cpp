@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   this->musicPlayer = new MusicPlayer();
   QObject::connect(this->musicPlayer->getMediaPlayer(), SIGNAL(positionChanged(qint64)), this, SLOT(mediaPlayerPositionChanged(qint64)));
 
+  this->playlist = new Playlist();
+
   this->musicSlider = new QSlider();
   this->musicSlider->setOrientation(Qt::Horizontal);
   this->musicSlider->setRange(0, 500);
@@ -168,43 +170,46 @@ void MainWindow::nextClicked()
 
 void MainWindow::addSongClicked()
 {
-  QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Directory for Files to Import"));
-
-  QList<QMediaContent> files;
+  QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Track to Import"));
 
   for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
-    files.push_back(QUrl::fromLocalFile(*filename));
-
     QFileInfo fileInfo {*filename};
+
+    Track track = Track(fileInfo.absoluteFilePath(), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    this->playlist->addTrack(track);
+
+    this->musicPlayer->addTrack(track);
+
     this->trackList->addItem(fileInfo.fileName());
   }
 
-  this->musicPlayer->getMediaPlaylist()->addMedia(files);
-  this->trackList->setCurrentRow(this->musicPlayer->getMediaPlaylist()->currentIndex() != -1 ? this->musicPlayer->getMediaPlaylist()->currentIndex() : 0);
+  if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
+    this->musicPlayer->getMediaPlaylist()->setCurrentIndex(0);
+  }
 }
 
 void MainWindow::addDirectoryClicked()
 {
-  QString directory = QFileDialog::getExistingDirectory(this, tr("Select Directory for Files to Import"));
+  QString directory = QFileDialog::getExistingDirectory(this, tr("Select Directory for Tracks to Import"));
 
   if(not directory.isEmpty()) {
     QDir dir {directory};
+
     QStringList filenames = dir.entryList(QStringList() << "*.mp3", QDir::Files);
 
-    for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
-      this->musicPlayer->getTracks()->push_back(Track(QUrl::fromLocalFile(dir.path() + "/" + *filename)));
-
+    for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); ++filename) {
       QFileInfo fileInfo {*filename};
+
+      Track track = Track(fileInfo.absoluteFilePath(), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      this->playlist->addTrack(track);
+
+      this->musicPlayer->addTrack(track);
+
       this->trackList->addItem(fileInfo.fileName());
     }
 
-    Track t = this->musicPlayer->getTracks()->at(0);
-    t.getAlbum();
-
-    for(QVector<Track>::iterator track {this->musicPlayer->getTracks()->begin()}; track != this->musicPlayer->getTracks()->end(); track++) {
-      this->musicPlayer->getMediaPlaylist()->addMedia(*track->getTrack());
+    if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
+      this->musicPlayer->getMediaPlaylist()->setCurrentIndex(0);
     }
-
-    this->trackList->setCurrentRow(this->musicPlayer->getMediaPlaylist()->currentIndex() != -1 ? this->musicPlayer->getMediaPlaylist()->currentIndex() : 0);
   }
 }

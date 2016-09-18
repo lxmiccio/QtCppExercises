@@ -9,6 +9,7 @@
 #include <QSlider>
 
 #include "musicplayer.h"
+#include "playlist.h"
 #include "track.h"
 
 class MainWindow : public QWidget
@@ -17,6 +18,7 @@ class MainWindow : public QWidget
 
 private:
   MusicPlayer* musicPlayer;
+  Playlist* playlist;
   QSlider* musicSlider;
   QSlider* volumeSlider;
   QListWidget* trackList;
