@@ -1,15 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMediaPlayer>
-#include <QMediaPlaylist>
 #include <QListWidget>
-#include <QMainWindow>
+#include <QWidget>
 #include <QPushButton>
 #include <QSlider>
 
 #include "musicplayer.h"
 #include "playlist.h"
+#include "stackedwidget.h"
 #include "track.h"
 
 class MainWindow : public QWidget
@@ -17,6 +16,7 @@ class MainWindow : public QWidget
   Q_OBJECT
 
 private:
+  StackedWidget* stackedWidget;
   MusicPlayer* musicPlayer;
   Playlist* playlist;
   QSlider* musicSlider;
@@ -28,9 +28,11 @@ private:
   QPushButton* next;
   QPushButton* addSong;
   QPushButton* addDirectory;
+  QPushButton* savePlaylist;
+  QPushButton* loadPlaylist;
 
 public:
-  explicit MainWindow(QWidget *parent = 0);
+  MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
 
 public slots:
   void mediaPlayerPositionChanged(qint64 position);
@@ -46,6 +48,8 @@ public slots:
   void nextClicked();
   void addSongClicked();
   void addDirectoryClicked();
+  void savePlaylistClicked();
+  void loadPlaylistClicked();
 };
 
 #endif // MAINWINDOW_H

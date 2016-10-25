@@ -7,8 +7,10 @@
 #include <QString>
 #include <QStringList>
 
-MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
+MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
+  this->stackedWidget = stackedWidget;
+
   this->musicPlayer = new MusicPlayer();
   QObject::connect(this->musicPlayer->getMediaPlayer(), SIGNAL(positionChanged(qint64)), this, SLOT(mediaPlayerPositionChanged(qint64)));
 
@@ -50,19 +52,27 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent)
   this->addDirectory = new QPushButton("Add Directory");
   QObject::connect(this->addDirectory, SIGNAL(clicked()), this, SLOT(addDirectoryClicked()));
 
+  this->savePlaylist = new QPushButton("Save Playlist");
+  QObject::connect(this->savePlaylist, SIGNAL(clicked()), this, SLOT(savePlaylistClicked()));
+
+  this->loadPlaylist = new QPushButton("Load Playlist");
+  QObject::connect(this->loadPlaylist, SIGNAL(clicked()), this, SLOT(loadPlaylistClicked()));
+
   QGridLayout* gridLayout = new QGridLayout();
 
   gridLayout->setSpacing(10);
 
   gridLayout->addWidget(this->musicSlider, 0, 0, 1, 1);
   gridLayout->addWidget(this->volumeSlider, 1, 0, 1, 1);
-  gridLayout->addWidget(this->trackList, 2, 0, 4, 1);
+  gridLayout->addWidget(this->trackList, 2, 0, 5, 1);
   gridLayout->addWidget(this->play, 0, 1, 1, 1);
   gridLayout->addWidget(this->stop, 0, 1, 1, 1);
   gridLayout->addWidget(this->previous, 1, 1, 1, 1);
   gridLayout->addWidget(this->next, 2, 1, 1, 1);
   gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
   gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);
+  gridLayout->addWidget(this->savePlaylist, 5, 1 ,1, 1);
+  gridLayout->addWidget(this->loadPlaylist, 6, 1 ,1, 1);
 
   this->setLayout(gridLayout);
 }
@@ -200,7 +210,7 @@ void MainWindow::addDirectoryClicked()
     for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); ++filename) {
       QFileInfo fileInfo {*filename};
 
-      Track track = Track(fileInfo.absoluteFilePath(), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      Track track = Track(dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
       this->playlist->addTrack(track);
 
       this->musicPlayer->addTrack(track);
@@ -212,4 +222,14 @@ void MainWindow::addDirectoryClicked()
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(0);
     }
   }
+}
+
+void MainWindow::savePlaylistClicked()
+{
+    this->playlist->savePlaylist();
+}
+
+void MainWindow::loadPlaylistClicked()
+{
+    //TO DO
 }

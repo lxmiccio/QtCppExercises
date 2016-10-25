@@ -7,6 +7,7 @@
 class Track
 {
 private:
+  QString title;
   QString path;
   QMediaContent mediaContent;
 
