@@ -18,6 +18,7 @@ public:
   QVector<Track>* getTracks();
 
   void savePlaylist();
+
   void loadPlaylist();
 };
 
