@@ -33,7 +33,7 @@ void Playlist::savePlaylist()
   for(QVector<Track>::iterator i {this->tracks.begin()}; i != this->tracks.end(); ++i) {
     qDebug() << i->getPath();
     qDebug() << QDir::currentPath() + "/tracks";
-    QFile::copy(i->getPath(), QDir::currentPath() + "/tracks/a.mp3");
+    QFile::copy(i->getPath(), QDir::currentPath() + "/tracks/" + i->getTitle() + ".mp3");
   }
 }
 

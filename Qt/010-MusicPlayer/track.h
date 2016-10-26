@@ -7,13 +7,18 @@
 class Track
 {
 private:
+  QString artist;
+  QString album;
   QString title;
   QString path;
   QMediaContent mediaContent;
 
 public:
   Track();
-  Track(QString path, QMediaContent mediaContent);
+  Track(QString artist, QString album, QString title, QString path, QMediaContent mediaContent);
+
+  void setTitle(QString title);
+  QString getTitle();
 
   void setPath(QString path);
   QString getPath();

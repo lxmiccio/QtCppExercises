@@ -8,10 +8,23 @@ Track::Track()
 
 }
 
-Track::Track(QString path, QMediaContent mediaContent)
+Track::Track(QString artist, QString album, QString title, QString path, QMediaContent mediaContent)
 {
+  this->artist = artist;
+  this->album = album;
+  this->title = title;
   this->path = path;
   this->mediaContent = mediaContent;
+}
+
+void Track::setTitle(QString title)
+{
+  this->title = title;
+}
+
+QString Track::getTitle()
+{
+  return this->title;
 }
 
 void Track::setPath(QString path)
