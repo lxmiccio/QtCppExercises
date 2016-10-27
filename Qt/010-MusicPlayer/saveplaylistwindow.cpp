@@ -32,6 +32,10 @@ SavePlaylistWindow::SavePlaylistWindow(StackedWidget* stackedWidget, Playlist* p
 
 void SavePlaylistWindow::savePlaylistClicked()
 {
+  if(not QDir("tracks").exists()) {
+    QDir().mkdir("tracks");
+  }
+
   QString path {QDir::currentPath() + "/tracks/"};
   QString playlistName {this->name->text()};
   QString playlistPath {path + playlistName};

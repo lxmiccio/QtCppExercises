@@ -191,9 +191,9 @@ void MainWindow::addSongClicked()
     QDir dir {fileInfo.absoluteDir()};
     QStringList data {dir.filePath(*filename).split('/')};
 
-    QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
+    QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
-    Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 
     this->playlist->addTrack(track);
 
@@ -220,10 +220,10 @@ void MainWindow::addDirectoryClicked()
       QFileInfo fileInfo {*filename};
       QStringList data {dir.filePath(*filename).split('/')};
 
-      QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
+      QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
       title = title.left(title.length() - 4);
 
-      Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 
       this->playlist->addTrack(track);
 

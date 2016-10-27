@@ -15,10 +15,6 @@ class MainWindow : public QWidget
 {
   Q_OBJECT
 
-  static const int16_t ARTIST_INDEX = 3;
-  static const int16_t ALBUM_INDEX = 2;
-  static const int16_t TITLE_INDEX = 1;
-
 private:
   StackedWidget* stackedWidget;
   MusicPlayer* musicPlayer;

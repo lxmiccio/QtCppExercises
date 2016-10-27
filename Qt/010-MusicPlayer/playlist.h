@@ -8,6 +8,7 @@
 
 class Playlist
 {
+public:
   static const int16_t ARTIST_INDEX = 3;
   static const int16_t ALBUM_INDEX = 2;
   static const int16_t TITLE_INDEX = 1;
