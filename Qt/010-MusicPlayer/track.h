@@ -10,15 +10,25 @@ private:
   QString artist;
   QString album;
   QString title;
+  QString filename;
   QString path;
   QMediaContent mediaContent;
 
 public:
   Track();
-  Track(QString artist, QString album, QString title, QString path, QMediaContent mediaContent);
+  Track(QString artist, QString album, QString title, QString filename, QString path, QMediaContent mediaContent);
+
+  void setArtist(QString artist);
+  QString getArtist();
+
+  void setAlbum(QString album);
+  QString getAlbum();
 
   void setTitle(QString title);
   QString getTitle();
+
+  void setFilename(QString filename);
+  QString getFilename();
 
   void setPath(QString path);
   QString getPath();
@@ -28,8 +38,5 @@ public:
 };
 
 bool operator==(const Track &track1, const Track &track2);
-
-QDataStream &operator<<(QDataStream &out, Track &track);
-QDataStream &operator>>(QDataStream &in, Track &track);
 
 #endif // TRACK_H

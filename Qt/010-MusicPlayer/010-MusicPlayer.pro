@@ -17,12 +17,16 @@ SOURCES += main.cpp\
     track.cpp \
     musicplayer.cpp \
     playlist.cpp \
-    stackedwidget.cpp
+    stackedwidget.cpp \
+    saveplaylistwindow.cpp \
+    loadplaylistwindow.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
     musicplayer.h \
     playlist.h \
-    stackedwidget.h
+    stackedwidget.h \
+    saveplaylistwindow.h \
+    loadplaylistwindow.h
 
 FORMS    +=

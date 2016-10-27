@@ -7,6 +7,9 @@
 #include <QString>
 #include <QStringList>
 
+#include "loadplaylistwindow.h"
+#include "saveplaylistwindow.h"
+
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
   this->stackedWidget = stackedWidget;
@@ -184,17 +187,19 @@ void MainWindow::addSongClicked()
 
   for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
     QFileInfo fileInfo {*filename};
-    //QStringList data {dir.filePath(*filename).split('/')};
 
-    //QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
-    //title = title.left(title.length() - 4);
-    //Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    QDir dir {fileInfo.absoluteDir()};
+    QStringList data {dir.filePath(*filename).split('/')};
 
-    //this->playlist->addTrack(track);
+    QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
+    title = title.left(title.length() - 4);
+    Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 
-    //this->musicPlayer->addTrack(track);
+    this->playlist->addTrack(track);
 
-    //this->trackList->addItem(fileInfo.fileName());
+    this->musicPlayer->addTrack(track);
+
+    this->trackList->addItem(fileInfo.fileName());
   }
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
@@ -218,7 +223,7 @@ void MainWindow::addDirectoryClicked()
       QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
       title = title.left(title.length() - 4);
 
-      Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 
       this->playlist->addTrack(track);
 
@@ -235,10 +240,16 @@ void MainWindow::addDirectoryClicked()
 
 void MainWindow::savePlaylistClicked()
 {
-    this->playlist->savePlaylist();
+  SavePlaylistWindow* savePlaylist = new SavePlaylistWindow(this->stackedWidget, this->playlist);
+
+  this->stackedWidget->getQStackedWidget()->addWidget(savePlaylist);
+  this->stackedWidget->getQStackedWidget()->setCurrentWidget(savePlaylist);
 }
 
 void MainWindow::loadPlaylistClicked()
 {
-    //TO DO
+  LoadPlaylistWindow* loadPlaylist = new LoadPlaylistWindow(this->stackedWidget);
+
+  this->stackedWidget->getQStackedWidget()->addWidget(loadPlaylist);
+  this->stackedWidget->getQStackedWidget()->setCurrentWidget(loadPlaylist);
 }
