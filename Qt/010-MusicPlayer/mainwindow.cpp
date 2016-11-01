@@ -7,6 +7,7 @@
 #include <QString>
 #include <QStringList>
 
+#include "imageloader.h"
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
 
