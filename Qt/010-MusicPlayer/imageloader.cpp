@@ -29,7 +29,7 @@ QPixmap ImageLoader::pixmap(const QString &image, const QSize &size, double opac
     painter.end();
 
     if(color.alpha() > 0) {
-      pixmap = this->tint(pixmap, color);
+      pixmap = ImageLoader::tint(pixmap, color);
     }
   } else {
     pixmap = QPixmap(image);

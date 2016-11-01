@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QSlider>
 
+#include "imagebutton.h"
+
 #include "musicplayer.h"
 #include "playlist.h"
 #include "stackedwidget.h"
@@ -25,7 +27,7 @@ private:
   QPushButton* play;
   QPushButton* stop;
   QPushButton* previous;
-  QPushButton* next;
+  ImageButton* next;
   QPushButton* addSong;
   QPushButton* addDirectory;
   QPushButton* remove;

@@ -19,7 +19,7 @@ ImageButton::ImageButton(const QString &path, QWidget *parent) : QAbstractButton
 
 void ImageButton::init(const QPixmap &pixmap)
 {
-  this->setPixmap(pixmap, QIcon::Off);
+  this->setPixmap(pixmap, QIcon::On);
 }
 
 void ImageButton::setPixmap(const QString &path)
