@@ -8,6 +8,7 @@
 
 #include "playlist.h"
 #include "stackedwidget.h"
+#include "mainwindow.h"
 
 class LoadPlaylistWindow : public QWidget
 {
@@ -24,6 +25,9 @@ public:
 
 public slots:
   void loadPlaylistClicked();
+
+signals:
+  void playlistLoaded(QString playlistName);
 };
 
 #endif // LOADPLAYLISTWINDOW_H

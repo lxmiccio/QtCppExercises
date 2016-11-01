@@ -35,6 +35,11 @@ void Playlist::removeTrack(Track &track)
   this->tracks.removeAt(this->tracks.indexOf(track));
 }
 
+void Playlist::removeAllTracks()
+{
+  this->tracks.empty();
+}
+
 void Playlist::savePlaylist(QString path)
 {
   for(QVector<Track>::iterator track {this->tracks.begin()}; track != this->tracks.end(); ++track) {

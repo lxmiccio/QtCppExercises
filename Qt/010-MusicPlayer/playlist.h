@@ -25,6 +25,7 @@ public:
 
   void addTrack(Track track);
   void removeTrack(Track &track);
+  void removeAllTracks();
   QVector<Track>* getTracks();
 
   void savePlaylist(QString path);

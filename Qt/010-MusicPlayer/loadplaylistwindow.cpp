@@ -30,25 +30,9 @@ LoadPlaylistWindow::LoadPlaylistWindow(StackedWidget* stackedWidget, QWidget* pa
 
 void LoadPlaylistWindow::loadPlaylistClicked()
 {
-  Playlist p = Playlist();
-
   if(this->playlists->currentRow() != -1) {
-    QString path {QDir::currentPath() + "/tracks/"};
+    emit(playlistLoaded(this->playlists->currentItem()->text()));
 
-    QDir dir {path + this->playlists->currentItem()->text()};
-
-    QStringList filenames = dir.entryList(QStringList() << "*.mp3", QDir::Files);
-
-    for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); ++filename) {
-      QFileInfo fileInfo {*filename};
-      QStringList data {dir.filePath(*filename).split('/')};
-
-      QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
-      title = title.left(title.length() - 4);
-
-      Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
-
-      p.addTrack(track);
-    }
+    this->stackedWidget->previousView();
   }
 }

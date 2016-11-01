@@ -28,6 +28,8 @@ private:
   QPushButton* next;
   QPushButton* addSong;
   QPushButton* addDirectory;
+  QPushButton* remove;
+  QPushButton* removeAll;
   QPushButton* savePlaylist;
   QPushButton* loadPlaylist;
 
@@ -48,8 +50,11 @@ public slots:
   void nextClicked();
   void addSongClicked();
   void addDirectoryClicked();
+  void removeClicked();
+  void removeAllClicked();
   void savePlaylistClicked();
   void loadPlaylistClicked();
+  void playlistLoaded(QString playlistName);
 };
 
 #endif // MAINWINDOW_H
