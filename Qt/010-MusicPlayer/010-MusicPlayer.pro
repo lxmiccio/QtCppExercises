@@ -12,21 +12,21 @@ TARGET = 010-MusicPlayer
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    track.cpp \
-    musicplayer.cpp \
-    playlist.cpp \
-    stackedwidget.cpp \
-    saveplaylistwindow.cpp \
-    loadplaylistwindow.cpp
+SOURCES += src/main.cpp\
+    src/mainwindow.cpp \
+    src/track.cpp \
+    src/musicplayer.cpp \
+    src/playlist.cpp \
+    src/stackedwidget.cpp \
+    src/saveplaylistwindow.cpp \
+    src/loadplaylistwindow.cpp
 
-HEADERS  += mainwindow.h \
-    track.h \
-    musicplayer.h \
-    playlist.h \
-    stackedwidget.h \
-    saveplaylistwindow.h \
-    loadplaylistwindow.h
+HEADERS  += inc/mainwindow.h \
+    inc/track.h \
+    inc/musicplayer.h \
+    inc/playlist.h \
+    inc/stackedwidget.h \
+    inc/saveplaylistwindow.h \
+    inc/loadplaylistwindow.h
 
 FORMS    +=
