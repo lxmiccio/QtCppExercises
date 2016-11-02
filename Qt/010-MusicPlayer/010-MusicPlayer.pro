@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     saveplaylistwindow.cpp \
     loadplaylistwindow.cpp \
     imageloader.cpp \
-    imagebutton.cpp
+    imagebutton.cpp \
+    audiocontrols.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     saveplaylistwindow.h \
     loadplaylistwindow.h \
     imageloader.h \
-    imagebutton.h
+    imagebutton.h \
+    audiocontrols.h
 
 FORMS    +=
