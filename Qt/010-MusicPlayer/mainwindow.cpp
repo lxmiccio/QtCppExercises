@@ -48,9 +48,9 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QObject::connect(this->previous, SIGNAL(clicked()), this, SLOT(previousClicked()));
 
   this->next = new ImageButton();
-  this->next->setFixedSize(QSize(30, 30));
-  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(30, 30), 1.0, Qt::black));
-  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(30, 30), 1.0, Qt::blue), QIcon::Off, QIcon::Active);
+  this->next->setFixedSize(QSize(25, 23));
+  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(25, 23), 1.0, Qt::black));
+  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(25, 23), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
   QObject::connect(this->next, SIGNAL(clicked()), this, SLOT(nextClicked()));
 
   this->addSong = new QPushButton("Add Song");

@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <QPaintEvent>
 
+#include <QDebug>
+
 ImageButton::ImageButton(QWidget *parent) : QAbstractButton(parent)
 {
 }
@@ -19,7 +21,10 @@ ImageButton::ImageButton(const QString &path, QWidget *parent) : QAbstractButton
 
 void ImageButton::init(const QPixmap &pixmap)
 {
-  this->setPixmap(pixmap, QIcon::On);
+  this->setPixmap(pixmap, QIcon::Off);
+  //this->size = pixmap.size();
+  m_sizeHint = pixmap.size();
+  this->updateGeometry();
 }
 
 void ImageButton::setPixmap(const QString &path)
@@ -42,10 +47,12 @@ void ImageButton::paintEvent(QPaintEvent *event)
   QPainter painter(this);
   painter.setClipRect(event->rect());
 
-  QIcon::Mode mode = this->isDown() ? QIcon::Selected : QIcon::Normal;
-  QIcon::State state = this->isChecked() ? QIcon::On : QIcon::Off;
+  QIcon::Mode mode = this->isDown() ? QIcon::Active : QIcon::Normal;
+  qDebug() << mode;
+  QIcon::State state = this->isChecked() ? QIcon::On : QIcon::On;
 
   if(not this->isEnabled()) {
+    /* Button cannot be pressed */
     painter.setOpacity(0.4);
   }
 
@@ -54,11 +61,13 @@ void ImageButton::paintEvent(QPaintEvent *event)
 
 void ImageButton::setPixmap(const QString &path, const QIcon::State state, QIcon::Mode mode)
 {
+  qDebug() << "a11";
   this->setPixmap(QPixmap(path), state, mode);
 }
 
 void ImageButton::setPixmap(const QPixmap &pixmap, const QIcon::State state, QIcon::Mode mode)
 {
+  qDebug() << "a111";
   QIcon icon = this->icon();
   icon.addPixmap(pixmap, mode, state);
 

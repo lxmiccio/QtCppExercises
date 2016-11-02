@@ -21,7 +21,8 @@ public:
 
   void clear();
 
-  virtual QSize getSize() const { return this->size; }
+  // virtual QSize getSize() const { return this->size; }
+  virtual QSize sizeHint() const { return m_sizeHint; }
 
 protected:
   virtual void paintEvent(QPaintEvent *event);
@@ -29,7 +30,8 @@ protected:
 private:
   void init(const QPixmap &pixmap);
 
-  QSize size;
+  //QSize size;
+  QSize m_sizeHint;
 };
 
 #endif // IMAGEBUTTON_H
