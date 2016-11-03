@@ -17,41 +17,25 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   this->musicPlayer = new MusicPlayer();
   QObject::connect(this->musicPlayer->getMediaPlayer(), SIGNAL(positionChanged(qint64)), this, SLOT(mediaPlayerPositionChanged(qint64)));
+  QObject::connect(this->musicPlayer->getMediaPlaylist(), SIGNAL(currentMediaChanged(QMediaContent)), this, SLOT(onCurrentMediaChanged(QMediaContent)));
 
   this->playlist = new Playlist();
 
-  this->musicSlider = new QSlider();
-  this->musicSlider->setOrientation(Qt::Horizontal);
-  this->musicSlider->setRange(0, 500);
-  QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(musicSliderMoved(int)));
-  QObject::connect(this->musicSlider, SIGNAL(sliderPressed()), this, SLOT(musicSliderPressed()));
-  QObject::connect(this->musicSlider, SIGNAL(sliderReleased()), this, SLOT(musicSliderReleased()));
+  this->audioControls = new AC::AudioControls();
+  QObject::connect(this->audioControls, SIGNAL(fastBackwardClicked()), this, SLOT(onFastBackwardClicked()));
+  QObject::connect(this->audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
+  QObject::connect(this->audioControls, SIGNAL(playClicked()), this, SLOT(onPlayClicked()));
+  QObject::connect(this->audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
+  QObject::connect(this->audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
+  QObject::connect(this->audioControls, SIGNAL(fastForwardClicked()), this, SLOT(onFastForwardClicked()));
+  QObject::connect(this->audioControls, SIGNAL(shuffleClicked(AC::ShuffleMode_t)), this, SLOT(onShuffleClicked(AC::ShuffleMode_t)));
+  QObject::connect(this->audioControls, SIGNAL(repeatClicked(AC::RepeatMode_t)), this, SLOT(onRepeatClicked(AC::RepeatMode_t)));
+  QObject::connect(this->audioControls, SIGNAL(volumeClicked(AC::VolumeMode_t)), this, SLOT(onVolumeClicked(AC::VolumeMode_t)));
 
-  this->volumeSlider = new QSlider();
-  this->volumeSlider->setOrientation(Qt::Horizontal);
-  this->volumeSlider->setRange(0, 100);
-  this->volumeSlider->setValue(100);
-  QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(volumeSliderMoved(int)));
-  QObject::connect(this->volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(volumeValueChanged(int)));
+  QObject::connect(this, SIGNAL(currentMediaChanged(Track&)), this->audioControls, SLOT(onMediaChanged(Track&)));
 
   this->trackList = new QListWidget();
   QObject::connect(this->trackList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(trackListItemDoubleClicked(QListWidgetItem*)));
-
-  this->play = new QPushButton("Play");
-  QObject::connect(this->play, SIGNAL(clicked()), this, SLOT(playClicked()));
-
-  this->stop = new QPushButton("Stop");
-  this->stop->hide();
-  QObject::connect(this->stop, SIGNAL(clicked()), this, SLOT(stopClicked()));
-
-  this->previous = new QPushButton("Previous");
-  QObject::connect(this->previous, SIGNAL(clicked()), this, SLOT(previousClicked()));
-
-  this->next = new ImageButton();
-  this->next->setFixedSize(QSize(25, 23));
-  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(25, 23), 1.0, Qt::black));
-  this->next->setPixmap(ImageLoader::pixmap(QString("forward.svg"), QSize(25, 23), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
-  QObject::connect(this->next, SIGNAL(clicked()), this, SLOT(nextClicked()));
 
   this->addSong = new QPushButton("Add Song");
   QObject::connect(this->addSong, SIGNAL(clicked()), this, SLOT(addSongClicked()));
@@ -75,33 +59,137 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   gridLayout->setSpacing(10);
 
-  gridLayout->addWidget(this->musicSlider, 0, 0, 1, 1);
-  gridLayout->addWidget(this->volumeSlider, 1, 0, 1, 1);
-  gridLayout->addWidget(this->trackList, 2, 0, 7, 1);
-  gridLayout->addWidget(this->play, 0, 1, 1, 1);
-  gridLayout->addWidget(this->stop, 0, 1, 1, 1);
-  gridLayout->addWidget(this->previous, 1, 1, 1, 1);
-  gridLayout->addWidget(this->next, 2, 1, 1, 1);
+  gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
   gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
   gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);
   gridLayout->addWidget(this->savePlaylist, 5, 1 ,1, 1);
   gridLayout->addWidget(this->loadPlaylist, 6, 1 ,1, 1);
   gridLayout->addWidget(this->remove, 7, 1, 1, 1);
-  gridLayout->addWidget(this->removeAll, 8, 1, 1, 1);
+  gridLayout->addWidget(this->audioControls, 8, 0, 1, 2);
 
   this->setLayout(gridLayout);
 }
 
+void MainWindow::onFastBackwardClicked()
+{
+  this->musicPlayer->getMediaPlaylist()->previous();
+}
+
+void MainWindow::onBackwardClicked()
+{
+  this->musicPlayer->getMediaPlayer()->setPosition(0);
+}
+
+void MainWindow::onPlayClicked()
+{
+  this->musicPlayer->getMediaPlayer()->pause();
+}
+
+void MainWindow::onPauseClicked()
+{
+  this->musicPlayer->getMediaPlayer()->play();
+  this->musicPlayer->getMediaPlaylist()->shuffle();
+}
+
+void MainWindow::onForwardClicked()
+{
+  this->musicPlayer->getMediaPlaylist()->next();
+}
+
+void MainWindow::onFastForwardClicked()
+{
+  this->musicPlayer->getMediaPlaylist()->setCurrentIndex(this->musicPlayer->getMediaPlaylist()->currentIndex() + 2);
+}
+
+void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
+{
+  switch (shuffleMode)
+  {
+    case AC::SHUFFLE_OFF: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+      break;
+    }
+
+    case AC::SHUFFLE_ON: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+}
+
+void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
+{
+  switch (repeatMode)
+  {
+    case AC::REPEAT_NONE: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+      break;
+    }
+
+    case AC::REPEAT_ONE: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+      break;
+    }
+
+    case AC::REPEAT_ALL: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+}
+
+void MainWindow::onVolumeClicked(AC::VolumeMode_t volumeMode)
+{
+  switch (volumeMode)
+  {
+    case AC::VOLUME_MUTED: {
+      this->musicPlayer->getMediaPlayer()->setMuted(true);
+      break;
+    }
+
+    case AC::VOLUME_NOT_MUTED: {
+      this->musicPlayer->getMediaPlayer()->setMuted(false);
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+}
+
+void MainWindow::onCurrentMediaChanged(QMediaContent mediaContent)
+{
+  QString filename {mediaContent.canonicalUrl().toString().split('/').last()};
+
+  for(QVector<Track>::iterator track {this->playlist->getTracks()->begin()}; track != this->playlist->getTracks()->end(); ++track) {
+    if(track->getFilename() == filename) {
+      emit this->currentMediaChanged(*track);
+    }
+  }
+}
+
+
+
+
 void MainWindow::mediaPlayerPositionChanged(qint64 position)
 {
   if(position != 0 and this->musicPlayer->getMediaPlayer()->duration() != 0) {
-    this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / this->musicPlayer->getMediaPlayer()->duration());
+    //this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / this->musicPlayer->getMediaPlayer()->duration());
   }
 }
 
 void MainWindow::musicSliderMoved(int value)
 {
-  this->musicPlayer->getMediaPlayer()->setPosition((this->musicPlayer->getMediaPlayer()->duration() * value) / (this->musicSlider->maximum() - this->musicSlider->minimum()));
+  //this->musicPlayer->getMediaPlayer()->setPosition((this->musicPlayer->getMediaPlayer()->duration() * value) / (this->musicSlider->maximum() - this->musicSlider->minimum()));
 }
 
 void MainWindow::musicSliderPressed()
@@ -131,8 +219,8 @@ void MainWindow::trackListItemDoubleClicked(QListWidgetItem* item)
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(i);
       this->musicPlayer->getMediaPlayer()->play();
 
-      this->play->hide();
-      this->stop->show();
+      //this->play->hide();
+      //this->stop->show();
 
       break;
     }
@@ -143,16 +231,16 @@ void MainWindow::playClicked()
 {
   this->musicPlayer->getMediaPlayer()->play();
 
-  this->play->hide();
-  this->stop->show();
+  //this->play->hide();
+  //this->stop->show();
 }
 
 void MainWindow::stopClicked()
 {
   this->musicPlayer->getMediaPlayer()->pause();
 
-  this->stop->hide();
-  this->play->show();
+  //this->stop->hide();
+  //this->play->show();
 }
 
 void MainWindow::previousClicked()
@@ -160,13 +248,13 @@ void MainWindow::previousClicked()
   this->musicPlayer->getMediaPlaylist()->previous();
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
-    this->play->show();
-    this->stop->hide();
-    this->musicSlider->setValue(0);
+    //this->play->show();
+    //this->stop->hide();
+    //this->musicSlider->setValue(0);
   } else if(this->musicPlayer->getMediaPlaylist()->currentIndex() == 0 || this->musicPlayer->getMediaPlaylist()->currentIndex() == this->trackList->count() - 1) {
     this->musicPlayer->getMediaPlayer()->play();
-    this->play->hide();
-    this->stop->show();
+    //this->play->hide();
+    //this->stop->show();
   } else {
     this->musicPlayer->getMediaPlayer()->play();
   }
@@ -179,13 +267,13 @@ void MainWindow::nextClicked()
   this->musicPlayer->getMediaPlaylist()->next();
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
-    this->play->show();
-    this->stop->hide();
-    this->musicSlider->setValue(0);
+    //this->play->show();
+    //this->stop->hide();
+    //this->musicSlider->setValue(0);
   } else if(this->musicPlayer->getMediaPlaylist()->currentIndex() == 0 || this->musicPlayer->getMediaPlaylist()->currentIndex() == this->trackList->count() - 1) {
     this->musicPlayer->getMediaPlayer()->play();
-    this->play->hide();
-    this->stop->show();
+    //this->play->hide();
+    //this->stop->show();
   } else {
     this->musicPlayer->getMediaPlayer()->play();
   }

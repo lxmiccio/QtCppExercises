@@ -8,6 +8,7 @@
 
 #include "imagebutton.h"
 
+#include "audiocontrols.h"
 #include "musicplayer.h"
 #include "playlist.h"
 #include "stackedwidget.h"
@@ -21,13 +22,8 @@ private:
   StackedWidget* stackedWidget;
   MusicPlayer* musicPlayer;
   Playlist* playlist;
-  QSlider* musicSlider;
-  QSlider* volumeSlider;
   QListWidget* trackList;
-  QPushButton* play;
-  QPushButton* stop;
-  QPushButton* previous;
-  ImageButton* next;
+  AC::AudioControls* audioControls;
   QPushButton* addSong;
   QPushButton* addDirectory;
   QPushButton* remove;
@@ -39,6 +35,21 @@ public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
 
 public slots:
+  void onFastBackwardClicked();
+  void onBackwardClicked();
+  void onPlayClicked();
+  void onPauseClicked();
+  void onFastForwardClicked();
+  void onForwardClicked();
+
+  void onShuffleClicked(AC::ShuffleMode_t shuffleMode);
+  void onRepeatClicked(AC::RepeatMode_t repeatMode);
+  void onVolumeClicked(AC::VolumeMode_t volumeMode);
+
+
+  void onCurrentMediaChanged(QMediaContent);
+
+
   void mediaPlayerPositionChanged(qint64 position);
   void musicSliderMoved(int value);
   void musicSliderPressed();
@@ -57,6 +68,9 @@ public slots:
   void savePlaylistClicked();
   void loadPlaylistClicked();
   void playlistLoaded(QString playlistName);
+
+signals:
+  currentMediaChanged(Track &track);
 };
 
 #endif // MAINWINDOW_H
