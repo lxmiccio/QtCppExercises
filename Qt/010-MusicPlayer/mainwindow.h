@@ -41,7 +41,6 @@ public slots:
   void onPauseClicked();
   void onFastForwardClicked();
   void onForwardClicked();
-
   void onShuffleClicked(AC::ShuffleMode_t shuffleMode);
   void onRepeatClicked(AC::RepeatMode_t repeatMode);
   void onVolumeClicked(AC::VolumeMode_t volumeMode);

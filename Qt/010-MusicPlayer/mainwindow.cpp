@@ -82,13 +82,12 @@ void MainWindow::onBackwardClicked()
 
 void MainWindow::onPlayClicked()
 {
-  this->musicPlayer->getMediaPlayer()->pause();
+  this->musicPlayer->getMediaPlayer()->play();
 }
 
 void MainWindow::onPauseClicked()
 {
-  this->musicPlayer->getMediaPlayer()->play();
-  this->musicPlayer->getMediaPlaylist()->shuffle();
+  this->musicPlayer->getMediaPlayer()->pause();
 }
 
 void MainWindow::onForwardClicked()

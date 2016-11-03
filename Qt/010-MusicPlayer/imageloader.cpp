@@ -9,7 +9,7 @@ ImageLoader::ImageLoader()
 
 }
 
-QPixmap ImageLoader::pixmap(const QString &image, const QSize &size, double opacity, QColor color)
+QPixmap ImageLoader::pixmap(const QString& image, const QSize& size, double opacity, QColor color)
 {
   if(size.height() < 0 || size.width() < 0) {
     return QPixmap();
@@ -23,7 +23,7 @@ QPixmap ImageLoader::pixmap(const QString &image, const QSize &size, double opac
     pixmap = QPixmap(size.height() == 0 || size.width() == 0 ? svgRenderer.defaultSize() : size);
     pixmap.fill(Qt::transparent);
 
-    QPainter painter {&pixmap};
+    QPainter painter(&pixmap);
     painter.setOpacity(opacity);
     svgRenderer.render(&painter);
     painter.end();
@@ -32,7 +32,7 @@ QPixmap ImageLoader::pixmap(const QString &image, const QSize &size, double opac
       pixmap = ImageLoader::tint(pixmap, color);
     }
   } else {
-    pixmap = QPixmap {image};
+    pixmap = QPixmap(image);
   }
 
   if(not pixmap.isNull() and not size.isNull() and pixmap.size() != size) {
@@ -50,9 +50,9 @@ QPixmap ImageLoader::pixmap(const QString &image, const QSize &size, double opac
 
 QPixmap ImageLoader::tint(const QPixmap &pixmap, const QColor &color)
 {
-  QImage image {pixmap.size(), QImage::Format_ARGB32};
+  QImage image(pixmap.size(), QImage::Format_ARGB32);
 
-  QPainter painter {&image};
+  QPainter painter(&image);
   painter.drawPixmap(0, 0, pixmap);
   painter.fillRect(image.rect(), color);
   painter.setCompositionMode(QPainter::CompositionMode_Screen);

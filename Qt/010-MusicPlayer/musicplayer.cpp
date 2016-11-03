@@ -1,8 +1,9 @@
 #include "musicplayer.h"
-
+#include <QDebug>
 MusicPlayer::MusicPlayer()
 {
   this->mediaPlayer = new QMediaPlayer();
+  this->mediaPlayer->setVolume(100);
   this->mediaPlaylist = new QMediaPlaylist();
   this->mediaPlayer->setPlaylist(this->mediaPlaylist);
 }
@@ -14,6 +15,7 @@ QMediaPlayer* MusicPlayer::getMediaPlayer()
 
 void MusicPlayer::addTrack(Track &track)
 {
+  qDebug() << track.getPath();
   this->mediaPlaylist->addMedia(track.getMediaContent());
 }
 

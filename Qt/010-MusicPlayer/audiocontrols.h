@@ -1,15 +1,13 @@
 #ifndef AUDIOCONTROLS_H
 #define AUDIOCONTROLS_H
 
-#include <QObject>
-#include <QWidget>
-
 #include <QHBoxLayout>
-#include <QVBoxLayout>
-
 #include <QLabel>
+#include <QObject>
 #include <QSlider>
 #include <QSpacerItem>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "imagebutton.h"
 #include "track.h"
@@ -43,9 +41,7 @@ namespace AC
     Q_OBJECT
 
   public:
-    explicit AudioControls(QWidget *parent = 0);
-
-  protected:
+    explicit AudioControls(QWidget* parent = 0);
 
   private:
     QVBoxLayout* verticalLayout;
@@ -113,6 +109,6 @@ namespace AC
     void volumeClicked(AC::VolumeMode_t volumeMode);
     void volumeSliderMoved(int position);
   };
-
-  #endif // AUDIOCONTROLS_H
 }
+
+#endif // AUDIOCONTROLS_H

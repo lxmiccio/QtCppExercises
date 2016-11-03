@@ -2,29 +2,24 @@
 
 #include "imageloader.h"
 
-AC::AudioControls::AudioControls(QWidget *parent) : QWidget(parent)
+AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
 {
-  this->verticalLayout = new QVBoxLayout();
-
-  this->upperHorizontalLayout = new QHBoxLayout();
-
   this->upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
   this->artist = new QLabel("Artist");
 
-  this->dash = new QLabel(" - ");
+  this->dash = new QLabel("-");
 
   this->track = new QLabel("Track");
 
   this->upperSpacer2 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
+  this->upperHorizontalLayout = new QHBoxLayout();
   this->upperHorizontalLayout->addItem(this->upperSpacer1);
   this->upperHorizontalLayout->addWidget(this->artist);
   this->upperHorizontalLayout->addWidget(this->dash);
   this->upperHorizontalLayout->addWidget(this->track);
   this->upperHorizontalLayout->addItem(this->upperSpacer2);
-
-  this->lowerHorizontalLayout = new QHBoxLayout();
 
   this->fastBackward = new ImageButton();
   this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(20, 20), 1.0, Qt::black));
@@ -106,6 +101,7 @@ AC::AudioControls::AudioControls(QWidget *parent) : QWidget(parent)
   this->volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
 
+  this->lowerHorizontalLayout = new QHBoxLayout();
   this->lowerHorizontalLayout->addWidget(this->fastBackward);
   this->lowerHorizontalLayout->addItem(this->lowerSpacer1);
   this->lowerHorizontalLayout->addWidget(this->backward);
@@ -130,15 +126,14 @@ AC::AudioControls::AudioControls(QWidget *parent) : QWidget(parent)
   this->lowerHorizontalLayout->addWidget(this->volume);
   this->lowerHorizontalLayout->addWidget(this->volumeSlider);
 
+  this->verticalLayout = new QVBoxLayout();
   this->verticalLayout->addLayout(this->upperHorizontalLayout);
   this->verticalLayout->addLayout(this->lowerHorizontalLayout);
 
   this->setLayout(this->verticalLayout);
 
   this->repeatMode = AC::REPEAT_NONE;
-
   this->shuffleMode = AC::SHUFFLE_OFF;
-
   this->volumeMode = AC::VOLUME_NOT_MUTED;
 }
 
@@ -233,7 +228,7 @@ void AC::AudioControls::onRepeatClicked()
       this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_all.svg"), QSize(20, 20), 1.0, Qt::black));
       this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_all.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
 
-    this->repeatMode = AC::REPEAT_ALL;
+      this->repeatMode = AC::REPEAT_ALL;
       break;
     }
 
@@ -241,7 +236,7 @@ void AC::AudioControls::onRepeatClicked()
       this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::black));
       this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
 
-    this->repeatMode = AC::REPEAT_NONE;
+      this->repeatMode = AC::REPEAT_NONE;
       break;
     }
 
