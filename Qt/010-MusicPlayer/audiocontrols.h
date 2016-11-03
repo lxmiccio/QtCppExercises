@@ -43,6 +43,9 @@ namespace AC
   public:
     explicit AudioControls(QWidget* parent = 0);
 
+    void showPlay(bool show);
+    void showPause(bool show);
+
   private:
     QVBoxLayout* verticalLayout;
     QHBoxLayout* upperHorizontalLayout;
@@ -81,7 +84,8 @@ namespace AC
     VolumeMode_t volumeMode;
 
   public slots:
-    void onMediaChanged(Track& track);
+    void onCurrentMediaChanged(Track& track);
+    void onPositionChanged(qint64 position, qint64 duration);
 
   private slots:
     void onFastBackwardClicked();
@@ -103,7 +107,7 @@ namespace AC
     void pauseClicked();
     void forwardClicked();
     void fastForwardClicked();
-    void musicSliderMoved(int position);
+    void musicSliderMoved(int position, int minimum, int maximum);
     void shuffleClicked(AC::ShuffleMode_t shuffleMode);
     void repeatClicked(AC::RepeatMode_t repeatMode);
     void volumeClicked(AC::VolumeMode_t volumeMode);

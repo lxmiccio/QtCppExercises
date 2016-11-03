@@ -41,6 +41,7 @@ public slots:
   void onPauseClicked();
   void onFastForwardClicked();
   void onForwardClicked();
+  void onMusicSliderMoved(int position, int minimum, int maximum);
   void onShuffleClicked(AC::ShuffleMode_t shuffleMode);
   void onRepeatClicked(AC::RepeatMode_t repeatMode);
   void onVolumeClicked(AC::VolumeMode_t volumeMode);
@@ -70,6 +71,7 @@ public slots:
 
 signals:
   currentMediaChanged(Track &track);
+  positionChanged(qint64 position, qint64 duration);
 };
 
 #endif // MAINWINDOW_H

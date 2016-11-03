@@ -137,10 +137,27 @@ AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
   this->volumeMode = AC::VOLUME_NOT_MUTED;
 }
 
-void AC::AudioControls::onMediaChanged(Track& track)
+void AC::AudioControls::showPlay(bool show)
+{
+  show ? this->play->show() : this->play->hide();
+}
+
+void AC::AudioControls::showPause(bool show)
+{
+  show ? this->pause->show() : this->pause->hide();
+}
+
+void AC::AudioControls::onCurrentMediaChanged(Track& track)
 {
   this->artist->setText(track.getArtist());
   this->track->setText(track.getTitle());
+}
+
+void AC::AudioControls::onPositionChanged(qint64 position, qint64 duration)
+{
+  if(duration != 0) {
+    this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / duration);
+  }
 }
 
 void AC::AudioControls::onFastBackwardClicked()
@@ -181,7 +198,7 @@ void AC::AudioControls::onFastForwardClicked()
 
 void AC::AudioControls::onMusicSliderMoved(int position)
 {
-  emit this->musicSliderMoved(position);
+  emit this->musicSliderMoved(position, this->musicSlider->minimum(), this->musicSlider->maximum());
 }
 
 void AC::AudioControls::onShuffleClicked()

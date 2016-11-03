@@ -28,11 +28,13 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QObject::connect(this->audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
   QObject::connect(this->audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
   QObject::connect(this->audioControls, SIGNAL(fastForwardClicked()), this, SLOT(onFastForwardClicked()));
+  QObject::connect(this->audioControls, SIGNAL(musicSliderMoved(int, int, int)), this, SLOT(onMusicSliderMoved(int, int, int)));
   QObject::connect(this->audioControls, SIGNAL(shuffleClicked(AC::ShuffleMode_t)), this, SLOT(onShuffleClicked(AC::ShuffleMode_t)));
   QObject::connect(this->audioControls, SIGNAL(repeatClicked(AC::RepeatMode_t)), this, SLOT(onRepeatClicked(AC::RepeatMode_t)));
   QObject::connect(this->audioControls, SIGNAL(volumeClicked(AC::VolumeMode_t)), this, SLOT(onVolumeClicked(AC::VolumeMode_t)));
 
-  QObject::connect(this, SIGNAL(currentMediaChanged(Track&)), this->audioControls, SLOT(onMediaChanged(Track&)));
+  QObject::connect(this, SIGNAL(currentMediaChanged(Track&)), this->audioControls, SLOT(onCurrentMediaChanged(Track&)));
+  QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), this->audioControls, SLOT(onPositionChanged(qint64, qint64)));
 
   this->trackList = new QListWidget();
   QObject::connect(this->trackList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(trackListItemDoubleClicked(QListWidgetItem*)));
@@ -73,6 +75,11 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 void MainWindow::onFastBackwardClicked()
 {
   this->musicPlayer->getMediaPlaylist()->previous();
+
+  if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
+    this->audioControls->showPause(false);
+    this->audioControls->showPlay(true);
+  }
 }
 
 void MainWindow::onBackwardClicked()
@@ -98,6 +105,13 @@ void MainWindow::onForwardClicked()
 void MainWindow::onFastForwardClicked()
 {
   this->musicPlayer->getMediaPlaylist()->setCurrentIndex(this->musicPlayer->getMediaPlaylist()->currentIndex() + 2);
+}
+
+void MainWindow::onMusicSliderMoved(int position, int minimum, int maximum)
+{
+  if(maximum - minimum != 0) {
+    this->musicPlayer->getMediaPlayer()->setPosition((this->musicPlayer->getMediaPlayer()->duration() * position) / (maximum - minimum));
+  }
 }
 
 void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
@@ -181,9 +195,7 @@ void MainWindow::onCurrentMediaChanged(QMediaContent mediaContent)
 
 void MainWindow::mediaPlayerPositionChanged(qint64 position)
 {
-  if(position != 0 and this->musicPlayer->getMediaPlayer()->duration() != 0) {
-    //this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / this->musicPlayer->getMediaPlayer()->duration());
-  }
+  emit this->positionChanged(position, this->musicPlayer->getMediaPlayer()->duration());
 }
 
 void MainWindow::musicSliderMoved(int value)
@@ -292,7 +304,7 @@ void MainWindow::addSongClicked()
 
     QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
-    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
     this->playlist->addTrack(track);
 
@@ -317,12 +329,13 @@ void MainWindow::addDirectoryClicked()
 
     for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); ++filename) {
       QFileInfo fileInfo {*filename};
+
+      QDir dir {fileInfo.absoluteDir()};
       QStringList data {dir.filePath(*filename).split('/')};
 
       QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
       title = title.left(title.length() - 4);
-
-      Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+      Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
       this->playlist->addTrack(track);
 
@@ -395,7 +408,7 @@ void MainWindow::playlistLoaded(QString playlistName)
     QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
 
-    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
     this->playlist->addTrack(track);
     this->musicPlayer->addTrack(track);
