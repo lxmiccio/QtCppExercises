@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     imageloader.cpp \
     imagebutton.cpp \
     audiocontrols.cpp \
-    seekslider.cpp
+    seekslider.cpp \
+    backgroundwidget.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     imagebutton.h \
     audiocontrols.h \
     seekslider.h \
-    dpiscaler.h
+    dpiscaler.h \
+    backgroundwidget.h
 
 FORMS    +=

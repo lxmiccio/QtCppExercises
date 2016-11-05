@@ -11,6 +11,7 @@
 
 #include <QTimeLine>
 
+#include "backgroundwidget.h"
 #include "imagebutton.h"
 #include "seekslider.h"
 #include "track.h"
@@ -39,7 +40,7 @@ namespace AC
   }
   VolumeMode_t;
 
-  class AudioControls : public QWidget
+  class AudioControls : public BackgroundWidget
   {
     Q_OBJECT
 

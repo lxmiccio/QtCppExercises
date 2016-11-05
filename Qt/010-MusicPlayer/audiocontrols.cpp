@@ -2,8 +2,10 @@
 
 #include "imageloader.h"
 
-AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
+AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 {
+  this->setBackgroundColor(QColor("#111111"));
+
   this->upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
   this->artist = new QLabel("Artist");
@@ -22,42 +24,42 @@ AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
   this->upperHorizontalLayout->addItem(this->upperSpacer2);
 
   this->fastBackward = new ImageButton();
-  this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(20, 20), 1.0, Qt::red), QIcon::Off, QIcon::Active);
+  this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->fastBackward, SIGNAL(clicked()), this, SLOT(onFastBackwardClicked()));
 
   this->lowerSpacer1 = new QSpacerItem(12, 8, QSizePolicy::Fixed);
 
   this->backward = new ImageButton();
-  this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
 
   this->lowerSpacer2 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
   this->play = new ImageButton();
-  this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->play, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
 
   this->pause = new ImageButton();
-  this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   this->pause->hide();
   QObject::connect(this->pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
 
   this->lowerSpacer3 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
   this->forward = new ImageButton();
-  this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
   this->lowerSpacer4 = new QSpacerItem(12, 8, QSizePolicy::Fixed);
 
   this->fastForward = new ImageButton();
-  this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->fastForward, SIGNAL(clicked()), this, SLOT(onFastForwardClicked()));
 
   this->lowerSpacer5 = new QSpacerItem(132, 8, QSizePolicy::Fixed);
@@ -79,25 +81,26 @@ AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
   this->lowerSpacer8 = new QSpacerItem(72, 8, QSizePolicy::Fixed);
 
   this->shuffle = new ImageButton();
-  this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->shuffle, SIGNAL(clicked()), this, SLOT(onShuffleClicked()));
 
   this->lowerSpacer9 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
   this->repeat = new ImageButton();
-  this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::black));
-  this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+  this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::gray));
+  this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->repeat, SIGNAL(clicked()), this, SLOT(onRepeatClicked()));
 
   this->lowerSpacer10 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
   this->volume = new ImageButton();
-  this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::black));
+  this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::white));
   this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
   QObject::connect(this->volume, SIGNAL(clicked()), this, SLOT(onVolumeClicked()));
 
-  this->volumeSlider = new QSlider(Qt::Horizontal);
+  this->volumeSlider = new SeekSlider(Qt::Horizontal);
+  this->volumeSlider->setFixedHeight(12);
   this->volumeSlider->setMinimumWidth(120);
   this->volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
@@ -207,16 +210,16 @@ void AC::AudioControls::onShuffleClicked()
   switch (this->shuffleMode)
   {
     case AC::SHUFFLE_OFF: {
-      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::blue));
-      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 0.5, Qt::blue), QIcon::Off, QIcon::Active);
+      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::white));
+      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 0.5, Qt::gray), QIcon::Off, QIcon::Active);
 
       this->shuffleMode = AC::SHUFFLE_ON;
       break;
     }
 
     case AC::SHUFFLE_ON: {
-      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::black));
-      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::gray));
+      this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
       this->shuffleMode = AC::SHUFFLE_OFF;
       break;
@@ -235,15 +238,15 @@ void AC::AudioControls::onRepeatClicked()
   switch (this->repeatMode)
   {
     case AC::REPEAT_NONE: {
-      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_one.svg"), QSize(20, 20), 1.0, Qt::black));
-      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_one.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_one.svg"), QSize(20, 20), 1.0, Qt::white));
+      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_one.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
       this->repeatMode = AC::REPEAT_ONE;
       break;
     }
 
     case AC::REPEAT_ONE: {
-      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_all.svg"), QSize(20, 20), 1.0, Qt::black));
+      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_all.svg"), QSize(20, 20), 1.0, Qt::white));
       this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat_all.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
 
       this->repeatMode = AC::REPEAT_ALL;
@@ -251,8 +254,8 @@ void AC::AudioControls::onRepeatClicked()
     }
 
     case AC::REPEAT_ALL: {
-      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::black));
-      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::gray));
+      this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
       this->repeatMode = AC::REPEAT_NONE;
       break;
@@ -271,7 +274,7 @@ void AC::AudioControls::onVolumeClicked()
   switch (this->volumeMode)
   {
     case AC::VOLUME_MUTED: {
-      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::black));
+      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::white));
       this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
 
       this->volumeMode = AC::VOLUME_NOT_MUTED;
@@ -279,8 +282,8 @@ void AC::AudioControls::onVolumeClicked()
     }
 
     case AC::VOLUME_NOT_MUTED: {
-      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume_muted.svg"), QSize(20, 20), 1.0, Qt::black));
-      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume_muted.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume_muted.svg"), QSize(20, 20), 1.0, Qt::gray));
+      this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume_muted.svg"), QSize(20, 20), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
       this->volumeMode = AC::VOLUME_MUTED;
       break;
