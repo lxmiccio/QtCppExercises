@@ -2,39 +2,39 @@
 
 #include <QMouseEvent>
 
-SeekSlider::SeekSlider(Qt::Orientation orientation, QWidget* parent) : QSlider(parent), m_acceptWheelEvents(false), m_isScrubbing(false), m_timeLine(0)
+GuiUtils::SeekSlider::SeekSlider(Qt::Orientation orientation, QWidget* parent) : QSlider(parent), m_acceptWheelEvents(false), m_isScrubbing(false), m_timeLine(0)
 {
   this->setOrientation(orientation);
 
   this->setStyleSheet(QString("QSlider::groove:horizontal {"
-                          "background: rgba(0, 0, 0, 0);"
+                          "background: rgba(200, 200, 200, 40);"
                           "border: 1px solid rgba(0, 0, 0, 25);"
                           "margin-bottom: 0px;"
                           "margin-left: 0px;"
                           "margin-right: 0px;"
-                          "margin-top: 4px;"
+                          "margin-top: 0px;"
                         "}"
                         "QSlider::sub-page:horizontal {"
                           "background: %1;"
                           "margin-bottom: 1px;"
                           "margin-left: 1px;"
                           "margin-right: 0px;"
-                          "margin-top: 5px;"
+                          "margin-top: 1px;"
                         "}")
-                .arg(QColor("#000000").name()));
+                .arg(QColor("#ffffff").name()));
 }
 
-void SeekSlider::setAcceptWheelEvents(bool accept)
+void GuiUtils::SeekSlider::setAcceptWheelEvents(bool accept)
 {
   this->m_acceptWheelEvents = accept;
 }
 
-void SeekSlider::setTimeLine(QTimeLine *timeline)
+void GuiUtils::SeekSlider::setTimeLine(QTimeLine *timeline)
 {
   this->m_timeLine = timeline;
 }
 
-void SeekSlider::setValue(int value)
+void GuiUtils::SeekSlider::setValue(int value)
 {
   if(m_timeLine and this->sender() == m_timeLine) {
     this->blockSignals(true);
@@ -45,7 +45,7 @@ void SeekSlider::setValue(int value)
   }
 }
 
-void SeekSlider::mouseMoveEvent(QMouseEvent* event)
+void GuiUtils::SeekSlider::mouseMoveEvent(QMouseEvent* event)
 {
   if(this->m_isScrubbing) {
     if(event->pos().x() > width()) {
@@ -56,7 +56,7 @@ void SeekSlider::mouseMoveEvent(QMouseEvent* event)
   }
 }
 
-void SeekSlider::mousePressEvent(QMouseEvent* event)
+void GuiUtils::SeekSlider::mousePressEvent(QMouseEvent* event)
 {
   if(event->button() == Qt::LeftButton) {
     this->m_isScrubbing = true;
@@ -68,7 +68,7 @@ void SeekSlider::mousePressEvent(QMouseEvent* event)
   }
 }
 
-void SeekSlider::wheelEvent(QWheelEvent* event)
+void GuiUtils::SeekSlider::wheelEvent(QWheelEvent* event)
 {
   if (this->m_acceptWheelEvents) {
     QAbstractSlider::wheelEvent(event);

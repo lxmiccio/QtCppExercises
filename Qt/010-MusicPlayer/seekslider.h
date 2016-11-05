@@ -4,26 +4,29 @@
 #include <QSlider>
 #include <QTimeLine>
 
-class SeekSlider : public QSlider
+namespace GuiUtils
 {
-public:
-  explicit SeekSlider(Qt::Orientation orientation, QWidget* parent = 0);
+  class SeekSlider : public QSlider
+  {
+  public:
+    explicit SeekSlider(Qt::Orientation orientation, QWidget* parent = 0);
 
-  void setAcceptWheelEvents(bool accept);
-  void setTimeLine(QTimeLine* timeline);
+    void setAcceptWheelEvents(bool accept);
+    void setTimeLine(QTimeLine* timeline);
 
-public slots:
-  void setValue(int value);
+  public slots:
+    void setValue(int value);
 
-protected:
-  void mousePressEvent(QMouseEvent* event);
-  void mouseMoveEvent(QMouseEvent* event);
-  void wheelEvent(QWheelEvent* event);
+  protected:
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
 
-private:
-    bool m_acceptWheelEvents;
-    bool m_isScrubbing;
-    QTimeLine* m_timeLine;
-};
+  private:
+      bool m_acceptWheelEvents;
+      bool m_isScrubbing;
+      QTimeLine* m_timeLine;
+  };
+}
 
 #endif // SEEKSLIDER_H

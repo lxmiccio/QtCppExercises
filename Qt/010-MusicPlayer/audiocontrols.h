@@ -40,7 +40,7 @@ namespace AC
   }
   VolumeMode_t;
 
-  class AudioControls : public BackgroundWidget
+  class AudioControls : public GuiUtils::BackgroundWidget
   {
     Q_OBJECT
 
@@ -59,37 +59,35 @@ namespace AC
     QLabel* track;
     QSpacerItem* upperSpacer2;
     QHBoxLayout* lowerHorizontalLayout;
-    ImageButton* fastBackward;
     QSpacerItem* lowerSpacer1;
-    ImageButton* backward;
+    GuiUtils::ImageButton* fastBackward;
     QSpacerItem* lowerSpacer2;
-    ImageButton* play;
-    ImageButton* pause;
+    GuiUtils::ImageButton* backward;
     QSpacerItem* lowerSpacer3;
-    ImageButton* forward;
+    GuiUtils::ImageButton* play;
+    GuiUtils::ImageButton* pause;
     QSpacerItem* lowerSpacer4;
-    ImageButton* fastForward;
+    GuiUtils::ImageButton* forward;
     QSpacerItem* lowerSpacer5;
-    QLabel* eslapsedTime;
+    GuiUtils::ImageButton* fastForward;
     QSpacerItem* lowerSpacer6;
-    SeekSlider* musicSlider;
+    QLabel* eslapsedTime;
     QSpacerItem* lowerSpacer7;
-    QLabel* remainingTime;
+    GuiUtils::SeekSlider* musicSlider;
     QSpacerItem* lowerSpacer8;
-    ImageButton* shuffle;
+    QLabel* remainingTime;
     QSpacerItem* lowerSpacer9;
-    ImageButton* repeat;
+    GuiUtils::ImageButton* shuffle;
     QSpacerItem* lowerSpacer10;
-    ImageButton* volume;
+    GuiUtils::ImageButton* repeat;
+    QSpacerItem* lowerSpacer11;
+    GuiUtils::ImageButton* volume;
     QSlider* volumeSlider;
+    QSpacerItem* lowerSpacer12;
 
     RepeatMode_t repeatMode;
     ShuffleMode_t shuffleMode;
     VolumeMode_t volumeMode;
-
-
-
-    QTimeLine m_sliderTimeLine;
 
   public slots:
     void onCurrentMediaChanged(Track& track);

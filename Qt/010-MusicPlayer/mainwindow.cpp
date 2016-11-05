@@ -22,6 +22,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   this->playlist = new Playlist();
 
   this->audioControls = new AC::AudioControls();
+  this->audioControls->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   QObject::connect(this->audioControls, SIGNAL(fastBackwardClicked()), this, SLOT(onFastBackwardClicked()));
   QObject::connect(this->audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
   QObject::connect(this->audioControls, SIGNAL(playClicked()), this, SLOT(onPlayClicked()));
@@ -61,7 +62,6 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   gridLayout->setSpacing(0);
   gridLayout->setMargin(0);
-  this->audioControls->setFixedHeight(80);
   gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
   gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
   gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);

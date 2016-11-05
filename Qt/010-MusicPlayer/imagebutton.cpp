@@ -3,32 +3,32 @@
 #include <QPainter>
 #include <QPaintEvent>
 
-ImageButton::ImageButton(QWidget* parent) : QAbstractButton(parent)
+GuiUtils::ImageButton::ImageButton(QWidget* parent) : QAbstractButton(parent)
 {
 
 }
 
-void ImageButton::clear()
+void GuiUtils::ImageButton::clear()
 {
   this->setIcon(QIcon());
 }
 
-void ImageButton::setPixmap(const QString& path)
+void GuiUtils::ImageButton::setPixmap(const QString& path)
 {
   init(QPixmap(path));
 }
 
-void ImageButton::setPixmap(const QPixmap& pixmap)
+void GuiUtils::ImageButton::setPixmap(const QPixmap& pixmap)
 {
   init(pixmap);
 }
 
-void ImageButton::setPixmap(const QString& path, const QIcon::State state, QIcon::Mode mode)
+void GuiUtils::ImageButton::setPixmap(const QString& path, const QIcon::State state, QIcon::Mode mode)
 {
   this->setPixmap(QPixmap(path), state, mode);
 }
 
-void ImageButton::setPixmap(const QPixmap& pixmap, const QIcon::State state, QIcon::Mode mode)
+void GuiUtils::ImageButton::setPixmap(const QPixmap& pixmap, const QIcon::State state, QIcon::Mode mode)
 {
   QIcon icon = this->icon();
   icon.addPixmap(pixmap, mode, state);
@@ -36,7 +36,7 @@ void ImageButton::setPixmap(const QPixmap& pixmap, const QIcon::State state, QIc
   this->setIcon(icon);
 }
 
-void ImageButton::paintEvent(QPaintEvent* event)
+void GuiUtils::ImageButton::paintEvent(QPaintEvent* event)
 {
   QPainter painter(this);
   painter.setClipRect(event->rect());
@@ -51,7 +51,7 @@ void ImageButton::paintEvent(QPaintEvent* event)
   this->icon().paint(&painter, this->rect(), Qt::AlignCenter, mode, state);
 }
 
-void ImageButton::init(const QPixmap& pixmap)
+void GuiUtils::ImageButton::init(const QPixmap& pixmap)
 {
   this->m_sizeHint = pixmap.size();
 
@@ -59,7 +59,7 @@ void ImageButton::init(const QPixmap& pixmap)
   this->updateGeometry();
 }
 
-QSize ImageButton::sizeHint() const
+QSize GuiUtils::ImageButton::sizeHint() const
 {
   return this->m_sizeHint;
 }

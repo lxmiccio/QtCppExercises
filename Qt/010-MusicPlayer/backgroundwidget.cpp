@@ -1,24 +1,24 @@
 #include "backgroundwidget.h"
 
-#include <QWidget>
-#include <QPixmap>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QPixmap>
+#include <QWidget>
 
 #include "imageloader.h"
 
-BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent), m_blurred(false)
+GuiUtils::BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent), m_blurred(false)
 {
   this->setAutoFillBackground(false);
   this->setBackgroundColor(Qt::transparent);
 }
 
-void BackgroundWidget::setBackgroundColor(const QColor& color)
+void GuiUtils::BackgroundWidget::setBackgroundColor(const QColor& color)
 {
   m_backgroundColor = color;
 }
 
-void BackgroundWidget::setBackground(const QPixmap& pixmap, bool blurred, bool blackWhite)
+void GuiUtils::BackgroundWidget::setBackground(const QPixmap& pixmap, bool blurred, bool blackWhite)
 {
   this->m_blurred = blurred;
 
@@ -33,7 +33,7 @@ void BackgroundWidget::setBackground(const QPixmap& pixmap, bool blurred, bool b
   this->repaint();
 }
 
-void BackgroundWidget::paintEvent(QPaintEvent* event)
+void GuiUtils::BackgroundWidget::paintEvent(QPaintEvent* event)
 {
   QPainter painter(this);
 
@@ -64,7 +64,7 @@ void BackgroundWidget::paintEvent(QPaintEvent* event)
   QWidget::paintEvent(event);
 }
 
-void BackgroundWidget::resizeEvent(QResizeEvent* event)
+void GuiUtils::BackgroundWidget::resizeEvent(QResizeEvent* event)
 {
   this->m_backgroundSlice = QPixmap();
 

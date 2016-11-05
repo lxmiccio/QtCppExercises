@@ -9,16 +9,16 @@ class StackedWidget : public QMainWindow
 {
   Q_OBJECT
 
-protected:
-  QStackedWidget* qStackedWidget;
+  protected:
+    QStackedWidget* qStackedWidget;
 
-public:
-  explicit StackedWidget(QWidget* parent = 0);
+  public:
+    explicit StackedWidget(QWidget* parent = 0);
 
-  QStackedWidget* getQStackedWidget() { return this->qStackedWidget; }
+    QStackedWidget* getQStackedWidget() { return this->qStackedWidget; }
 
-public slots:
-  void previousView();
+  public slots:
+    void previousView();
 };
 
 #endif // STACKWIDGET_H

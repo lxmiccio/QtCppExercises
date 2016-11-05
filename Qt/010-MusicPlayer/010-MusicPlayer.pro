@@ -41,3 +41,7 @@ HEADERS  += mainwindow.h \
     backgroundwidget.h
 
 FORMS    +=
+
+
+INCLUDEPATH += $$PWD/../taglib-1.11.1/build/taglib
+DEPENDPATH += $$PWD/../taglib-1.11.1/build/taglib
