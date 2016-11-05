@@ -60,7 +60,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QGridLayout* gridLayout = new QGridLayout();
 
   gridLayout->setSpacing(10);
-
+this->audioControls->setFixedHeight(80);
   gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
   gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
   gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);
@@ -200,6 +200,7 @@ void MainWindow::mediaPlayerPositionChanged(qint64 position)
 
 void MainWindow::musicSliderMoved(int value)
 {
+  value++;
   //this->musicPlayer->getMediaPlayer()->setPosition((this->musicPlayer->getMediaPlayer()->duration() * value) / (this->musicSlider->maximum() - this->musicSlider->minimum()));
 }
 

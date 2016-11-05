@@ -9,7 +9,10 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <QTimeLine>
+
 #include "imagebutton.h"
+#include "seekslider.h"
 #include "track.h"
 
 namespace AC
@@ -68,7 +71,7 @@ namespace AC
     QSpacerItem* lowerSpacer5;
     QLabel* eslapsedTime;
     QSpacerItem* lowerSpacer6;
-    QSlider* musicSlider;
+    SeekSlider* musicSlider;
     QSpacerItem* lowerSpacer7;
     QLabel* remainingTime;
     QSpacerItem* lowerSpacer8;
@@ -82,6 +85,10 @@ namespace AC
     RepeatMode_t repeatMode;
     ShuffleMode_t shuffleMode;
     VolumeMode_t volumeMode;
+
+
+
+    QTimeLine m_sliderTimeLine;
 
   public slots:
     void onCurrentMediaChanged(Track& track);

@@ -60,14 +60,15 @@ AC::AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
   this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(20, 20), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
   QObject::connect(this->fastForward, SIGNAL(clicked()), this, SLOT(onFastForwardClicked()));
 
-  this->lowerSpacer5 = new QSpacerItem(144, 8, QSizePolicy::Fixed);
+  this->lowerSpacer5 = new QSpacerItem(132, 8, QSizePolicy::Fixed);
 
   this->eslapsedTime = new QLabel("Eslapsed time");
 
   this->lowerSpacer6 = new QSpacerItem(12, 8, QSizePolicy::Fixed);
 
-  this->musicSlider = new QSlider(Qt::Horizontal);
-  this->musicSlider->setMinimumWidth(240);
+  this->musicSlider = new SeekSlider(Qt::Horizontal);
+  this->musicSlider->setFixedHeight(12);
+  this->musicSlider->setMinimumWidth(160);
   this->musicSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
   QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(onMusicSliderMoved(int)));
 
