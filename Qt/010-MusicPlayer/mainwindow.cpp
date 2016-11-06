@@ -1,11 +1,15 @@
 #include "mainwindow.h"
 
+#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
 #include <QGridLayout>
 #include <QMediaMetaData>
 #include <QString>
 #include <QStringList>
+
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
 
 #include "imageloader.h"
 #include "loadplaylistwindow.h"
@@ -300,6 +304,17 @@ void MainWindow::addSongClicked()
 
   for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
     QFileInfo fileInfo {*filename};
+
+
+    TagLib::FileRef f(fileInfo.canonicalFilePath().toLatin1().data());
+   TagLib::String s= f.tag()->artist();
+   const char* a =s.toCString(true);
+qDebug()<<QString("%1").arg(a);
+QString b(a);
+qDebug()<<b;
+qDebug()<<b.left(4);
+
+
 
     QDir dir {fileInfo.absoluteDir()};
     QStringList data {dir.filePath(*filename).split('/')};
