@@ -1,5 +1,5 @@
 #include "musicplayer.h"
-#include <QDebug>
+
 MusicPlayer::MusicPlayer()
 {
   this->mediaPlayer = new QMediaPlayer();

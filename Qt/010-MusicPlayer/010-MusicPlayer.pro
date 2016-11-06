@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     imagebutton.cpp \
     audiocontrols.cpp \
     seekslider.cpp \
-    backgroundwidget.cpp
+    backgroundwidget.cpp \
+    tagmanager.cpp \
+    utils.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
@@ -36,7 +38,9 @@ HEADERS  += mainwindow.h \
     imagebutton.h \
     audiocontrols.h \
     seekslider.h \
-    backgroundwidget.h
+    backgroundwidget.h \
+    tagmanager.h \
+    utils.h
 
 FORMS    +=
 
@@ -66,7 +70,8 @@ INCLUDEPATH += $$PWD/../taglib-1.10/taglib/trueaudio
 INCLUDEPATH += $$PWD/../taglib-1.10/taglib/wavpack
 INCLUDEPATH += $$PWD/../taglib-1.10/taglib/xm
 
-LIBS += -L$$PWD/taglib -ltaglib
-
 INCLUDEPATH += $$PWD/../taglib-1.10/build/taglib
 DEPENDPATH += $$PWD/../taglib-1.10/build/taglib
+
+LIBS += -L$$PWD/taglib -ltaglib
+

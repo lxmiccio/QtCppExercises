@@ -8,6 +8,8 @@
 
 #include "imagebutton.h"
 
+#include "tagmanager.h"
+
 #include "audiocontrols.h"
 #include "musicplayer.h"
 #include "playlist.h"

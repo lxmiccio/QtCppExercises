@@ -123,19 +123,19 @@ void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
 {
   switch (shuffleMode)
   {
-    case AC::SHUFFLE_OFF: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-      break;
-    }
+  case AC::SHUFFLE_OFF: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+    break;
+  }
 
-    case AC::SHUFFLE_ON: {
+  case AC::SHUFFLE_ON: {
     this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
-      break;
-    }
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -143,24 +143,24 @@ void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
 {
   switch (repeatMode)
   {
-    case AC::REPEAT_NONE: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-      break;
-    }
+  case AC::REPEAT_NONE: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+    break;
+  }
 
-    case AC::REPEAT_ONE: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-      break;
-    }
+  case AC::REPEAT_ONE: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    break;
+  }
 
-    case AC::REPEAT_ALL: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
-      break;
-    }
+  case AC::REPEAT_ALL: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -168,19 +168,19 @@ void MainWindow::onVolumeClicked(AC::VolumeMode_t volumeMode)
 {
   switch (volumeMode)
   {
-    case AC::VOLUME_MUTED: {
-      this->musicPlayer->getMediaPlayer()->setMuted(true);
-      break;
-    }
+  case AC::VOLUME_MUTED: {
+    this->musicPlayer->getMediaPlayer()->setMuted(true);
+    break;
+  }
 
-    case AC::VOLUME_NOT_MUTED: {
-      this->musicPlayer->getMediaPlayer()->setMuted(false);
-      break;
-    }
+  case AC::VOLUME_NOT_MUTED: {
+    this->musicPlayer->getMediaPlayer()->setMuted(false);
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -305,15 +305,8 @@ void MainWindow::addSongClicked()
   for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
     QFileInfo fileInfo {*filename};
 
-
-    TagLib::FileRef f(fileInfo.canonicalFilePath().toLatin1().data());
-   TagLib::String s= f.tag()->artist();
-   const char* a =s.toCString(true);
-qDebug()<<QString("%1").arg(a);
-QString b(a);
-qDebug()<<b;
-qDebug()<<b.left(4);
-
+    QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+qDebug() << tags["artist"];
 
 
     QDir dir {fileInfo.absoluteDir()};
