@@ -43,7 +43,7 @@ void Playlist::removeAllTracks()
 void Playlist::savePlaylist(QString path)
 {
   for(QVector<Track>::iterator track {this->tracks.begin()}; track != this->tracks.end(); ++track) {
-    QFile::copy(track->getPath(), path + '/' + track->getFilename());
+    //QFile::copy(track->getPath(), path + '/' + track->getFilename());
   }
 }
 
@@ -64,9 +64,9 @@ Playlist Playlist::loadPlaylist(QString path)
     QString title = QString(data.at(data.length() - TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
 
-    Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), directory.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
+    //Track track = Track(QString(data.at(data.length() - ARTIST_INDEX)), QString(data.at(data.length() - ALBUM_INDEX)), title, QString(data.at(data.length() - TITLE_INDEX)), directory.filePath(*filename), QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 
-    playlist.addTrack(track);
+    //playlist.addTrack(track);
   }
 
   return playlist;

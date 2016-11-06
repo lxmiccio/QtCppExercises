@@ -1,84 +1,94 @@
 #include "track.h"
 
-#include <QMediaMetaData>
-#include <QMediaPlayerControl>
-
 Track::Track()
 {
 
 }
 
-Track::Track(QString artist, QString album, QString title, QString filename, QString path, QMediaContent mediaContent)
+Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size)
 {
-  this->artist = artist;
-  this->album = album;
-  this->title = title;
-  this->filename = filename;
-  this->path = path;
-  this->mediaContent = mediaContent;
+    this->title = title;
+    this->track = track;
+    this->year = year;
+    this->duration = duration;
+    this->bitrate = bitrate;
+    this->url = url;
+    this->size = size;
 }
 
-void Track::setArtist(QString artist)
+const QString& Track::getTitle() const
 {
-  this->artist = artist;
+    return this->title;
 }
 
-QString Track::getArtist()
+void Track::setTitle(const QString& title)
 {
-  return this->artist;
+    this->title = title;
 }
 
-void Track::setAlbum(QString album)
+quint8 Track::getYear() const
 {
-  this->album = album;
+    return this->year;
 }
 
-QString Track::getAlbum()
+void Track::setYear(quint8 year)
 {
-  return this->album;
+    this->year = year;
 }
 
-void Track::setTitle(QString title)
+quint32 Track::getDuration() const
 {
-  this->title = title;
+    return this->getDuration();
 }
 
-QString Track::getTitle()
+void Track::setDuration(quint32 duration)
 {
-  return this->title;
+    this->duration = duration;
 }
 
-void Track::setFilename(QString filename)
+quint32 Track::getBitrate() const
 {
-  this->filename = filename;
+    return this->bitrate;
 }
 
-QString Track::getFilename()
+void Track::setBitrate(quint32 bitrate)
 {
-  return this->filename;
+    this->bitrate = bitrate;
 }
 
-void Track::setPath(QString path)
+const QString& Track::getUrl() const
 {
-  this->path = path;
+    return this->url;
 }
 
-QString Track::getPath()
+void Track::setUrl(const QString &url)
 {
-  return this->path;
+    this->url = url;
 }
 
-void Track::setMediaContent(QMediaContent mediaContent)
+quint64 Track::getSize() const
 {
-  this->mediaContent = mediaContent;
+    return this->size;
 }
 
-QMediaContent Track::getMediaContent() const
+void Track::setSize(quint64 size)
 {
-  return this->mediaContent;
+    this->size = size;
+}
+
+Album* Track::getAlbum() const
+{
+    return this->album;
+}
+
+void Track::setAlbum(Album *album)
+{
+    if(album != NULL) {
+        this->album = album;
+    }
 }
 
 bool operator==(const Track &track1, const Track &track2)
 {
-  return track1.getMediaContent() == track2.getMediaContent();
+    return track1.getTitle() == track2.getTitle();
 }

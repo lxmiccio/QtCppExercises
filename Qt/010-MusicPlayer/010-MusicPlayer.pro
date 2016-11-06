@@ -25,7 +25,9 @@ SOURCES += main.cpp\
     seekslider.cpp \
     backgroundwidget.cpp \
     tagmanager.cpp \
-    utils.cpp
+    utils.cpp \
+    artist.cpp \
+    album.cpp
 
 HEADERS  += mainwindow.h \
     track.h \
@@ -40,7 +42,9 @@ HEADERS  += mainwindow.h \
     seekslider.h \
     backgroundwidget.h \
     tagmanager.h \
-    utils.h
+    utils.h \
+    artist.h \
+    album.h
 
 FORMS    +=
 

@@ -189,9 +189,9 @@ void MainWindow::onCurrentMediaChanged(QMediaContent mediaContent)
   QString filename {mediaContent.canonicalUrl().toString().split('/').last()};
 
   for(QVector<Track>::iterator track {this->playlist->getTracks()->begin()}; track != this->playlist->getTracks()->end(); ++track) {
-    if(track->getFilename() == filename) {
+    /*if(track->getFilename() == filename) {
       emit this->currentMediaChanged(*track);
-    }
+    }*/
   }
 }
 
@@ -314,13 +314,13 @@ qDebug() << tags["artist"];
 
     QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
-    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
+    //Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
-    this->playlist->addTrack(track);
+    //this->playlist->addTrack(track);
 
-    this->musicPlayer->addTrack(track);
+    //this->musicPlayer->addTrack(track);
 
-    this->trackList->addItem(track.getTitle());
+    //this->trackList->addItem(track.getTitle());
   }
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
@@ -345,13 +345,13 @@ void MainWindow::addDirectoryClicked()
 
       QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
       title = title.left(title.length() - 4);
-      Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
+      //Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
-      this->playlist->addTrack(track);
+      //this->playlist->addTrack(track);
 
-      this->musicPlayer->addTrack(track);
+      //this->musicPlayer->addTrack(track);
 
-      this->trackList->addItem(track.getTitle());
+      //this->trackList->addItem(track.getTitle());
     }
 
     if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
@@ -418,9 +418,9 @@ void MainWindow::playlistLoaded(QString playlistName)
     QString title = QString(data.at(data.length() - Playlist::TITLE_INDEX)).mid(5);
     title = title.left(title.length() - 4);
 
-    Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
+    //Track track = Track(QString(data.at(data.length() - Playlist::ARTIST_INDEX)), QString(data.at(data.length() - Playlist::ALBUM_INDEX)), title, QString(data.at(data.length() - Playlist::TITLE_INDEX)), dir.filePath(*filename), QUrl(fileInfo.absoluteFilePath()));
 
-    this->playlist->addTrack(track);
-    this->musicPlayer->addTrack(track);
+    //this->playlist->addTrack(track);
+    //this->musicPlayer->addTrack(track);
   }
 }

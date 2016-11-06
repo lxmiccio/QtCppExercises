@@ -4,37 +4,57 @@
 #include <QMediaContent>
 #include <QString>
 
+#include "artist.h"
+#include "album.h"
+
+class Album;
+
 class Track
 {
-private:
-  QString artist;
-  QString album;
-  QString title;
-  QString filename;
-  QString path;
-  QMediaContent mediaContent;
+  public:
+    explicit Track();
+    Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size);
 
-public:
-  Track();
-  Track(QString artist, QString album, QString title, QString filename, QString path, QMediaContent mediaContent);
+    const QString& getTitle() const;
+    void setTitle(const QString& title);
 
-  void setArtist(QString artist);
-  QString getArtist();
+    quint8 getTrack();
+    void setTrack();
 
-  void setAlbum(QString album);
-  QString getAlbum();
+    quint8 getYear() const;
+    void setYear(quint8 year);
 
-  void setTitle(QString title);
-  QString getTitle();
+    quint32 getDuration() const;
+    void setDuration(quint32 duration);
 
-  void setFilename(QString filename);
-  QString getFilename();
+    quint32 getBitrate() const;
+    void setBitrate(quint32 bitrate);
 
-  void setPath(QString path);
-  QString getPath();
+    const QString& getUrl() const;
+    void setUrl(const QString& url);
 
-  void setMediaContent(QMediaContent mediaContent);
-  QMediaContent getMediaContent() const;
+    quint64 getSize() const;
+    void setSize(quint64 size);
+
+    Album* getAlbum() const;
+    void setAlbum(Album* album);
+
+    QMediaContent getMediaContent() const;
+    void setMediaContent(const QMediaContent& mediaContent);
+
+  private:
+    QString title;
+    quint8 track;
+    quint8 year;
+    quint32 duration;
+    quint32 bitrate;
+
+    QString url;
+    quint64 size;
+
+    Album* album;
+
+    QMediaContent mediaContent;
 };
 
 bool operator==(const Track &track1, const Track &track2);

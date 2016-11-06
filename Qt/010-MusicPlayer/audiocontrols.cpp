@@ -185,8 +185,8 @@ void AC::AudioControls::showPause(bool show)
 
 void AC::AudioControls::onCurrentMediaChanged(Track& track)
 {
-  this->artist->setText(track.getArtist());
-  this->track->setText(track.getTitle());
+  //this->artist->setText(track.getArtist());
+  //this->track->setText(track.getTitle());
 }
 
 void AC::AudioControls::onPositionChanged(qint64 position, qint64 duration)
