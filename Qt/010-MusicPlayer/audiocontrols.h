@@ -11,10 +11,10 @@
 
 #include <QTimeLine>
 
-#include "backgroundwidget.h"
-#include "imagebutton.h"
-#include "seekslider.h"
-#include "track.h"
+#include "gui/backgroundwidget.h"
+#include "gui/imagebutton.h"
+#include "gui/seekslider.h"
+#include "engine/track.h"
 
 namespace AC
 {
@@ -40,7 +40,7 @@ namespace AC
   }
   VolumeMode_t;
 
-  class AudioControls : public GuiUtils::BackgroundWidget
+  class AudioControls : public BackgroundWidget
   {
     Q_OBJECT
 
@@ -60,28 +60,28 @@ namespace AC
     QSpacerItem* upperSpacer2;
     QHBoxLayout* lowerHorizontalLayout;
     QSpacerItem* lowerSpacer1;
-    GuiUtils::ImageButton* fastBackward;
+    ImageButton* fastBackward;
     QSpacerItem* lowerSpacer2;
-    GuiUtils::ImageButton* backward;
+    ImageButton* backward;
     QSpacerItem* lowerSpacer3;
-    GuiUtils::ImageButton* play;
-    GuiUtils::ImageButton* pause;
+    ImageButton* play;
+    ImageButton* pause;
     QSpacerItem* lowerSpacer4;
-    GuiUtils::ImageButton* forward;
+    ImageButton* forward;
     QSpacerItem* lowerSpacer5;
-    GuiUtils::ImageButton* fastForward;
+    ImageButton* fastForward;
     QSpacerItem* lowerSpacer6;
     QLabel* eslapsedTime;
     QSpacerItem* lowerSpacer7;
-    GuiUtils::SeekSlider* musicSlider;
+    SeekSlider* musicSlider;
     QSpacerItem* lowerSpacer8;
     QLabel* remainingTime;
     QSpacerItem* lowerSpacer9;
-    GuiUtils::ImageButton* shuffle;
+    ImageButton* shuffle;
     QSpacerItem* lowerSpacer10;
-    GuiUtils::ImageButton* repeat;
+    ImageButton* repeat;
     QSpacerItem* lowerSpacer11;
-    GuiUtils::ImageButton* volume;
+    ImageButton* volume;
     QSlider* volumeSlider;
     QSpacerItem* lowerSpacer12;
 

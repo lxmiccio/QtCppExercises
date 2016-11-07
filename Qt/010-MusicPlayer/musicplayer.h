@@ -5,7 +5,7 @@
 #include <QMediaPlaylist>
 #include <QVector>
 
-#include "track.h"
+#include "engine/track.h"
 
 class MusicPlayer
 {

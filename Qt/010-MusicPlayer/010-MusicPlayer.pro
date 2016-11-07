@@ -13,38 +13,40 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     mainwindow.cpp \
-    track.cpp \
+    engine/track.cpp \
     musicplayer.cpp \
     playlist.cpp \
     stackedwidget.cpp \
     saveplaylistwindow.cpp \
     loadplaylistwindow.cpp \
-    imageloader.cpp \
-    imagebutton.cpp \
+    gui/imageloader.cpp \
+    gui/imagebutton.cpp \
     audiocontrols.cpp \
-    seekslider.cpp \
-    backgroundwidget.cpp \
-    tagmanager.cpp \
-    utils.cpp \
-    artist.cpp \
-    album.cpp
+    gui/seekslider.cpp \
+    gui/backgroundwidget.cpp \
+    tag/tagmanager.cpp \
+    engine/artist.cpp \
+    engine/album.cpp \
+    gui/imageutils.cpp \
+    tag/tagutils.cpp
 
 HEADERS  += mainwindow.h \
-    track.h \
+    engine/track.h \
     musicplayer.h \
     playlist.h \
     stackedwidget.h \
     saveplaylistwindow.h \
     loadplaylistwindow.h \
-    imageloader.h \
-    imagebutton.h \
+    gui/imageloader.h \
+    gui/imagebutton.h \
     audiocontrols.h \
-    seekslider.h \
-    backgroundwidget.h \
-    tagmanager.h \
-    utils.h \
-    artist.h \
-    album.h
+    gui/seekslider.h \
+    gui/backgroundwidget.h \
+    tag/tagmanager.h \
+    engine/artist.h \
+    engine/album.h \
+    gui/imageutils.h \
+    tag/tagutils.h
 
 FORMS    +=
 

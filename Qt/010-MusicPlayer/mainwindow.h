@@ -6,15 +6,15 @@
 #include <QPushButton>
 #include <QSlider>
 
-#include "imagebutton.h"
+#include "gui/imagebutton.h"
 
-#include "tagmanager.h"
+#include "tag/tagmanager.h"
 
 #include "audiocontrols.h"
 #include "musicplayer.h"
 #include "playlist.h"
 #include "stackedwidget.h"
-#include "track.h"
+#include "engine/track.h"
 
 class MainWindow : public QWidget
 {

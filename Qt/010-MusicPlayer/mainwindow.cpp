@@ -11,7 +11,7 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
-#include "imageloader.h"
+#include "gui/imageloader.h"
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
 
@@ -306,8 +306,9 @@ void MainWindow::addSongClicked()
     QFileInfo fileInfo {*filename};
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
-qDebug() << tags["artist"];
 
+    Track track = Track(QString(tags["title"].toString()), (quint8) tags["track"].toUInt(), (quint8) tags["year"].toUInt(), (quint32) tags["duration"].toUInt(), (quint32) tags["bitrate"].toUInt(), QString(tags["url"].toString()), (quint64) tags["size"].toULongLong());
+qDebug() << track.getTitle();
 
     QDir dir {fileInfo.absoluteDir()};
     QStringList data {dir.filePath(*filename).split('/')};

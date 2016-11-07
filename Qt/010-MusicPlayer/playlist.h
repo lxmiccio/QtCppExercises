@@ -4,7 +4,7 @@
 #include <QString>
 #include <QVector>
 
-#include "track.h"
+#include "engine/track.h"
 
 class Playlist
 {

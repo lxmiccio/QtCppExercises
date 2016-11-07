@@ -1,12 +1,14 @@
 #include "audiocontrols.h"
 
 #include <QFontDatabase>
-#include "imageloader.h"
+
+#include "gui/imageloader.h"
+#include "gui/imageutils.h"
 
 AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 {
   QImage i("images/tovelo.jpg");
-  this->setBackground(QPixmap::fromImage(ImageLoader::blur(i, i.rect(), 30, false, true)));
+  this->setBackgroundImage(QPixmap::fromImage(ImageUtils::blur(i, i.rect(), 30, false, true)));
 
   QFont font = this->font();
   font.setBold(true);
@@ -38,26 +40,26 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer1 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
-  this->fastBackward = new GuiUtils::ImageButton();
+  this->fastBackward = new ImageButton();
   this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->fastBackward->setPixmap(ImageLoader::pixmap(QString("images/fast_backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->fastBackward, SIGNAL(clicked()), this, SLOT(onFastBackwardClicked()));
 
   this->lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->backward = new GuiUtils::ImageButton();
+  this->backward = new ImageButton();
   this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->backward->setPixmap(ImageLoader::pixmap(QString("images/backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
 
   this->lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->play = new GuiUtils::ImageButton();
+  this->play = new ImageButton();
   this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->play->setPixmap(ImageLoader::pixmap(QString("images/play.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->play, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
 
-  this->pause = new GuiUtils::ImageButton();
+  this->pause = new ImageButton();
   this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->pause->setPixmap(ImageLoader::pixmap(QString("images/pause.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   this->pause->hide();
@@ -65,14 +67,14 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer4 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->forward = new GuiUtils::ImageButton();
+  this->forward = new ImageButton();
   this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->forward->setPixmap(ImageLoader::pixmap(QString("images/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
   this->lowerSpacer5 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->fastForward = new GuiUtils::ImageButton();
+  this->fastForward = new ImageButton();
   this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->fastForward->setPixmap(ImageLoader::pixmap(QString("images/fast_forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->fastForward, SIGNAL(clicked()), this, SLOT(onFastForwardClicked()));
@@ -88,7 +90,7 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer7 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
 
-  this->musicSlider = new GuiUtils::SeekSlider(Qt::Horizontal);
+  this->musicSlider = new SeekSlider(Qt::Horizontal);
   this->musicSlider->setFixedHeight(6);
   this->musicSlider->setMinimumWidth(256);
 
@@ -103,7 +105,7 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->shuffle = new GuiUtils::ImageButton();
+  this->shuffle = new ImageButton();
   this->shuffle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->shuffle->setPixmap(ImageLoader::pixmap(QString("images/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
@@ -111,7 +113,7 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer10 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->repeat = new GuiUtils::ImageButton();
+  this->repeat = new ImageButton();
   this->repeat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->repeat->setPixmap(ImageLoader::pixmap(QString("images/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
@@ -119,13 +121,13 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer11 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->volume = new GuiUtils::ImageButton();
+  this->volume = new ImageButton();
   this->volume->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(17, 17), 1.0, Qt::white));
   this->volume->setPixmap(ImageLoader::pixmap(QString("images/volume.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
   QObject::connect(this->volume, SIGNAL(clicked()), this, SLOT(onVolumeClicked()));
 
-  this->volumeSlider = new GuiUtils::SeekSlider(Qt::Horizontal);
+  this->volumeSlider = new SeekSlider(Qt::Horizontal);
   this->volumeSlider->setFixedHeight(6);
   this->volumeSlider->setMinimumWidth(120);
   this->volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
