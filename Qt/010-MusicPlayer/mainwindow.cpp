@@ -25,7 +25,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   this->playlist = new Playlist();
 
-  this->audioControls = new AC::AudioControls();
+  this->audioControls = new AudioControls();
   this->audioControls->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   QObject::connect(this->audioControls, SIGNAL(fastBackwardClicked()), this, SLOT(onFastBackwardClicked()));
   QObject::connect(this->audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
@@ -307,8 +307,12 @@ void MainWindow::addSongClicked()
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
 
-    Track track = Track(QString(tags["title"].toString()), (quint8) tags["track"].toUInt(), (quint8) tags["year"].toUInt(), (quint32) tags["duration"].toUInt(), (quint32) tags["bitrate"].toUInt(), QString(tags["url"].toString()), (quint64) tags["size"].toULongLong());
-qDebug() << track.getTitle();
+    Track track = Track(tags);
+
+
+
+    qDebug() << track.getTitle();
+    //qDebug() << track.getAlbum()->getTitle();
 
     QDir dir {fileInfo.absoluteDir()};
     QStringList data {dir.filePath(*filename).split('/')};

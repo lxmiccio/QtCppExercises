@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-  class BackgroundWidget : public QWidget
-  {
-    Q_OBJECT
+class BackgroundWidget : public QWidget
+{
+  Q_OBJECT
 
   public:
     explicit BackgroundWidget(QWidget* parent = 0);
@@ -23,6 +23,6 @@
     QColor m_backgroundColor;
     QPixmap m_background;
     QPixmap m_backgroundSlice;
-  };
+};
 
 #endif // BACKGROUNDWIDGET_H

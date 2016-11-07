@@ -4,9 +4,9 @@
 #include <QAbstractButton>
 #include <QIcon>
 
-  class ImageButton : public QAbstractButton
-  {
-    Q_OBJECT
+class ImageButton : public QAbstractButton
+{
+  Q_OBJECT
 
   public:
     explicit ImageButton(QWidget* parent = 0);
@@ -26,6 +26,6 @@
     void init(const QPixmap& pixmap);
 
     QSize m_sizeHint;
-  };
+};
 
 #endif // IMAGEBUTTON_H

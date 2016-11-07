@@ -7,7 +7,7 @@
 #include <QWidget>
 
 #include "playlist.h"
-#include "stackedwidget.h"
+#include "gui/stackedwidget.h"
 #include "mainwindow.h"
 
 class LoadPlaylistWindow : public QWidget

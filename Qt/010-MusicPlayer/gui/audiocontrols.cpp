@@ -5,7 +5,7 @@
 #include "gui/imageloader.h"
 #include "gui/imageutils.h"
 
-AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
+AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 {
   QImage i("images/tovelo.jpg");
   this->setBackgroundImage(QPixmap::fromImage(ImageUtils::blur(i, i.rect(), 30, false, true)));
@@ -175,40 +175,40 @@ AC::AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->volumeMode = AC::VOLUME_NOT_MUTED;
 }
 
-void AC::AudioControls::showPlay(bool show)
+void AudioControls::showPlay(bool show)
 {
   show ? this->play->show() : this->play->hide();
 }
 
-void AC::AudioControls::showPause(bool show)
+void AudioControls::showPause(bool show)
 {
   show ? this->pause->show() : this->pause->hide();
 }
 
-void AC::AudioControls::onCurrentMediaChanged(Track& track)
+void AudioControls::onCurrentMediaChanged(Track& track)
 {
   //this->artist->setText(track.getArtist());
   //this->track->setText(track.getTitle());
 }
 
-void AC::AudioControls::onPositionChanged(qint64 position, qint64 duration)
+void AudioControls::onPositionChanged(qint64 position, qint64 duration)
 {
   if(duration != 0) {
     this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / duration);
   }
 }
 
-void AC::AudioControls::onFastBackwardClicked()
+void AudioControls::onFastBackwardClicked()
 {
   emit this->fastBackwardClicked();
 }
 
-void AC::AudioControls::onBackwardClicked()
+void AudioControls::onBackwardClicked()
 {
   emit this->backwardClicked();
 }
 
-void AC::AudioControls::onPlayClicked()
+void AudioControls::onPlayClicked()
 {
   this->play->hide();
   this->pause->show();
@@ -216,7 +216,7 @@ void AC::AudioControls::onPlayClicked()
   emit this->playClicked();
 }
 
-void AC::AudioControls::onPauseClicked()
+void AudioControls::onPauseClicked()
 {
   this->pause->hide();
   this->play->show();
@@ -224,22 +224,22 @@ void AC::AudioControls::onPauseClicked()
   emit this->pauseClicked();
 }
 
-void AC::AudioControls::onForwardClicked()
+void AudioControls::onForwardClicked()
 {
   emit this->forwardClicked();
 }
 
-void AC::AudioControls::onFastForwardClicked()
+void AudioControls::onFastForwardClicked()
 {
   emit this->fastForwardClicked();
 }
 
-void AC::AudioControls::onMusicSliderMoved(int position)
+void AudioControls::onMusicSliderMoved(int position)
 {
   emit this->musicSliderMoved(position, this->musicSlider->minimum(), this->musicSlider->maximum());
 }
 
-void AC::AudioControls::onShuffleClicked()
+void AudioControls::onShuffleClicked()
 {
   switch (this->shuffleMode)
   {
@@ -267,7 +267,7 @@ void AC::AudioControls::onShuffleClicked()
   emit this->shuffleClicked(this->shuffleMode);
 }
 
-void AC::AudioControls::onRepeatClicked()
+void AudioControls::onRepeatClicked()
 {
   switch (this->repeatMode)
   {
@@ -303,7 +303,7 @@ void AC::AudioControls::onRepeatClicked()
   emit this->repeatClicked(this->repeatMode);
 }
 
-void AC::AudioControls::onVolumeClicked()
+void AudioControls::onVolumeClicked()
 {
   switch (this->volumeMode)
   {
@@ -331,7 +331,7 @@ void AC::AudioControls::onVolumeClicked()
   emit this->volumeClicked(this->volumeMode);
 }
 
-void AC::AudioControls::onVolumeSliderMoved(int position)
+void AudioControls::onVolumeSliderMoved(int position)
 {
   emit this->volumeSliderMoved(position);
 }

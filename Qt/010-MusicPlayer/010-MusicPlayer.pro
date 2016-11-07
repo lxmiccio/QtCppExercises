@@ -12,41 +12,41 @@ TARGET = 010-MusicPlayer
 TEMPLATE = app
 
 SOURCES += main.cpp\
-    mainwindow.cpp \
-    engine/track.cpp \
-    musicplayer.cpp \
-    playlist.cpp \
-    stackedwidget.cpp \
-    saveplaylistwindow.cpp \
-    loadplaylistwindow.cpp \
-    gui/imageloader.cpp \
-    gui/imagebutton.cpp \
-    audiocontrols.cpp \
-    gui/seekslider.cpp \
-    gui/backgroundwidget.cpp \
-    tag/tagmanager.cpp \
     engine/artist.cpp \
     engine/album.cpp \
+    engine/track.cpp \
+    gui/audiocontrols.cpp \
+    gui/backgroundwidget.cpp \
+    gui/imagebutton.cpp \
+    gui/imageloader.cpp \
     gui/imageutils.cpp \
-    tag/tagutils.cpp
+    gui/seekslider.cpp \
+    gui/stackedwidget.cpp \
+    tag/tagmanager.cpp \
+    tag/tagutils.cpp \
+    mainwindow.cpp \
+    musicplayer.cpp \
+    playlist.cpp \
+    saveplaylistwindow.cpp \
+    loadplaylistwindow.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += engine/artist.h \
+    engine/album.h \
     engine/track.h \
+    gui/audiocontrols.h \
+    gui/backgroundwidget.h \
+    gui/imagebutton.h \
+    gui/imageloader.h \
+    gui/imageutils.h \
+    gui/seekslider.h \
+    gui/stackedwidget.h \
+    tag/tagmanager.h \
+    tag/tagutils.h \
+    mainwindow.h \
     musicplayer.h \
     playlist.h \
-    stackedwidget.h \
     saveplaylistwindow.h \
-    loadplaylistwindow.h \
-    gui/imageloader.h \
-    gui/imagebutton.h \
-    audiocontrols.h \
-    gui/seekslider.h \
-    gui/backgroundwidget.h \
-    tag/tagmanager.h \
-    engine/artist.h \
-    engine/album.h \
-    gui/imageutils.h \
-    tag/tagutils.h
+    loadplaylistwindow.h
 
 FORMS    +=
 

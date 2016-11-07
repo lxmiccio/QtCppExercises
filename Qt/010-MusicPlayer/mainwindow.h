@@ -10,10 +10,10 @@
 
 #include "tag/tagmanager.h"
 
-#include "audiocontrols.h"
+#include "gui/audiocontrols.h"
 #include "musicplayer.h"
 #include "playlist.h"
-#include "stackedwidget.h"
+#include "gui/stackedwidget.h"
 #include "engine/track.h"
 
 class MainWindow : public QWidget
@@ -25,7 +25,7 @@ private:
   MusicPlayer* musicPlayer;
   Playlist* playlist;
   QListWidget* trackList;
-  AC::AudioControls* audioControls;
+  AudioControls* audioControls;
   QPushButton* addSong;
   QPushButton* addDirectory;
   QPushButton* remove;

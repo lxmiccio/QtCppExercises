@@ -39,10 +39,11 @@ namespace AC
     VOLUME_NOT_MUTED
   }
   VolumeMode_t;
+}
 
-  class AudioControls : public BackgroundWidget
-  {
-    Q_OBJECT
+class AudioControls : public BackgroundWidget
+{
+  Q_OBJECT
 
   public:
     explicit AudioControls(QWidget* parent = 0);
@@ -85,9 +86,9 @@ namespace AC
     QSlider* volumeSlider;
     QSpacerItem* lowerSpacer12;
 
-    RepeatMode_t repeatMode;
-    ShuffleMode_t shuffleMode;
-    VolumeMode_t volumeMode;
+    AC::RepeatMode_t repeatMode;
+    AC::ShuffleMode_t shuffleMode;
+    AC::VolumeMode_t volumeMode;
 
   public slots:
     void onCurrentMediaChanged(Track& track);
@@ -118,7 +119,6 @@ namespace AC
     void repeatClicked(AC::RepeatMode_t repeatMode);
     void volumeClicked(AC::VolumeMode_t volumeMode);
     void volumeSliderMoved(int position);
-  };
-}
+};
 
 #endif // AUDIOCONTROLS_H

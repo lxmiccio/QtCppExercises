@@ -4,8 +4,8 @@
 #include <QSlider>
 #include <QTimeLine>
 
-  class SeekSlider : public QSlider
-  {
+class SeekSlider : public QSlider
+{
   public:
     explicit SeekSlider(Qt::Orientation orientation, QWidget* parent = 0);
 
@@ -21,9 +21,9 @@
     void wheelEvent(QWheelEvent* event);
 
   private:
-      bool m_acceptWheelEvents;
-      bool m_isScrubbing;
-      QTimeLine* m_timeLine;
-  };
+    bool m_acceptWheelEvents;
+    bool m_isScrubbing;
+    QTimeLine* m_timeLine;
+};
 
 #endif // SEEKSLIDER_H
