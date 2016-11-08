@@ -33,6 +33,8 @@ private:
   QPushButton* savePlaylist;
   QPushButton* loadPlaylist;
 
+  QLabel *l;
+
 public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
 

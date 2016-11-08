@@ -116,3 +116,13 @@ QPixmap ImageUtils::tint(const QPixmap &pixmap, const QColor &color)
 
   return QPixmap::fromImage(image);
 }
+
+QPixmap ImageUtils::stringToImage(QImage image, const QString &string)
+{
+  QPainter painter(&image);
+  painter.setPen(QPen(QColor(0,0,0)));
+  painter.setFont(QFont("Times", 12, QFont::Bold));
+  painter.drawText(image.rect(), Qt::AlignCenter, string);
+
+  return QPixmap::fromImage(image);
+}

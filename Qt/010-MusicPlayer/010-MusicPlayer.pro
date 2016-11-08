@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     musicplayer.cpp \
     playlist.cpp \
     saveplaylistwindow.cpp \
-    loadplaylistwindow.cpp
+    loadplaylistwindow.cpp \
+    engine/musiclibrary.cpp
 
 HEADERS  += engine/artist.h \
     engine/album.h \
@@ -46,7 +47,8 @@ HEADERS  += engine/artist.h \
     musicplayer.h \
     playlist.h \
     saveplaylistwindow.h \
-    loadplaylistwindow.h
+    loadplaylistwindow.h \
+    engine/musiclibrary.h
 
 FORMS    +=
 

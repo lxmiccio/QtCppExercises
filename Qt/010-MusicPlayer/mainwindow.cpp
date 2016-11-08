@@ -11,6 +11,8 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
+#include "gui/imageutils.h"
+
 #include "gui/imageloader.h"
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
@@ -64,6 +66,9 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   QGridLayout* gridLayout = new QGridLayout();
 
+  this->l = new QLabel("song");
+
+
   gridLayout->setSpacing(0);
   gridLayout->setMargin(0);
   gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
@@ -73,6 +78,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   gridLayout->addWidget(this->loadPlaylist, 6, 1 ,1, 1);
   gridLayout->addWidget(this->remove, 7, 1, 1, 1);
   gridLayout->addWidget(this->audioControls, 8, 0, 1, 2);
+  gridLayout->addWidget(this->l, 9,0,1,1);
 
   this->setLayout(gridLayout);
 }
@@ -307,11 +313,14 @@ void MainWindow::addSongClicked()
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
 
-    Track track = Track(tags);
+    //Track track = Track(tags);
+
+    //l->setPixmap(ImageUtils::stringToImage(QImage("images/white.png"), track.getTitle()));
 
 
 
-    qDebug() << track.getTitle();
+
+    //qDebug() << track.getTitle();
     //qDebug() << track.getAlbum()->getTitle();
 
     QDir dir {fileInfo.absoluteDir()};

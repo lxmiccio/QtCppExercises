@@ -16,7 +16,7 @@ Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, 
   this->size = size;
 }
 
-Track::Track(const QVariantMap& tags)
+Track::Track(const QVariantMap& tags, Album* album)
 {
   this->title = QString(tags["title"].toString());
   this->track = (quint8) tags["track"].toUInt();
@@ -25,6 +25,8 @@ Track::Track(const QVariantMap& tags)
   this->bitrate = (quint32) tags["bitrate"].toUInt();
   this->url = QString(tags["url"].toString());
   this->size = (quint64) tags["size"].toULongLong();
+
+  this->album = album;
 }
 
 const QString& Track::getTitle() const
