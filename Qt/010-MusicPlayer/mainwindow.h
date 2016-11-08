@@ -15,6 +15,7 @@
 #include "playlist.h"
 #include "gui/stackedwidget.h"
 #include "engine/track.h"
+#include "engine/musiclibrary.h"
 
 class MainWindow : public QWidget
 {
@@ -34,6 +35,7 @@ private:
   QPushButton* loadPlaylist;
 
   QLabel *l;
+  MusicLibrary* musicLibrary;
 
 public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);

@@ -14,7 +14,7 @@ class Album
 {
   public:
     explicit Album();
-    explicit Album(const QString& title);
+    explicit Album(const QString& title, Artist* artist);
 
     const QString& getTitle() const;
     void setTitle(const QString& title);

@@ -5,9 +5,15 @@ Album::Album()
   this->tracks = new QVector<Track>();
 }
 
-Album::Album(const QString& title)
+Album::Album(const QString& title, Artist *artist)
 {
   this->title = title;
+
+  if(artist != NULL) {
+    this->artist = artist;
+  } else {
+    // TO DO
+  }
 
   this->tracks = new QVector<Track>();
 }
@@ -46,6 +52,8 @@ void Album::setArtist(Artist* artist)
 {
   if(artist != NULL) {
     this->artist = artist;
+  } else {
+    // TO DO
   }
 }
 

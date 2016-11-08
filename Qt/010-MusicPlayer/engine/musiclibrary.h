@@ -1,6 +1,7 @@
 #ifndef MUSICLIBRARY_H
 #define MUSICLIBRARY_H
 
+#include <QString>
 #include <QVector>
 
 #include "artist.h"
@@ -14,19 +15,22 @@ public:
 
   QVector<Artist>* getArtists() const;
   Artist* getArtist(const QString& name) const;
-  void addArtist(const Artist& artist);
   void removeArtist(const Artist& artist);
+  void removeArtist(const QString& name);
 
-  QVector<Album>* getAlbumsOfArtist(const Artist& artist) const;
-  void addAlbumToArtist(const Album& album, const Artist& artist);
+  QVector<Album>* getAlbums() const;
+  QVector<Album>* getAlbumsOfArtist(const QString& name) const;
   void removeAlbumFromArtist(const Album& album, const Artist& artist);
+  void removeAlbumFromArtist(const QString& album, const QString& artist);
 
-  QVector<Track>* getTracksOfArtist(const Artist& artist) const;
-  QVector<Track>* getTracksOfAlbum(const Album& album) const;
-  void addTrackToAlbum(const Album& album, const Track& track);
-  void removeTrackFromAlbum(const Album& album, const Track& track);
+  QVector<Track>* getTracksOfArtist(const QString& album) const;
+  QVector<Track>* getTracksOfAlbum(const QString& album) const;
+  void removeTrackFromAlbum(const Track& track, const Album& album);
+  void removeTrackFromAlbum(const QString& track, const QString& album);
 
   void addTrack(const QVariantMap& tags);
+
+  void debug();
 
 private:
   QVector<Artist>* artists;

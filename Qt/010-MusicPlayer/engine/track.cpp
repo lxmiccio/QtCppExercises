@@ -5,7 +5,7 @@ Track::Track()
 
 }
 
-Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size)
+Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album* album)
 {
   this->title = title;
   this->track = track;
@@ -14,6 +14,12 @@ Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, 
   this->bitrate = bitrate;
   this->url = url;
   this->size = size;
+
+  if(album != NULL) {
+    this->album = album;
+  } else {
+    // TO DO
+  }
 }
 
 Track::Track(const QVariantMap& tags, Album* album)
@@ -26,7 +32,11 @@ Track::Track(const QVariantMap& tags, Album* album)
   this->url = QString(tags["url"].toString());
   this->size = (quint64) tags["size"].toULongLong();
 
-  this->album = album;
+  if(album != NULL) {
+    this->album = album;
+  } else {
+    // TO DO
+  }
 }
 
 const QString& Track::getTitle() const
@@ -108,6 +118,8 @@ void Track::setAlbum(Album *album)
 {
   if(album != NULL) {
     this->album = album;
+  } else {
+    // TO DO
   }
 }
 

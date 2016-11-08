@@ -14,8 +14,7 @@ class Track
 {
   public:
     explicit Track();
-    Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size);
-    Track(const QVariantMap& tags);
+    Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album* album);
     Track(const QVariantMap& tags, Album* album);
 
     const QString& getTitle() const;

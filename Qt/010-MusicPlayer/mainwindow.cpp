@@ -81,6 +81,9 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   gridLayout->addWidget(this->l, 9,0,1,1);
 
   this->setLayout(gridLayout);
+
+  this->musicLibrary = new MusicLibrary();
+
 }
 
 void MainWindow::onFastBackwardClicked()
@@ -312,7 +315,9 @@ void MainWindow::addSongClicked()
     QFileInfo fileInfo {*filename};
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+    this->musicLibrary->addTrack(tags);
 
+    this->musicLibrary->debug();
     //Track track = Track(tags);
 
     //l->setPixmap(ImageUtils::stringToImage(QImage("images/white.png"), track.getTitle()));

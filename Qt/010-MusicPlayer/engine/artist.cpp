@@ -29,7 +29,7 @@ QVector<Album>* Artist::getAlbums() const
 
 void Artist::addAlbum(const Album &album)
 {
-  this->albums->push_front(album);
+  this->albums->push_back(album);
 }
 
 void Artist::removeAlbum(const Album &album)
