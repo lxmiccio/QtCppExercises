@@ -27,14 +27,25 @@ QVector<Album>* Artist::getAlbums() const
   return this->albums;
 }
 
+Album* Artist::getAlbum(const QString& title) const
+{
+  for(QVector<Album>::iterator album = this->albums->begin(); album != this->albums->end(); ++album) {
+    if(album->getTitle() == title) {
+      return album;
+    }
+  }
+
+  return NULL;
+}
+
 void Artist::addAlbum(const Album &album)
 {
   this->albums->push_back(album);
 }
 
-void Artist::removeAlbum(const Album &album)
+bool Artist::removeAlbum(const Album &album)
 {
-  this->albums->removeOne(album);
+  return this->albums->removeOne(album);
 }
 
 QVector<Track>* Artist::getTracks()

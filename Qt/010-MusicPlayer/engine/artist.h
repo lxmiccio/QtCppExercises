@@ -16,11 +16,12 @@ class Artist
     explicit Artist(const QString &title);
 
     const QString& getName() const;
-    void setName(const QString &name);
+    void setName(const QString& name);
 
     QVector<Album>* getAlbums() const;
-    void addAlbum(const Album &album);
-    void removeAlbum(const Album& album);
+    Album* getAlbum(const QString& title) const;
+    void addAlbum(const Album& album);
+    bool removeAlbum(const Album& album);
 
     QVector<Track>* getTracks();
 

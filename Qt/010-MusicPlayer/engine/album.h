@@ -20,8 +20,9 @@ class Album
     void setTitle(const QString& title);
 
     QVector<Track>* getTracks() const;
+    Track* getTrack(const QString& title) const;
     void addTrack(const Track& track);
-    void removeTrack(const Track& track);
+    bool removeTrack(const Track& track);
 
     Artist* getArtist() const;
     void setArtist(Artist* artist);

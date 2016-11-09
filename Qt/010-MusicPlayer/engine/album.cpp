@@ -33,14 +33,25 @@ QVector<Track>* Album::getTracks() const
   return this->tracks;
 }
 
+Track* Album::getTrack(const QString& title) const
+{
+  for(QVector<Track>::iterator track = this->tracks->begin(); track != this->tracks->end(); ++track) {
+    if(track->getTitle() == title) {
+      return track;
+    }
+  }
+
+  return NULL;
+}
+
 void Album::addTrack(const Track& track)
 {
   this->tracks->push_back(track);
 }
 
-void Album::removeTrack(const Track& track)
+bool Album::removeTrack(const Track& track)
 {
-  this->tracks->removeOne(track);
+  return this->tracks->removeOne(track);
 }
 
 Artist* Album::getArtist() const

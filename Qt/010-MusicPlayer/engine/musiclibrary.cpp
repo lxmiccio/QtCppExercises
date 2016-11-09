@@ -26,19 +26,14 @@ Artist* MusicLibrary::getArtist(const QString& name) const
   return artist;
 }
 
-void MusicLibrary::removeArtist(const Artist& artist)
+bool MusicLibrary::removeArtist(const Artist& artist)
 {
-  this->artists->removeOne(artist);
+  return this->artists->removeOne(artist);
 }
 
-void MusicLibrary::removeArtist(const QString& name)
+bool MusicLibrary::removeArtist(const QString& name)
 {
-  for(QVector<Artist>::iterator artist = this->artists->begin(); artist != this->artists->end(); ++artist) {
-    if(artist->getName() == name) {
-      this->artists->removeOne(*artist);
-      break;
-    }
-  }
+  return this->artists->removeOne(this->getArtist(name));
 }
 
 QVector<Album>* MusicLibrary::getAlbums() const
@@ -54,30 +49,55 @@ QVector<Album>* MusicLibrary::getAlbums() const
   return albums;
 }
 
-QVector<Album>* MusicLibrary::getAlbumsOfArtist(const QString& name) const
+QVector<Album>* MusicLibrary::getAlbumsOfArtist(const QString& artistName) const
 {
-  QVector<Album>* albums = new QVector<Album>();
+  return this->getArtist(name)->getAlbums();
+}
 
+bool MusicLibrary::removeAlbum(const Album& album)
+{
   for(QVector<Artist>::iterator artist = this->artists->begin(); artist != this->artists->end(); ++artist) {
-    if(artist->getName() == name) {
-      for(QVector<Album>::iterator album = artist->getAlbums()->begin(); album != artist->getAlbums()->end(); ++album) {
-        albums->push_back(*album);
-      }
-      break;
+    if(artist->removeAlbum(album)) {
+      return true;
     }
   }
 
-  return albums;
+  return false;
 }
 
-void MusicLibrary::removeTrackFromAlbum(const Track& track, const Album& album)
+bool MusicLibrary::removeAlbum(const QString& albumName, const QString& artistName)
 {
-  //
+  return this->getArtist(artistName)->removeAlbum(albumName);
 }
 
-void removeTrackFromAlbum(const QString& track, const QString& album)
+bool MusicLibrary::removeTrack(const Track& track)
 {
-  //
+  for(QVector<Artist>::iterator artist = this->artists->begin(); artist != this->artists->end(); ++artist) {
+    for(QVector<Album>::iterator album = artist->getAlbums()->begin(); album != artist->getAlbums()->end(); ++album) {
+      if(album->removeTrack(track)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+bool MusicLibrary::removeTrack(const QString& trackName, const QString& albumName)
+{
+  for(QVector<Artist>::iterator artist = this->artists->begin(); artist != this->artists->end(); ++artist) {
+    //if(artist->getAlbum())
+    /*for(QVector<Album>::iterator album = artist->getAlbums()->begin(); album != artist->getAlbums()->end(); ++album) {
+      if(album->getTitle() == albumTitle) {
+        return album->removeTrack()
+      }
+      if(album->removeTrack(track)) {
+        return true;
+      }
+    }*/
+  }
+
+  return false;
 }
 
 void MusicLibrary::addTrack(const QVariantMap& tags)
