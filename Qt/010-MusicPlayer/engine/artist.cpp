@@ -17,7 +17,7 @@ const QString& Artist::getName() const
   return this->name;
 }
 
-void Artist::setName(const QString &name)
+void Artist::setName(const QString& name)
 {
   this->name = name;
 }
@@ -43,9 +43,20 @@ void Artist::addAlbum(const Album &album)
   this->albums->push_back(album);
 }
 
-bool Artist::removeAlbum(const Album &album)
+bool Artist::removeAlbum(Album *album)
 {
-  return this->albums->removeOne(album);
+  return this->albums->removeOne(*album);
+}
+
+bool Artist::removeAlbum(const QString& title)
+{
+  for(QVector<Album>::iterator album = this->albums->begin(); album != this->albums->end(); ++album) {
+    if(album->getTitle() == title) {
+      return this->albums->removeOne(*album);
+    }
+  }
+
+  return false;
 }
 
 QVector<Track>* Artist::getTracks()

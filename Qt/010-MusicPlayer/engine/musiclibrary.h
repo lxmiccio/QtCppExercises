@@ -15,20 +15,22 @@ public:
 
   QVector<Artist>* getArtists() const;
   Artist* getArtist(const QString& name) const;
-  bool removeArtist(const Artist& artist);
+  bool removeArtist(Artist* artist);
   bool removeArtist(const QString& name);
 
   QVector<Album>* getAlbums() const;
-  QVector<Album>* getAlbumsOfArtist(const QString& artistName) const;
-  bool removeAlbum(const Album& album);
+  QVector<Album>* getAlbumsOfArtist(const QString& name) const;
+  Album* getAlbum(const QString& title) const;
+  bool removeAlbum(Album* album);
   bool removeAlbum(const QString& albumName, const QString &artistName);
 
-  QVector<Track>* getTracksOfArtist(const QString& album) const;
-  QVector<Track>* getTracksOfAlbum(const QString& album) const;
-  bool removeTrack(const Track& name);
-  bool removeTrack(const QString& trackName, const QString& albumName);
+  QVector<Track>* getTracks() const;
+  QVector<Track>* getTracksOfArtist(const QString& name) const;
+  QVector<Track>* getTracksOfAlbum(const QString& title) const;
+  bool removeTrack(Track* track);
+  bool removeTrack(const QString& trackTitle, const QString& albumTitle);
 
-  void addTrack(const QVariantMap& tags);
+  bool addTrack(const QVariantMap& tags);
 
   void debug();
 

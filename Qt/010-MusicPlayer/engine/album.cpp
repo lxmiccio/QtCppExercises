@@ -5,15 +5,10 @@ Album::Album()
   this->tracks = new QVector<Track>();
 }
 
-Album::Album(const QString& title, Artist *artist)
+Album::Album(const QString& title, Artist& artist)
 {
   this->title = title;
-
-  if(artist != NULL) {
-    this->artist = artist;
-  } else {
-    // TO DO
-  }
+  this->artist = &artist;
 
   this->tracks = new QVector<Track>();
 }
@@ -49,9 +44,20 @@ void Album::addTrack(const Track& track)
   this->tracks->push_back(track);
 }
 
-bool Album::removeTrack(const Track& track)
+bool Album::removeTrack(Track* track)
 {
-  return this->tracks->removeOne(track);
+  return this->tracks->removeOne(*track);
+}
+
+bool Album::removeTrack(const QString& title)
+{
+  for(QVector<Track>::iterator track = this->tracks->begin(); track != this->tracks->end(); ++track) {
+    if(track->getTitle() == title) {
+      return this->tracks->removeOne(*track);
+    }
+  }
+
+  return false;
 }
 
 Artist* Album::getArtist() const
@@ -59,13 +65,9 @@ Artist* Album::getArtist() const
   return this->artist;
 }
 
-void Album::setArtist(Artist* artist)
+void Album::setArtist(Artist& artist)
 {
-  if(artist != NULL) {
-    this->artist = artist;
-  } else {
-    // TO DO
-  }
+  this->artist = &artist;
 }
 
 bool operator==(const Album& album1, const Album& album2)

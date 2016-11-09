@@ -14,8 +14,8 @@ class Track
 {
   public:
     explicit Track();
-    Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album* album);
-    Track(const QVariantMap& tags, Album* album);
+    Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album& album);
+    Track(const QVariantMap& tags, Album& album);
 
     const QString& getTitle() const;
     void setTitle(const QString& title);
@@ -42,7 +42,7 @@ class Track
     void setMediaContent(const QMediaContent& mediaContent);
 
     Album* getAlbum() const;
-    void setAlbum(Album* album);
+    void setAlbum(Album& album);
 
     Artist* getArtist() const;
 
@@ -61,6 +61,6 @@ class Track
     Album* album;
 };
 
-bool operator==(const Track &track1, const Track &track2);
+bool operator==(const Track& track1, const Track& track2);
 
 #endif // TRACK_H

@@ -14,7 +14,7 @@ class Album
 {
   public:
     explicit Album();
-    explicit Album(const QString& title, Artist* artist);
+    explicit Album(const QString& title, Artist& artist);
 
     const QString& getTitle() const;
     void setTitle(const QString& title);
@@ -22,15 +22,16 @@ class Album
     QVector<Track>* getTracks() const;
     Track* getTrack(const QString& title) const;
     void addTrack(const Track& track);
-    bool removeTrack(const Track& track);
+    bool removeTrack(Track* track);
+    bool removeTrack(const QString& title);
 
     Artist* getArtist() const;
-    void setArtist(Artist* artist);
+    void setArtist(Artist& artist);
 
   private:
     QString title;
-    QVector<Track>* tracks;
 
+    QVector<Track>* tracks;
     Artist* artist;
 };
 

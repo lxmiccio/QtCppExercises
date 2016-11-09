@@ -1,11 +1,13 @@
 #include "track.h"
 
+#include <QFileInfo>
+
 Track::Track()
 {
 
 }
 
-Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album* album)
+Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album& album)
 {
   this->title = title;
   this->track = track;
@@ -14,15 +16,12 @@ Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, 
   this->bitrate = bitrate;
   this->url = url;
   this->size = size;
+  this->album = &album;
 
-  if(album != NULL) {
-    this->album = album;
-  } else {
-    // TO DO
-  }
+  this->mediaContent = QMediaContent(QUrl(QFileInfo(this->url).absoluteFilePath()));
 }
 
-Track::Track(const QVariantMap& tags, Album* album)
+Track::Track(const QVariantMap& tags, Album& album)
 {
   this->title = QString(tags["title"].toString());
   this->track = (quint8) tags["track"].toUInt();
@@ -31,12 +30,9 @@ Track::Track(const QVariantMap& tags, Album* album)
   this->bitrate = (quint32) tags["bitrate"].toUInt();
   this->url = QString(tags["url"].toString());
   this->size = (quint64) tags["size"].toULongLong();
+  this->album = &album;
 
-  if(album != NULL) {
-    this->album = album;
-  } else {
-    // TO DO
-  }
+  this->mediaContent = QMediaContent(QUrl(QFileInfo(this->url).absoluteFilePath()));
 }
 
 const QString& Track::getTitle() const
@@ -114,13 +110,9 @@ Album* Track::getAlbum() const
   return this->album;
 }
 
-void Track::setAlbum(Album *album)
+void Track::setAlbum(Album& album)
 {
-  if(album != NULL) {
-    this->album = album;
-  } else {
-    // TO DO
-  }
+  this->album = &album;
 }
 
 Artist* Track::getArtist() const
@@ -128,7 +120,7 @@ Artist* Track::getArtist() const
   return this->album->getArtist();
 }
 
-bool operator==(const Track &track1, const Track &track2)
+bool operator==(const Track& track1, const Track& track2)
 {
   return track1.getTitle() == track2.getTitle();
 }
