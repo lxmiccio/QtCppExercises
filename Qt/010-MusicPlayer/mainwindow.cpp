@@ -118,8 +118,9 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QObject::connect(this->tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
 
   gridLayout->addWidget(tableView,0,0,1,1);
-  gridLayout->addWidget(this->audioControls, 2, 0, 1, 1);
+  gridLayout->addWidget(this->audioControls, 3, 0, 1, 1);
   gridLayout->addWidget(this->addSong,1,0,1,1);
+  gridLayout->addWidget(this->remove,2,0,1,1);
   this->setLayout(gridLayout);
 
   this->musicLibrary = new MusicLibrary();
@@ -171,19 +172,19 @@ void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
 {
   switch (shuffleMode)
   {
-    case AC::SHUFFLE_OFF: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-      break;
-    }
+  case AC::SHUFFLE_OFF: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+    break;
+  }
 
-    case AC::SHUFFLE_ON: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
-      break;
-    }
+  case AC::SHUFFLE_ON: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -191,24 +192,24 @@ void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
 {
   switch (repeatMode)
   {
-    case AC::REPEAT_NONE: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-      break;
-    }
+  case AC::REPEAT_NONE: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+    break;
+  }
 
-    case AC::REPEAT_ONE: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-      break;
-    }
+  case AC::REPEAT_ONE: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    break;
+  }
 
-    case AC::REPEAT_ALL: {
-      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
-      break;
-    }
+  case AC::REPEAT_ALL: {
+    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -216,19 +217,19 @@ void MainWindow::onVolumeClicked(AC::VolumeMode_t volumeMode)
 {
   switch (volumeMode)
   {
-    case AC::VOLUME_MUTED: {
-      this->musicPlayer->getMediaPlayer()->setMuted(true);
-      break;
-    }
+  case AC::VOLUME_MUTED: {
+    this->musicPlayer->getMediaPlayer()->setMuted(true);
+    break;
+  }
 
-    case AC::VOLUME_NOT_MUTED: {
-      this->musicPlayer->getMediaPlayer()->setMuted(false);
-      break;
-    }
+  case AC::VOLUME_NOT_MUTED: {
+    this->musicPlayer->getMediaPlayer()->setMuted(false);
+    break;
+  }
 
-    default: {
-      break;
-    }
+  default: {
+    break;
+  }
   }
 }
 
@@ -358,11 +359,11 @@ void MainWindow::addSongClicked()
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
     Track* t = this->musicLibrary->addTrack(tags);
     if(t) {
-    TrackItem* ti = new TrackItem(t);
-    this->model->appendRow(ti->getItems());
+      TrackItem* ti = new TrackItem(t);
+      this->model->appendRow(ti->getItems());
 
-    this->musicLibrary->debug();
-    this->items.push_back(ti);
+      this->musicLibrary->debug();
+      this->items.push_back(ti);
     }
     //Track track = Track(tags);
 
@@ -427,18 +428,11 @@ void MainWindow::addDirectoryClicked()
 
 void MainWindow::removeClicked()
 {
-  if(this->trackList->currentRow() != -1) {
-    this->trackList->takeItem(this->trackList->currentRow());
-    this->trackList->update();
+  QModelIndexList list = this->tableView->selectionModel()->selectedRows();
 
-    for(QVector<Track>::iterator track {this->playlist->getTracks()->begin()}; track != this->playlist->getTracks()->end(); ++track) {
-      if(track->getTitle() == this->trackList->currentItem()->text()) {
-        this->musicPlayer->removeTrack(*track);
-        this->playlist->removeTrack(*track);
-
-        break;
-      }
-    }
+  for(qint16 i = list.size() - 1; i >= 0; --i) {
+    this->items.removeAt(list.at(i).row());
+    this->model->removeRow(list.at(i).row());
   }
 }
 
