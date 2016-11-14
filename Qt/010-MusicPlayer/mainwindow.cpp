@@ -8,6 +8,11 @@
 #include <QString>
 #include <QStringList>
 
+
+#include <QStandardItem>
+#include <QHeaderView>
+#include <QList>
+
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
@@ -17,8 +22,12 @@
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
 
+#include "table/trackitem.h"
+
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
+  this->items = QVector<TrackItem*>();
+
   this->stackedWidget = stackedWidget;
 
   this->musicPlayer = new MusicPlayer();
@@ -43,8 +52,8 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QObject::connect(this, SIGNAL(currentMediaChanged(Track&)), this->audioControls, SLOT(onCurrentMediaChanged(Track&)));
   QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), this->audioControls, SLOT(onPositionChanged(qint64, qint64)));
 
-  this->trackList = new QListWidget();
-  QObject::connect(this->trackList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(trackListItemDoubleClicked(QListWidgetItem*)));
+  //this->trackList = new QListWidget();
+  //QObject::connect(this->trackList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(trackListItemDoubleClicked(QListWidgetItem*)));
 
   this->addSong = new QPushButton("Add Song");
   QObject::connect(this->addSong, SIGNAL(clicked()), this, SLOT(addSongClicked()));
@@ -66,24 +75,54 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   QGridLayout* gridLayout = new QGridLayout();
 
-  this->l = new QLabel("song");
-
-
   gridLayout->setSpacing(0);
   gridLayout->setMargin(0);
-  gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
-  gridLayout->addWidget(this->addSong, 3, 1, 1, 1);
-  gridLayout->addWidget(this->addDirectory, 4, 1, 1, 1);
-  gridLayout->addWidget(this->savePlaylist, 5, 1 ,1, 1);
-  gridLayout->addWidget(this->loadPlaylist, 6, 1 ,1, 1);
-  gridLayout->addWidget(this->remove, 7, 1, 1, 1);
-  gridLayout->addWidget(this->audioControls, 8, 0, 1, 2);
-  gridLayout->addWidget(this->l, 9,0,1,1);
+  //gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
+
 
   this->setLayout(gridLayout);
 
-  this->musicLibrary = new MusicLibrary();
 
+  model = new QStandardItemModel(0,0,this);
+  // Generate data
+
+  // Attach (tie) the model to the view
+  //ui->tableView->setModel(model);
+  //ui->tableView->setShowGrid(false);
+  //ui->tableView->horizontalHeader()->setVisible(false);
+  //ui->tableView->verticalHeader()->setVisible(false);
+  //ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  tableView = new TableView();
+  tableView->setStyleSheet("QHeaderView {background-color: transparent;}");
+  //tableView->hideColumn(0);
+  tableView->horizontalHeader()->hide();
+  tableView->verticalHeader()->hide();
+  tableView->setModel(model);
+  tableView->setShowGrid(false);
+  tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+
+  this->delegate = new MyDelegate();
+  tableView->setItemDelegate(delegate);
+  //ui->tableView->setItemDelegate(myDelegate);
+
+  //connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+  connect(tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+
+
+  // Tie the View with the new MyDelegate instance
+  // If we don not set this, it will use default delegate
+  //ui->tableView->resizeColumnsToContents();
+  //ui->tableView->setFixedSize(100,100);
+
+  QObject::connect(this->tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
+
+  gridLayout->addWidget(tableView,0,0,1,1);
+  gridLayout->addWidget(this->audioControls, 2, 0, 1, 1);
+  gridLayout->addWidget(this->addSong,1,0,1,1);
+  this->setLayout(gridLayout);
+
+  this->musicLibrary = new MusicLibrary();
 }
 
 void MainWindow::onFastBackwardClicked()
@@ -132,19 +171,19 @@ void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
 {
   switch (shuffleMode)
   {
-  case AC::SHUFFLE_OFF: {
-    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-    break;
-  }
+    case AC::SHUFFLE_OFF: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+      break;
+    }
 
-  case AC::SHUFFLE_ON: {
-    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
-    break;
-  }
+    case AC::SHUFFLE_ON: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
+      break;
+    }
 
-  default: {
-    break;
-  }
+    default: {
+      break;
+    }
   }
 }
 
@@ -152,24 +191,24 @@ void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
 {
   switch (repeatMode)
   {
-  case AC::REPEAT_NONE: {
-    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
-    break;
-  }
+    case AC::REPEAT_NONE: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
+      break;
+    }
 
-  case AC::REPEAT_ONE: {
-    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-    break;
-  }
+    case AC::REPEAT_ONE: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+      break;
+    }
 
-  case AC::REPEAT_ALL: {
-    this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
-    break;
-  }
+    case AC::REPEAT_ALL: {
+      this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
+      break;
+    }
 
-  default: {
-    break;
-  }
+    default: {
+      break;
+    }
   }
 }
 
@@ -177,19 +216,19 @@ void MainWindow::onVolumeClicked(AC::VolumeMode_t volumeMode)
 {
   switch (volumeMode)
   {
-  case AC::VOLUME_MUTED: {
-    this->musicPlayer->getMediaPlayer()->setMuted(true);
-    break;
-  }
+    case AC::VOLUME_MUTED: {
+      this->musicPlayer->getMediaPlayer()->setMuted(true);
+      break;
+    }
 
-  case AC::VOLUME_NOT_MUTED: {
-    this->musicPlayer->getMediaPlayer()->setMuted(false);
-    break;
-  }
+    case AC::VOLUME_NOT_MUTED: {
+      this->musicPlayer->getMediaPlayer()->setMuted(false);
+      break;
+    }
 
-  default: {
-    break;
-  }
+    default: {
+      break;
+    }
   }
 }
 
@@ -238,9 +277,10 @@ void MainWindow::volumeValueChanged(int value)
   this->musicPlayer->getMediaPlayer()->setVolume(value);
 }
 
-void MainWindow::trackListItemDoubleClicked(QListWidgetItem* item)
+void MainWindow::trackListItemDoubleClicked(const QModelIndex& index)
 {
-  for(int i {0}; i < this->trackList->count(); i++) {
+  qDebug() << index.row();
+  /*for(int i {0}; i < this->trackList->count(); i++) {
     if(item->text() == this->trackList->item(i)->text()) {
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(i);
       this->musicPlayer->getMediaPlayer()->play();
@@ -250,7 +290,7 @@ void MainWindow::trackListItemDoubleClicked(QListWidgetItem* item)
 
       break;
     }
-  }
+  }*/
 }
 
 void MainWindow::playClicked()
@@ -315,9 +355,12 @@ void MainWindow::addSongClicked()
     QFileInfo fileInfo {*filename};
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
-    this->musicLibrary->addTrack(tags);
+    Track* t = this->musicLibrary->addTrack(tags);
+    TrackItem* ti = new TrackItem(t);
+    this->model->appendRow(ti->getItems());
 
     this->musicLibrary->debug();
+    this->items.push_back(ti);
     //Track track = Track(tags);
 
     //l->setPixmap(ImageUtils::stringToImage(QImage("images/white.png"), track.getTitle()));

@@ -35,6 +35,16 @@ Track::Track(const QVariantMap& tags, Album& album)
   this->mediaContent = QMediaContent(QUrl(QFileInfo(this->url).absoluteFilePath()));
 }
 
+quint8 Track::getTrack()
+{
+  return this->track;
+}
+
+void Track::setTrack(quint8 track)
+{
+  this->track = track;
+}
+
 const QString& Track::getTitle() const
 {
   return this->title;
@@ -57,7 +67,12 @@ void Track::setYear(quint8 year)
 
 quint32 Track::getDuration() const
 {
-  return this->getDuration();
+  return this->duration;
+}
+
+QString Track::getDurationInMinutes() const
+{
+  return QString("%1:%2").arg(this->duration / 60).arg(this->duration % 60);
 }
 
 void Track::setDuration(quint32 duration)

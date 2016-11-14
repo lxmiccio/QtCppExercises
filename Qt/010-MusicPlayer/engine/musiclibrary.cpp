@@ -157,12 +157,11 @@ bool MusicLibrary::removeTrack(const QString& trackTitle, const QString& albumTi
   return false;
 }
 
-bool MusicLibrary::addTrack(const QVariantMap& tags)
+Track* MusicLibrary::addTrack(const QVariantMap& tags)
 {
   Artist* artist = NULL;
   Album* album = NULL;
-
-  bool added = false;
+  Track* track = NULL;
 
   for(QVector<Artist>::iterator iter_artist = this->artists->begin(); iter_artist != this->artists->end(); ++iter_artist) {
     if(iter_artist->getName() == tags["artist"].toString()) {
@@ -180,49 +179,46 @@ bool MusicLibrary::addTrack(const QVariantMap& tags)
     }
 
     if(album != NULL) {
-      album->addTrack(Track(tags, *album));
-
-      added = true;
+      track = new Track(tags, *album);
+      album->addTrack(*track);
     } else {
       album = new Album(tags["album"].toString(), *artist);
-      album->addTrack(Track(tags, *album));
+
+      track = new Track(tags, *album);
+      album->addTrack(*track);
 
       artist->addAlbum(*album);
-
-      added = true;
     }
   } else {
     artist = new Artist(tags["artist"].toString());
 
     album = new Album(tags["album"].toString(), *artist);
-    album->addTrack(Track(tags, *album));
+    track = new Track(tags, *album);
+    album->addTrack(*track);
 
     artist->addAlbum(*album);
 
     this->artists->push_back(*artist);
-
-    added = true;
   }
 
-  return added;
+  return track;
 }
 
 void MusicLibrary::debug()
 {
-  qDebug() << "***";
+  qDebug() << "*****";
 
   for(QVector<Artist>::iterator artist = this->getArtists()->begin(); artist != this->getArtists()->end(); ++artist) {
-    qDebug() << artist->getName();
+    qDebug() << "****" << artist->getName();
 
     for(QVector<Album>::iterator album = artist->getAlbums()->begin(); album != artist->getAlbums()->end(); ++album) {
-      qDebug() << album->getTitle();
+      qDebug() << "***" << album->getTitle();
 
       for(QVector<Track>::iterator track = album->getTracks()->begin(); track != album->getTracks()->end(); ++track) {
-        qDebug() << track->getTitle();
-        qDebug() << "*";
+        qDebug() << "**" << track->getTitle();
       }
     }
   }
 
-  qDebug() << "***";
+  qDebug() << '*';
 }

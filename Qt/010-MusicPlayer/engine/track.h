@@ -21,12 +21,13 @@ class Track
     void setTitle(const QString& title);
 
     quint8 getTrack();
-    void setTrack();
+    void setTrack(quint8 track);
 
     quint8 getYear() const;
     void setYear(quint8 year);
 
     quint32 getDuration() const;
+    QString getDurationInMinutes() const;
     void setDuration(quint32 duration);
 
     quint32 getBitrate() const;

@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QSlider>
+#include <QVector>
 
 #include "gui/imagebutton.h"
 
@@ -16,6 +17,11 @@
 #include "gui/stackedwidget.h"
 #include "engine/track.h"
 #include "engine/musiclibrary.h"
+#include "table/tableview.h"
+#include "table/mydelegate.h"
+#include "table/trackitem.h"
+
+#include <QStandardItemModel>
 
 class MainWindow : public QWidget
 {
@@ -34,8 +40,14 @@ private:
   QPushButton* savePlaylist;
   QPushButton* loadPlaylist;
 
-  QLabel *l;
+  TableView* tableView;
+  MyDelegate* delegate;
+
+  QStandardItemModel* model;
+
   MusicLibrary* musicLibrary;
+
+  QVector<TrackItem*> items;
 
 public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
@@ -62,7 +74,7 @@ public slots:
   void musicSliderReleased();
   void volumeSliderMoved(int value);
   void volumeValueChanged(int value);
-  void trackListItemDoubleClicked(QListWidgetItem*);
+  void trackListItemDoubleClicked(const QModelIndex& index);
   void playClicked();
   void stopClicked();
   void previousClicked();

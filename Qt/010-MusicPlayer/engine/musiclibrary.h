@@ -30,7 +30,7 @@ public:
   bool removeTrack(Track* track);
   bool removeTrack(const QString& trackTitle, const QString& albumTitle);
 
-  bool addTrack(const QVariantMap& tags);
+  Track *addTrack(const QVariantMap& tags);
 
   void debug();
 
