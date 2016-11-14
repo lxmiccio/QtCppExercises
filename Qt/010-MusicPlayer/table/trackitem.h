@@ -13,6 +13,9 @@ public:
 
   QList<QStandardItem *> getItems();
 
+  Track* getTrack() const;
+  void setTrack(Track& track);
+
 private:
   QList<QStandardItem*> items;
 

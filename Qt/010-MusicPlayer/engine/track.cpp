@@ -72,7 +72,7 @@ quint32 Track::getDuration() const
 
 QString Track::getDurationInMinutes() const
 {
-  return QString("%1:%2").arg(this->duration / 60).arg(this->duration % 60);
+  return QString("%1:%2").arg(this->duration / 60, 2, 10, QChar('0')).arg(this->duration % 60, 2, 10, QChar('0'));
 }
 
 void Track::setDuration(quint32 duration)

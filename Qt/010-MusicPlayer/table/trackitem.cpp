@@ -1,5 +1,7 @@
 #include "trackitem.h"
 
+#include "tableview.h"
+
 TrackItem::TrackItem(Track *track)
 {
   this->track = track;
@@ -22,4 +24,20 @@ TrackItem::TrackItem(Track *track)
 QList<QStandardItem*> TrackItem::getItems()
 {
   return this->items;
+}
+
+Track* TrackItem::getTrack() const
+{
+  return this->track;
+}
+
+void TrackItem::setTrack(Track& track)
+{
+  this->track = &track;
+
+  this->items.at(TableView::TRACK)->setText(QString("%1").arg(track.getTrack()));
+  this->items.at(TableView::TRACK)->setText(track.getTitle());
+  this->items.at(TableView::TRACK)->setText(track.getAlbum()->getTitle());
+  this->items.at(TableView::TRACK)->setText(track.getArtist()->getName());
+  this->items.at(TableView::TRACK)->setText(track.getDurationInMinutes());
 }

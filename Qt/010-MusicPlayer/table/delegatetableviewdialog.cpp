@@ -50,7 +50,7 @@ DelegateTableViewDialog
   t2.append(new QStandardItem("ol ewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwot"));
   model->appendRow(t2);
 
-  this->myDelegate = new MyDelegate();
+  this->myDelegate = new MyDelegate(tableView);
   tableView->setItemDelegate(myDelegate);
   //ui->tableView->setItemDelegate(myDelegate);
 

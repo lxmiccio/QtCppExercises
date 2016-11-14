@@ -102,7 +102,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
-  this->delegate = new MyDelegate();
+  this->delegate = new MyDelegate(tableView);
   tableView->setItemDelegate(delegate);
   //ui->tableView->setItemDelegate(myDelegate);
 
@@ -280,6 +280,7 @@ void MainWindow::volumeValueChanged(int value)
 void MainWindow::trackListItemDoubleClicked(const QModelIndex& index)
 {
   qDebug() << index.row();
+  qDebug() << this->items.at(index.row())->getTrack()->getTitle();
   /*for(int i {0}; i < this->trackList->count(); i++) {
     if(item->text() == this->trackList->item(i)->text()) {
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(i);
@@ -356,11 +357,13 @@ void MainWindow::addSongClicked()
 
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
     Track* t = this->musicLibrary->addTrack(tags);
+    if(t) {
     TrackItem* ti = new TrackItem(t);
     this->model->appendRow(ti->getItems());
 
     this->musicLibrary->debug();
     this->items.push_back(ti);
+    }
     //Track track = Track(tags);
 
     //l->setPixmap(ImageUtils::stringToImage(QImage("images/white.png"), track.getTitle()));

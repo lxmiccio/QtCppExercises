@@ -163,42 +163,44 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
   Album* album = NULL;
   Track* track = NULL;
 
-  for(QVector<Artist>::iterator iter_artist = this->artists->begin(); iter_artist != this->artists->end(); ++iter_artist) {
-    if(iter_artist->getName() == tags["artist"].toString()) {
-      artist = iter_artist;
-      break;
-    }
-  }
-
-  if(artist != NULL) {
-    for(QVector<Album>::iterator iter_album = artist->getAlbums()->begin(); iter_album != artist->getAlbums()->end(); ++iter_album) {
-      if(iter_album->getTitle() == tags["album"].toString()) {
-        album = iter_album;
+  if(tags["artist"].toString().length() > 0 && tags["album"].toString().length() && tags["title"].toString().length() && tags["track"] > 0 && tags["duration"] > 0) {
+    for(QVector<Artist>::iterator iter_artist = this->artists->begin(); iter_artist != this->artists->end(); ++iter_artist) {
+      if(iter_artist->getName() == tags["artist"].toString()) {
+        artist = iter_artist;
         break;
       }
     }
 
-    if(album != NULL) {
-      track = new Track(tags, *album);
-      album->addTrack(*track);
-    } else {
-      album = new Album(tags["album"].toString(), *artist);
+    if(artist != NULL) {
+      for(QVector<Album>::iterator iter_album = artist->getAlbums()->begin(); iter_album != artist->getAlbums()->end(); ++iter_album) {
+        if(iter_album->getTitle() == tags["album"].toString()) {
+          album = iter_album;
+          break;
+        }
+      }
 
+      if(album != NULL) {
+        track = new Track(tags, *album);
+        album->addTrack(*track);
+      } else {
+        album = new Album(tags["album"].toString(), *artist);
+
+        track = new Track(tags, *album);
+        album->addTrack(*track);
+
+        artist->addAlbum(*album);
+      }
+    } else {
+      artist = new Artist(tags["artist"].toString());
+
+      album = new Album(tags["album"].toString(), *artist);
       track = new Track(tags, *album);
       album->addTrack(*track);
 
       artist->addAlbum(*album);
+
+      this->artists->push_back(*artist);
     }
-  } else {
-    artist = new Artist(tags["artist"].toString());
-
-    album = new Album(tags["album"].toString(), *artist);
-    track = new Track(tags, *album);
-    album->addTrack(*track);
-
-    artist->addAlbum(*album);
-
-    this->artists->push_back(*artist);
   }
 
   return track;
