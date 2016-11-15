@@ -9,9 +9,9 @@
 class TrackItem
 {
 public:
-  TrackItem(Track* track);
+  TrackItem(Track& track);
 
-  QList<QStandardItem *> getItems();
+  QList<QStandardItem*> getItems() const;
 
   Track* getTrack() const;
   void setTrack(Track& track);

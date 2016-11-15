@@ -30,10 +30,9 @@ SOURCES += main.cpp\
     saveplaylistwindow.cpp \
     loadplaylistwindow.cpp \
     engine/musiclibrary.cpp \
-    table/delegatetableviewdialog.cpp \
-    table/mydelegate.cpp \
-    table/tableview.cpp \
-    table/trackitem.cpp
+    table/trackitem.cpp \
+    table/trackview.cpp \
+    table/trackdelegate.cpp
 
 HEADERS  += engine/artist.h \
     engine/album.h \
@@ -53,10 +52,9 @@ HEADERS  += engine/artist.h \
     saveplaylistwindow.h \
     loadplaylistwindow.h \
     engine/musiclibrary.h\
-    table/delegatetableviewdialog.h \
-    table/mydelegate.h \
-    table/tableview.h \
-    table/trackitem.h
+    table/trackitem.h \
+    table/trackview.h \
+    table/trackdelegate.h
 
 FORMS    +=
 

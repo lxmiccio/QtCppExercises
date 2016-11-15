@@ -17,8 +17,8 @@
 #include "gui/stackedwidget.h"
 #include "engine/track.h"
 #include "engine/musiclibrary.h"
-#include "table/tableview.h"
-#include "table/mydelegate.h"
+#include "table/trackview.h"
+#include "table/trackdelegate.h"
 #include "table/trackitem.h"
 
 #include <QStandardItemModel>
@@ -40,8 +40,8 @@ private:
   QPushButton* savePlaylist;
   QPushButton* loadPlaylist;
 
-  TableView* tableView;
-  MyDelegate* delegate;
+  TrackView* trackView;
+  TrackDelegate* trackDelegate;
 
   QStandardItemModel* model;
 

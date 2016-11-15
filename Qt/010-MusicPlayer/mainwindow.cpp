@@ -87,37 +87,37 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   // Generate data
 
   // Attach (tie) the model to the view
-  //ui->tableView->setModel(model);
-  //ui->tableView->setShowGrid(false);
-  //ui->tableView->horizontalHeader()->setVisible(false);
-  //ui->tableView->verticalHeader()->setVisible(false);
-  //ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-  tableView = new TableView();
-  tableView->setStyleSheet("QHeaderView {background-color: transparent;}");
-  //tableView->hideColumn(0);
-  tableView->horizontalHeader()->hide();
-  tableView->verticalHeader()->hide();
-  tableView->setModel(model);
-  tableView->setShowGrid(false);
-  tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  //ui->trackView->setModel(model);
+  //ui->trackView->setShowGrid(false);
+  //ui->trackView->horizontalHeader()->setVisible(false);
+  //ui->trackView->verticalHeader()->setVisible(false);
+  //ui->trackView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  trackView = new TrackView();
+  trackView->setStyleSheet("QHeaderView {background-color: transparent;}");
+  //trackView->hideColumn(0);
+  trackView->horizontalHeader()->hide();
+  trackView->verticalHeader()->hide();
+  trackView->setModel(model);
+  trackView->setShowGrid(false);
+  trackView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
-  this->delegate = new MyDelegate(tableView);
-  tableView->setItemDelegate(delegate);
-  //ui->tableView->setItemDelegate(myDelegate);
+  this->trackDelegate = new TrackDelegate(trackView);
+  trackView->setItemDelegate(this->trackDelegate);
+  //ui->trackView->setItemDelegate(myDelegate);
 
-  //connect(ui->tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
-  connect(tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+  //connect(ui->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+  connect(trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
 
 
   // Tie the View with the new MyDelegate instance
   // If we don not set this, it will use default delegate
-  //ui->tableView->resizeColumnsToContents();
-  //ui->tableView->setFixedSize(100,100);
+  //ui->trackView->resizeColumnsToContents();
+  //ui->trackView->setFixedSize(100,100);
 
-  QObject::connect(this->tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
+  QObject::connect(this->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
 
-  gridLayout->addWidget(tableView,0,0,1,1);
+  gridLayout->addWidget(trackView,0,0,1,1);
   gridLayout->addWidget(this->audioControls, 3, 0, 1, 1);
   gridLayout->addWidget(this->addSong,1,0,1,1);
   gridLayout->addWidget(this->remove,2,0,1,1);
@@ -359,7 +359,7 @@ void MainWindow::addSongClicked()
     QVariantMap tags = TagManager::readTags(fileInfo).toMap();
     Track* t = this->musicLibrary->addTrack(tags);
     if(t) {
-      TrackItem* ti = new TrackItem(t);
+      TrackItem* ti = new TrackItem(*t);
       this->model->appendRow(ti->getItems());
 
       this->musicLibrary->debug();
@@ -387,6 +387,8 @@ void MainWindow::addSongClicked()
     //this->musicPlayer->addTrack(track);
 
     //this->trackList->addItem(track.getTitle());
+    this->addSong->hide();
+    this->remove->hide();
   }
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
@@ -428,7 +430,7 @@ void MainWindow::addDirectoryClicked()
 
 void MainWindow::removeClicked()
 {
-  QModelIndexList list = this->tableView->selectionModel()->selectedRows();
+  QModelIndexList list = this->trackView->selectionModel()->selectedRows();
 
   for(qint16 i = list.size() - 1; i >= 0; --i) {
     this->items.removeAt(list.at(i).row());

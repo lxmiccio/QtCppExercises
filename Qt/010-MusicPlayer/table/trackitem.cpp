@@ -1,18 +1,18 @@
 #include "trackitem.h"
 
-#include "tableview.h"
+#include "trackview.h"
 
-TrackItem::TrackItem(Track *track)
+TrackItem::TrackItem(Track& track)
 {
-  this->track = track;
+  this->track = &track;
+
+  this->items = QList<QStandardItem*>();
 
   QStandardItem* id = new QStandardItem(QString("%1").arg(this->track->getTrack()));
   QStandardItem* title = new QStandardItem(this->track->getTitle());
   QStandardItem* album = new QStandardItem(this->track->getAlbum()->getTitle());
   QStandardItem* artist = new QStandardItem(this->track->getArtist()->getName());
   QStandardItem* durarion = new QStandardItem(this->track->getDurationInMinutes());
-
-  this->items = QList<QStandardItem*>();
 
   this->items.append(id);
   this->items.append(title);
@@ -21,7 +21,7 @@ TrackItem::TrackItem(Track *track)
   this->items.append(durarion);
 }
 
-QList<QStandardItem*> TrackItem::getItems()
+QList<QStandardItem*> TrackItem::getItems() const
 {
   return this->items;
 }
@@ -35,9 +35,9 @@ void TrackItem::setTrack(Track& track)
 {
   this->track = &track;
 
-  this->items.at(TableView::TRACK)->setText(QString("%1").arg(track.getTrack()));
-  this->items.at(TableView::TRACK)->setText(track.getTitle());
-  this->items.at(TableView::TRACK)->setText(track.getAlbum()->getTitle());
-  this->items.at(TableView::TRACK)->setText(track.getArtist()->getName());
-  this->items.at(TableView::TRACK)->setText(track.getDurationInMinutes());
+  this->items.at(TrackView::TRACK)->setText(QString("%1").arg(track.getTrack()));
+  this->items.at(TrackView::TITLE)->setText(track.getTitle());
+  this->items.at(TrackView::ALBUM)->setText(track.getAlbum()->getTitle());
+  this->items.at(TrackView::ARTIST)->setText(track.getArtist()->getName());
+  this->items.at(TrackView::DURATION)->setText(track.getDurationInMinutes());
 }
