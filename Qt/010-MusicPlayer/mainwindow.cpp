@@ -10,8 +10,10 @@
 
 
 #include <QStandardItem>
+#include <QScrollArea>
 #include <QHeaderView>
 #include <QList>
+#include <QScrollBar>
 
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
@@ -23,6 +25,8 @@
 #include "saveplaylistwindow.h"
 
 #include "table/trackitem.h"
+
+#include "gui/cover.h"
 
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
@@ -72,7 +76,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   this->loadPlaylist = new QPushButton("Load Playlist");
   QObject::connect(this->loadPlaylist, SIGNAL(clicked()), this, SLOT(loadPlaylistClicked()));
-
+  /*
   QGridLayout* gridLayout = new QGridLayout();
 
   gridLayout->setSpacing(0);
@@ -81,7 +85,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
 
   this->setLayout(gridLayout);
-
+*/
 
   model = new QStandardItemModel(0,0,this);
   // Generate data
@@ -93,7 +97,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //ui->trackView->verticalHeader()->setVisible(false);
   //ui->trackView->setSelectionBehavior(QAbstractItemView::SelectRows);
   trackView = new TrackView();
-  trackView->setStyleSheet("QHeaderView {background-color: transparent;}");
+  //trackView->setStyleSheet("QHeaderView {background-color: transparent;}");
   //trackView->hideColumn(0);
   trackView->horizontalHeader()->hide();
   trackView->verticalHeader()->hide();
@@ -116,12 +120,32 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //ui->trackView->setFixedSize(100,100);
 
   QObject::connect(this->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
-
+  /*
   gridLayout->addWidget(trackView,0,0,1,1);
   gridLayout->addWidget(this->audioControls, 3, 0, 1, 1);
   gridLayout->addWidget(this->addSong,1,0,1,1);
   gridLayout->addWidget(this->remove,2,0,1,1);
-  this->setLayout(gridLayout);
+  this->setLayout(gridLayout);*/
+
+
+  this->layout = new QVBoxLayout();
+  this->layout->setMargin(0);
+
+  QScrollArea* sa = new QScrollArea();
+  sa->setWidgetResizable(true);
+  this->albumView = new AlbumView();
+  sa->setWidget(this->albumView);
+  sa->setFixedHeight(400);
+
+
+  this->layout->addWidget(sa);
+  this->layout->addWidget(this->trackView);
+  this->layout->addWidget(this->addSong);
+  this->layout->addWidget(this->remove);
+  this->layout->addWidget(this->audioControls);
+
+
+  this->setLayout(layout);
 
   this->musicLibrary = new MusicLibrary();
 }
@@ -349,6 +373,7 @@ void MainWindow::nextClicked()
   this->trackList->setCurrentRow(this->musicPlayer->getMediaPlaylist()->currentIndex());
 }
 
+
 void MainWindow::addSongClicked()
 {
   QStringList filenames = QFileDialog::getOpenFileNames(this, tr("Select Track to Import"));
@@ -364,6 +389,8 @@ void MainWindow::addSongClicked()
 
       this->musicLibrary->debug();
       this->items.push_back(ti);
+
+      this->albumView->addCover(t->getAlbum());
     }
     //Track track = Track(tags);
 
@@ -387,7 +414,7 @@ void MainWindow::addSongClicked()
     //this->musicPlayer->addTrack(track);
 
     //this->trackList->addItem(track.getTitle());
-    this->addSong->hide();
+    //this->addSong->hide();
     this->remove->hide();
   }
 

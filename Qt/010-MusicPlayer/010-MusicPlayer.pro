@@ -32,7 +32,10 @@ SOURCES += main.cpp\
     engine/musiclibrary.cpp \
     table/trackitem.cpp \
     table/trackview.cpp \
-    table/trackdelegate.cpp
+    table/trackdelegate.cpp \
+    gui/cover.cpp \
+    gui/elidedlabel.cpp \
+    albumview.cpp
 
 HEADERS  += engine/artist.h \
     engine/album.h \
@@ -54,7 +57,10 @@ HEADERS  += engine/artist.h \
     engine/musiclibrary.h\
     table/trackitem.h \
     table/trackview.h \
-    table/trackdelegate.h
+    table/trackdelegate.h \
+    gui/cover.h \
+    gui/elidedlabel.h \
+    albumview.h
 
 FORMS    +=
 

@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QVector>
+#include <QVBoxLayout>
 
 #include "gui/imagebutton.h"
 
@@ -20,6 +21,8 @@
 #include "table/trackview.h"
 #include "table/trackdelegate.h"
 #include "table/trackitem.h"
+
+#include "albumview.h"
 
 #include <QStandardItemModel>
 
@@ -48,6 +51,10 @@ private:
   MusicLibrary* musicLibrary;
 
   QVector<TrackItem*> items;
+
+  QVBoxLayout* layout;
+
+  AlbumView* albumView;
 
 public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
