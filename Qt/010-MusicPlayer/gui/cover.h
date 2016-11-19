@@ -18,6 +18,10 @@ class Cover : public QWidget
 public:
   Cover(Album* album, QWidget* parent = 0);
 
+  Album* getAlbum() {
+    return this->album;
+  }
+
 private:
   Album* album;
 

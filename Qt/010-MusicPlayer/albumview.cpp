@@ -1,16 +1,31 @@
 #include "albumview.h"
 
+#include <QMimeData>
 #include <QDebug>
 #include <QLabel>
+#include <QFileInfo>
+#include "engine/musiclibrary.h"
 
-AlbumView::AlbumView(QWidget* parent) : QWidget(parent)
+#include "engine/track.h"
+#include "tag/tagmanager.h"
+
+AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 {
+  BackgroundWidget::setBackgroundColor(QColor(255, 255, 255, 255));
+
   this->covers = QVector<Cover*>();
 
-  this->mainLayout = new QGridLayout(this);
+  this->mainLayout = new QGridLayout();
+  this->mainLayout->setMargin(0);
+  this->mainLayout->setSpacing(0);
+
+  this->setLayout(this->mainLayout);
 
   this->currCol = 0;
+
   this->currRow = 0;
+
+  this->setAcceptDrops(true);
 }
 
 void AlbumView::addCover(Album* album)
@@ -18,62 +33,46 @@ void AlbumView::addCover(Album* album)
   Cover* cover = new Cover(album);
   this->covers.push_back(cover);
 
-  this->currCol++;
   if(currCol!= 0 && currCol % 4 == 0) {
     currRow++;
     currCol = 0;
   }
 
+  this->mainLayout->addWidget(cover, currRow, currCol, 1, 1, Qt::AlignLeft);
 
-  qDebug() << "row:"<<this->currRow;
-  qDebug() << "col:"<<this->currCol;
-  this->mainLayout->addWidget(cover, currRow, currCol, 1, 1);
-  QWidget::update();
+  this->currCol++;
 }
 
-void AlbumView::resizeEvent(QResizeEvent * event)
+void AlbumView::resizeEvent(QResizeEvent *event)
 {
-  qDebug()<<event->size().width();
+}
 
-  QWidget::resizeEvent(event);
+void AlbumView::dropEvent(QDropEvent* event)
+{
+  MusicLibrary* ml = new MusicLibrary();
+  qDebug()<<"drymytears";
+  QList<QUrl> urls = event->mimeData()->urls();
+  foreach(QUrl u, urls) {
+    qDebug()<<"yougotaperfectone"<<u.toLocalFile();
 
-  /*
-  QPainter painter(this);
-  painter.setRenderHint(QPainter::TextAntialiasing);
+    QFileInfo fileInfo {u.toLocalFile()};
 
-  QRect rect = this->contentsRect();
-  rect.adjust(this->m_margin, this->m_margin, -this->m_margin, -this->m_margin);
 
-  if(this->m_multiLine) {
-    QTextLayout textLayout(this->m_text);
-    textLayout.setFont(painter.font());
+    QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+    Track* t = ml->addTrack(tags);
+    if(t) {
+      qDebug()<<"letsusethemuptilleverylittlefieceisgone";
+      //TrackItem* ti = new TrackItem(*t);
+      //this->model->appendRow(ti->getItems());
 
-    int widthUsed = 0;
-    int lineCount = 0;
-    int lineLimit = rect.height() / this->fontMetrics().height();
+      ml->debug();
 
-    textLayout.beginLayout();
-
-    while(++lineCount < lineLimit) {
-      QTextLine line = textLayout.createLine();
-
-      if(!line.isValid()) {
-        break;
-      }
-
-      line.setLineWidth(rect.width());
-      widthUsed += line.naturalTextWidth();
+      this->addCover(t->getAlbum());
     }
-
-    textLayout.endLayout();
-    widthUsed += rect.width();
-
-    const QString elidedText = this->fontMetrics().elidedText(this->m_text, Qt::ElideRight, widthUsed);
-    painter.drawText(rect, this->m_align | Qt::TextWordWrap, elidedText);
-  } else {
-    const QString elidedText = this->fontMetrics().elidedText(this->m_text, this->m_mode, rect.width());
-    painter.drawText(rect, this->m_align, elidedText);
   }
-  *
-  */
+}
+
+void AlbumView::dragEnterEvent(QDragEnterEvent* event)
+{
+  event->accept();
 }

@@ -12,7 +12,7 @@ TrackView::TrackView(QWidget* parent) : QTableView(parent)
                                                    "}"
                                                    "QScrollBar::handle:vertical {"
                                                      "margin: 2px 2px 2px 0px;"
-                                                     "border-image: url(images/rect.jpg);"
+                                                     "border-image: url(images/scrollbar.jpg);"
                                                      "border-radius: 2px;"
                                                    "}"
                                                    "QScrollBar::add-line:vertical {"
