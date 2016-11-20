@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-Cover::Cover(Album *album, QWidget *parent) : QWidget(parent)
+Cover::Cover(const Album *album, QWidget *parent) : QWidget(parent)
 {
   this->album = album;
 

@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     table/trackdelegate.cpp \
     gui/cover.cpp \
     gui/elidedlabel.cpp \
-    albumview.cpp
+    albumview.cpp \
+    scrollarea.cpp
 
 HEADERS  += engine/artist.h \
     engine/album.h \
@@ -60,7 +61,8 @@ HEADERS  += engine/artist.h \
     table/trackdelegate.h \
     gui/cover.h \
     gui/elidedlabel.h \
-    albumview.h
+    albumview.h \
+    scrollarea.h
 
 FORMS    +=
 

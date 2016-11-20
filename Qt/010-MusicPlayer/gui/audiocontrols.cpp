@@ -137,8 +137,8 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerHorizontalLayout = new QHBoxLayout();
   this->lowerHorizontalLayout->addItem(this->lowerSpacer1);
-  this->lowerHorizontalLayout->addWidget(this->fastBackward);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer2);
+  //this->lowerHorizontalLayout->addWidget(this->fastBackward);
+  //this->lowerHorizontalLayout->addItem(this->lowerSpacer2);
   this->lowerHorizontalLayout->addWidget(this->backward);
   this->lowerHorizontalLayout->addItem(this->lowerSpacer3);
   this->lowerHorizontalLayout->addWidget(this->play);
@@ -146,8 +146,8 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->lowerHorizontalLayout->addItem(this->lowerSpacer4);
   this->lowerHorizontalLayout->addWidget(this->forward);
   this->lowerHorizontalLayout->addItem(this->lowerSpacer5);
-  this->lowerHorizontalLayout->addWidget(this->fastForward);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer6);
+  //this->lowerHorizontalLayout->addWidget(this->fastForward);
+  //this->lowerHorizontalLayout->addItem(this->lowerSpacer6);
   this->lowerHorizontalLayout->addWidget(this->eslapsedTime);
   this->lowerHorizontalLayout->addItem(this->lowerSpacer7);
   this->lowerHorizontalLayout->addWidget(this->musicSlider);

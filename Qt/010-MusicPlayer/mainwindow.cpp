@@ -25,7 +25,7 @@
 #include "saveplaylistwindow.h"
 
 #include "table/trackitem.h"
-
+#include "scrollarea.h"
 #include "gui/cover.h"
 
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
@@ -130,12 +130,31 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   this->layout = new QVBoxLayout();
   this->layout->setMargin(0);
+  this->layout->setSpacing(0);
 
+  ScrollArea* a = new ScrollArea();
+  //QVBoxLayout* vb = new QVBoxLayout();
+  //vb->setMargin(10);
+
+  AlbumView * aw = new AlbumView();
+  QObject::connect(aw, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
+
+//a->setLayout(vb);
+a->setWidgetResizable(true);
+//vb->addWidget(aw);
+a->setWidget(aw);
+
+QObject::connect(a, SIGNAL(resized(QResizeEvent*)), aw, SLOT(onScrollAreaPainted(QResizeEvent*)));
+
+QObject::connect(this, SIGNAL(trackAdded(const Track*)), aw, SLOT(onTrackAdded(const Track*)));
+/*
   QScrollArea* sa = new QScrollArea();
   sa->setWidgetResizable(true);
-  this->albumView = new AlbumView();
+  /*
+  this->albumView = new AlbumView(sa);
   sa->setWidget(this->albumView);
-  sa->setFixedHeight(400);
+  sa->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  sa->setMinimumWidth(800);
 
   sa->verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
                                                      "background: %1;"
@@ -163,17 +182,30 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
                                                    "}")
                                            .arg(QColor(255, 255, 255, 255).name()));
 
-
-  this->layout->addWidget(sa);
-  this->layout->addWidget(this->trackView);
-  this->layout->addWidget(this->addSong);
-  this->layout->addWidget(this->remove);
-  this->layout->addWidget(this->audioControls);
+*/
+this->layout->addWidget(a);
+this->layout->addWidget(remove);
 
 
   this->setLayout(layout);
 
   this->musicLibrary = new MusicLibrary();
+}
+
+void MainWindow::onFileDropped(const QFileInfo& fileInfo)
+{
+  QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+  Track* t = this->musicLibrary->addTrack(tags);
+
+  if(t) {
+    TrackItem* ti = new TrackItem(*t);
+    this->model->appendRow(ti->getItems());
+
+    this->musicLibrary->debug();
+    this->items.push_back(ti);
+
+    emit this->trackAdded(t);
+  }
 }
 
 void MainWindow::onFastBackwardClicked()
@@ -416,7 +448,7 @@ void MainWindow::addSongClicked()
       this->musicLibrary->debug();
       this->items.push_back(ti);
 
-      this->albumView->addCover(t->getAlbum());
+      //this->albumView->addCover(t->getAlbum());
     }
     //Track track = Track(tags);
 

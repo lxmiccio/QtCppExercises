@@ -47,6 +47,8 @@ class Track
 
     Artist* getArtist() const;
 
+    static bool isSupportedSuffix(const QString& suffix);
+
   private:
     QString title;
     quint8 track;

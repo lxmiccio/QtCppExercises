@@ -21,6 +21,7 @@
 #include "table/trackview.h"
 #include "table/trackdelegate.h"
 #include "table/trackitem.h"
+#include "scrollarea.h"
 
 #include "albumview.h"
 
@@ -66,6 +67,7 @@ public slots:
   void onPauseClicked();
   void onFastForwardClicked();
   void onForwardClicked();
+  void onFileDropped(const QFileInfo& fileInfo);
   void onMusicSliderMoved(int position, int minimum, int maximum);
   void onShuffleClicked(AC::ShuffleMode_t shuffleMode);
   void onRepeatClicked(AC::RepeatMode_t repeatMode);
@@ -95,6 +97,7 @@ public slots:
   void playlistLoaded(QString playlistName);
 
 signals:
+  void trackAdded(const Track* track);
   currentMediaChanged(Track &track);
   positionChanged(qint64 position, qint64 duration);
 };

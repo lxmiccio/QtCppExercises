@@ -16,14 +16,14 @@ class Cover : public QWidget
   Q_OBJECT
 
 public:
-  Cover(Album* album, QWidget* parent = 0);
+  Cover(const Album* album, QWidget* parent = 0);
 
-  Album* getAlbum() {
+  const Album* getAlbum() {
     return this->album;
   }
 
 private:
-  Album* album;
+  const Album* album;
 
   ImageButton* cover;
   ElidedLabel* lblAlbum;

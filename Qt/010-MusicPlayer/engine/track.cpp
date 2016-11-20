@@ -135,6 +135,17 @@ Artist* Track::getArtist() const
   return this->album->getArtist();
 }
 
+bool Track::isSupportedSuffix(const QString& suffix)
+{
+  static QVector<QString> suffixes;
+
+  if(suffixes.isEmpty()) {
+    suffixes.append("mp3");
+  }
+
+  return suffixes.indexOf(suffix) == -1 ? false : true;
+}
+
 bool operator==(const Track& track1, const Track& track2)
 {
   return track1.getTitle() == track2.getTitle();
