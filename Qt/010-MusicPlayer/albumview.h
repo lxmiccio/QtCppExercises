@@ -11,15 +11,19 @@
 #include <QFileInfo>
 #include <QDropEvent>
 #include <QUrl>
+ #include <QDebug>
+#include <QThread>
 
 #include "engine/album.h"
 #include "gui/cover.h"
 #include "gui/backgroundwidget.h"
 #include "scrollarea.h"
+#include "worker.h"
 
 class AlbumView : public BackgroundWidget
 {
   Q_OBJECT
+  QThread workerThread;
 
 public:
   AlbumView(QWidget* parent = 0);
@@ -35,7 +39,7 @@ public:
               delete item->layout();
           }
           if (item->widget()) {
-              delete item->widget();
+              //delete item->widget();
           }
           delete item;
       }
@@ -45,11 +49,15 @@ public slots:
   void onTrackAdded(const Track* track);
   void onAlbumAdded(const Album* album);
   void onScrollAreaPainted(QResizeEvent* event);
+  void handleResults(QVector<Cover*>&) {
+    qDebug()<<"thread finish";
+  }
 
 
 
 signals:
   void fileDropped(const QFileInfo& fileInfo);
+  void repaint(QVector<const Album*>&);
 
 private:
   QVector<const Album*> m_albums;

@@ -1,23 +1,19 @@
 #include "cover.h"
 
-#include <QDebug>
-
 Cover::Cover(const Album *album, QWidget *parent) : QWidget(parent)
 {
   this->album = album;
 
-  QImage image("images/bs.jpg");
+  QImage image("images/qoct.jpg");
 
   this->cover = new ImageButton();
-  this->cover->setPixmap(QPixmap::fromImage(image.scaled(175, 175, Qt::KeepAspectRatio)));
+  this->cover->setPixmap(QPixmap::fromImage(image.scaled(175, 175, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
   this->lblAlbum = new ElidedLabel(album->getTitle());
   this->lblAlbum->setAlignment(Qt::AlignCenter);
-  this->lblAlbum->setWordWrap(true);
 
   this->lblArtist = new ElidedLabel(album->getArtist()->getName());
   this->lblArtist->setAlignment(Qt::AlignCenter);
-  this->lblArtist->setWordWrap(true);
 
   QVBoxLayout* verticalLayout = new QVBoxLayout();
   verticalLayout->setMargin(0);
@@ -27,5 +23,5 @@ Cover::Cover(const Album *album, QWidget *parent) : QWidget(parent)
 
   this->setLayout(verticalLayout);
 
-  this->setFixedSize(200, 300);
+  this->setFixedSize(175, 200);
 }

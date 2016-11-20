@@ -15,6 +15,9 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 
   m_albums = QVector<const Album*>();
 
+  qRegisterMetaType<QVector<const Album*>>("QVector<const Album*>&");
+  qRegisterMetaType<QVector<Cover*>>("QVector<Cover*>&");
+
   m_currentRow = 0;
   m_currentColumn = 0;
 
@@ -27,6 +30,7 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 
   setAcceptDrops(true);
   setLayout(m_verticalLayout);
+
 }
 
 void AlbumView::dragEnterEvent(QDragEnterEvent* event)
@@ -116,9 +120,37 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
     m_currentColumn = 0;
     m_currentRow = 0;
 
+    for(QVector<Cover*>::iterator horizontalLayout = m_widgets.begin(); horizontalLayout != m_widgets.end(); ++horizontalLayout) {
+     //clearLayout(*horizontalLayout);
+      (*horizontalLayout)->hide();
+
+      if(m_currentColumn == 0) {
+        QHBoxLayout* layout = new QHBoxLayout();
+        m_horizontalLayouts.push_back(layout);
+
+        m_verticalLayout->addLayout(layout);
+      }
+
+      m_horizontalLayouts.at(m_currentRow)->addWidget(*horizontalLayout);
+
+      m_currentColumn++;
+
+      if(m_currentColumn == m_currentAlbumsPerRow) {
+        m_currentColumn = 0;
+        m_currentRow++;
+
+      }
+      (*horizontalLayout)->show();
+    }
+
+    //m_widgets.clear();
+
+    //emit repaint(m_albums);
+
+
     for(QVector<const Album*>::iterator album = m_albums.begin(); album != m_albums.end(); ++album) {
-      Cover* cover = new Cover(*album);
-      m_widgets.push_back(cover);
+      //Cover* cover = new Cover(*album);
+      /*m_widgets.push_back(cover);
 
       if(m_currentColumn == 0) {
         QHBoxLayout* layout = new QHBoxLayout();
@@ -134,7 +166,7 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
       if(m_currentColumn == m_currentAlbumsPerRow) {
         m_currentColumn = 0;
         m_currentRow++;
-      }
+      }*/
     }
   }/*
   qDebug()<<event->size().width();
