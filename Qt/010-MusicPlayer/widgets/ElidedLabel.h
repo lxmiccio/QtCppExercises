@@ -12,28 +12,28 @@ class ElidedLabel : public QFrame
     explicit ElidedLabel(QWidget* parent = 0, Qt::WindowFlags flags = 0);
     explicit ElidedLabel(const QString& text, QWidget* parent = 0, Qt::WindowFlags flags = 0);
 
-    QString text() const;
-
     Qt::Alignment alignment() const;
     void setAlignment(Qt::Alignment alignment);
 
     Qt::TextElideMode elideMode() const;
-    void setElideMode(Qt::TextElideMode mode);
+    void setElideMode(Qt::TextElideMode elideMode);
 
     void setFont(const QFont& font);
 
     int margin() const;
     void setMargin(int margin);
 
+    QString text() const;
+    void setText(const QString& text);
+
+    bool wordWrap();
+    void setWordWrap(bool wordWrap);
+
     virtual QSize sizeHint() const;
     virtual QSize minimumSizeHint() const;
 
-    void init(const QString& txt = QString());
-    void updateLabel();
-
   public slots:
-    void setText(const QString& text);
-    void setWordWrap(bool b);
+    //void setWordWrap(bool wordWrap);
 
   signals:
     void clicked();
@@ -48,13 +48,13 @@ class ElidedLabel : public QFrame
   private:
     QString m_text;
 
-    Qt::Alignment m_align;
-    Qt::TextElideMode m_mode;
+    Qt::Alignment m_alignment;
+    Qt::TextElideMode m_elideMode;
 
     QTime m_time;
 
     int m_margin;
-    bool m_multiLine;
+    bool m_wordWrap;
 };
 
 #endif // ELIDEDLABEL_H

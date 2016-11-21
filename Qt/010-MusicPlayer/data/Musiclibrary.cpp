@@ -194,6 +194,7 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       artist = new Artist(tags["artist"].toString());
 
       album = new Album(tags["album"].toString(), *artist);
+
       track = new Track(tags, *album);
       album->addTrack(*track);
 

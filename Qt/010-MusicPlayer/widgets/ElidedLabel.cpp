@@ -1,121 +1,160 @@
 #include "ElidedLabel.h"
 
 #include <QApplication>
-#include <QEvent>
-#include <QFontMetrics>
 #include <QPainter>
-#include <QRect>
 #include <QTextLayout>
+#include <QTextLine>
 
 ElidedLabel::ElidedLabel(QWidget* parent, Qt::WindowFlags flags) : QFrame(parent, flags)
 {
-  this->init();
-}
+  m_text = QString();
 
+  m_alignment = Qt::AlignLeft;
+  m_elideMode = Qt::ElideRight;
+  m_margin = 0;
+  m_wordWrap = false;
+
+  setContentsMargins(0, 0, 0, 0);
+}
 
 ElidedLabel::ElidedLabel(const QString& text, QWidget* parent, Qt::WindowFlags flags) : QFrame(parent, flags)
 {
-  this->init(text);
-}
+  m_text = text;
 
-QString ElidedLabel::text() const
-{
-  return this->m_text;
+  m_alignment = Qt::AlignLeft;
+  m_elideMode = Qt::ElideRight;
+  m_margin = 0;
+  m_wordWrap = false;
+
+  setContentsMargins(0, 0, 0, 0);
 }
 
 Qt::Alignment ElidedLabel::alignment() const
 {
-  return this->m_align;
+  return m_alignment;
 }
 
 void ElidedLabel::setAlignment(Qt::Alignment alignment)
 {
-  if(this->m_align != alignment) {
-    this->m_align = alignment;
-    this->update();
+  if(m_alignment != alignment) {
+    m_alignment = alignment;
+
+    update();
   }
 }
 
 Qt::TextElideMode ElidedLabel::elideMode() const
 {
-  return this->m_mode;
+  return m_elideMode;
 }
 
-void ElidedLabel::setElideMode(Qt::TextElideMode mode)
+void ElidedLabel::setElideMode(Qt::TextElideMode elideMode)
 {
-  if(this->m_mode != mode ) {
-    this->m_mode = mode;
-    this->updateLabel();
+  if(m_elideMode != elideMode) {
+    m_elideMode = elideMode;
+
+    updateGeometry();
+    update();
   }
 }
 
 void ElidedLabel::setFont(const QFont& font)
 {
   QWidget::setFont(font);
-  this->updateLabel();
+
+  updateGeometry();
+  update();
 }
 
 int ElidedLabel::margin() const
 {
-  return this->m_margin;
+  return m_margin;
 }
 
 void ElidedLabel::setMargin(int margin)
 {
-  this->m_margin = margin;
+  m_margin = margin;
 }
 
-QSize ElidedLabel::sizeHint() const
+QString ElidedLabel::text() const
 {
-  const QFontMetrics& metrics = this->fontMetrics();
-  return QSize(metrics.width(this->m_text) + this->m_margin * 2, metrics.height() + this->m_margin * 2);
-}
-
-QSize ElidedLabel::minimumSizeHint() const
-{
-  switch(this->m_mode) {
-    case Qt::ElideNone: {
-      return this->sizeHint();
-      break;
-    }
-
-    default: {
-      const QFontMetrics& metrics = this->fontMetrics();
-      return QSize(metrics.width( "..." ), metrics.height());
-    }
-  }
-}
-
-void ElidedLabel::updateLabel()
-{
-  this->updateGeometry();
-  this->update();
+  return m_text;
 }
 
 void ElidedLabel::setText(const QString& text)
 {
-  if(this->m_text != text) {
-    this->m_text = text;
-    this->updateLabel();
+  if(m_text != text) {
+    m_text = text;
+
+    updateGeometry();
+    update();
 
     emit textChanged(text);
   }
 }
 
-void ElidedLabel::setWordWrap(bool b)
+bool ElidedLabel::wordWrap()
 {
-  this->m_multiLine = b;
+  return m_wordWrap;
 }
 
-void ElidedLabel::init(const QString& txt)
+void ElidedLabel::setWordWrap(bool wordWrap)
 {
-  this->m_text = txt;
-  this->m_align = Qt::AlignLeft;
-  this->m_mode = Qt::ElideRight;
-  this->m_margin = 0;
-  this->m_multiLine = false;
+  m_wordWrap = wordWrap;
+}
 
-  this->setContentsMargins(0, 0, 0, 0);
+QSize ElidedLabel::sizeHint() const
+{
+  const QFontMetrics& metrics = this->fontMetrics();
+  return QSize(metrics.width(m_text) + m_margin * 2, metrics.height() + m_margin * 2);
+}
+
+QSize ElidedLabel::minimumSizeHint() const
+{
+  switch(m_elideMode)
+  {
+    case Qt::ElideNone: {
+      return sizeHint();
+    }
+
+    default: {
+      const QFontMetrics& metrics = this->fontMetrics();
+      return QSize(metrics.width("..."), metrics.height());
+    }
+  }
+}
+
+void ElidedLabel::changeEvent(QEvent* event)
+{
+  QFrame::changeEvent(event);
+
+  switch(event->type())
+  {
+    case QEvent::ApplicationFontChange:
+    case QEvent::FontChange: {
+      updateGeometry();
+      update();
+      break;
+    }
+
+    default:
+      break;
+    }
+}
+
+void ElidedLabel::mousePressEvent(QMouseEvent* event)
+{
+  QFrame::mousePressEvent(event);
+  this->m_time.start();
+}
+
+void ElidedLabel::mouseReleaseEvent(QMouseEvent* event)
+{
+  QFrame::mouseReleaseEvent(event);
+
+  if(m_time.elapsed() < qApp->doubleClickInterval()) {
+    emit clicked();
+  }
 }
 
 void ElidedLabel::paintEvent(QPaintEvent* event)
@@ -125,16 +164,16 @@ void ElidedLabel::paintEvent(QPaintEvent* event)
   QPainter painter(this);
   painter.setRenderHint(QPainter::TextAntialiasing);
 
-  QRect rect = this->contentsRect();
-  rect.adjust(this->m_margin, this->m_margin, -this->m_margin, -this->m_margin);
+  QRect rect = contentsRect();
+  rect.adjust(m_margin, m_margin, -m_margin, -m_margin);
 
-  if(this->m_multiLine) {
-    QTextLayout textLayout(this->m_text);
+  if(m_wordWrap) {
+    QTextLayout textLayout(m_text);
     textLayout.setFont(painter.font());
 
-    int widthUsed = 0;
     int lineCount = 0;
-    int lineLimit = rect.height() / this->fontMetrics().height();
+    int lineLimit = rect.height() / fontMetrics().height();
+    int widthUsed = 0;
 
     textLayout.beginLayout();
 
@@ -152,40 +191,10 @@ void ElidedLabel::paintEvent(QPaintEvent* event)
     textLayout.endLayout();
     widthUsed += rect.width();
 
-    const QString elidedText = this->fontMetrics().elidedText(this->m_text, Qt::ElideRight, widthUsed);
-    painter.drawText(rect, this->m_align | Qt::TextWordWrap, elidedText);
+    const QString elidedText = this->fontMetrics().elidedText(m_text, Qt::ElideRight, widthUsed);
+    painter.drawText(rect, m_alignment | Qt::TextWordWrap, elidedText);
   } else {
-    const QString elidedText = this->fontMetrics().elidedText(this->m_text, this->m_mode, rect.width());
-    painter.drawText(rect, this->m_align, elidedText);
-  }
-}
-
-void ElidedLabel::changeEvent(QEvent* event)
-{
-  QFrame::changeEvent(event);
-
-  switch(event->type()) {
-    case QEvent::ApplicationFontChange:
-    case QEvent::FontChange: {
-      this->updateLabel();
-      break;
-    }
-    default:
-      break;
-  }
-}
-
-void ElidedLabel::mousePressEvent(QMouseEvent* event)
-{
-  QFrame::mousePressEvent(event);
-  this->m_time.start();
-}
-
-void ElidedLabel::mouseReleaseEvent(QMouseEvent* event)
-{
-  QFrame::mouseReleaseEvent(event);
-
-  if(m_time.elapsed() < qApp->doubleClickInterval()) {
-    emit clicked();
+    const QString elidedText = this->fontMetrics().elidedText(m_text, m_elideMode, rect.width());
+    painter.drawText(rect, m_alignment, elidedText);
   }
 }

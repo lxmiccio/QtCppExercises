@@ -1,6 +1,7 @@
 #ifndef ALBUM_H
 #define ALBUM_H
 
+#include <QImage>
 #include <QString>
 #include <QVector>
 
@@ -28,8 +29,14 @@ class Album
     Artist* getArtist() const;
     void setArtist(Artist& artist);
 
+    QImage& getImage()
+    {
+      return this->image;
+    }
+
   private:
     QString title;
+    QImage image;
 
     QVector<Track>* tracks;
     Artist* artist;

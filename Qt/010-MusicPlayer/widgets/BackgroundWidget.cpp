@@ -7,30 +7,32 @@
 
 #include "imageutils.h"
 
-BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent), m_blurred(false)
+BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent)
 {
-  this->setAutoFillBackground(false);
-  this->setBackgroundColor(Qt::transparent);
+  m_blurred = false;
+
+  setAutoFillBackground(false);
+  setBackgroundColor(Qt::transparent);
 }
 
-void BackgroundWidget::setBackgroundColor(const QColor& color)
+void BackgroundWidget::setBackgroundColor(const QColor& backgroundColor)
 {
-  this->m_backgroundColor = color;
+  m_backgroundColor = backgroundColor;
 }
 
 void BackgroundWidget::setBackgroundImage(const QPixmap& pixmap, bool blurred, bool blackWhite)
 {
-  this->m_blurred = blurred;
+  m_blurred = blurred;
 
-  if(this->m_blurred) {
-    this->m_background = QPixmap::fromImage(ImageUtils::blur(pixmap.toImage(), pixmap.rect(), 10, false, blackWhite));
+  if(m_blurred) {
+    m_background = QPixmap::fromImage(ImageUtils::blur(pixmap.toImage(), pixmap.rect(), 10, false, blackWhite));
   } else {
-    this->m_background = pixmap;
+    m_background = pixmap;
   }
 
-  this->m_backgroundSlice = QPixmap();
+  m_backgroundSlice = QPixmap();
 
-  this->repaint();
+  repaint();
 }
 
 void BackgroundWidget::paintEvent(QPaintEvent* event)

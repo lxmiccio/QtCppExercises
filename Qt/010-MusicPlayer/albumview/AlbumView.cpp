@@ -1,13 +1,15 @@
 #include "AlbumView.h"
 
+#include <QResizeEvent>
+
 AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 {
   BackgroundWidget::setBackgroundColor(QColor(255, 255, 255, 255));
 
   m_albums = QVector<const Album*>();
 
-  m_currentRow = 0;
   m_currentColumn = 0;
+  m_currentRow = 0;
 
   m_currentAlbumsPerRow = albumsPerRow(rect().size().width());
 
@@ -22,9 +24,9 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 
 void AlbumView::clearLayout(QLayout* layout)
 {
-  QLayoutItem *item;
+  QLayoutItem* item;
 
-  while((item = layout->takeAt(0))) {
+  while((item = layout->takeAt(0)) != NULL) {
     if(item->layout()) {
       clearLayout(item->layout());
       delete item->layout();
@@ -38,23 +40,9 @@ void AlbumView::clearLayout(QLayout* layout)
   }
 }
 
-void AlbumView::dragEnterEvent(QDragEnterEvent* event)
+void AlbumView::onCoverClicked(const Album& album)
 {
-  event->accept();
-}
-
-void AlbumView::dropEvent(QDropEvent* event)
-{
-  QList<QUrl> urls = event->mimeData()->urls();
-  QListIterator<QUrl> iterator(urls);
-
-  while(iterator.hasNext()) {
-    QFileInfo fileInfo(iterator.next().toLocalFile());
-
-    if(Track::isSupportedSuffix(fileInfo.suffix())) {
-      emit fileDropped(fileInfo);
-    }
-  }
+  emit coverClicked(album);
 }
 
 void AlbumView::onScrollAreaPainted(QResizeEvent* event)
@@ -93,15 +81,16 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
     }
   }
 }
-#include <QDebug>
+
 void AlbumView::onTrackAdded(const Track& track)
 {
-  qDebug()<<track.getAlbum();
-  if(m_albums.indexOf(track.getAlbum()) == -1) {
+  //if(m_albums.indexOf(track.getAlbum()) == -1) {
     m_albums.push_back(track.getAlbum());
 
     Cover* cover = new Cover(track.getAlbum());
     m_widgets.push_back(cover);
+
+    QObject::connect(cover, SIGNAL(clicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
 
     if(m_currentColumn == 0) {
       QHBoxLayout* layout = new QHBoxLayout();
@@ -109,18 +98,19 @@ void AlbumView::onTrackAdded(const Track& track)
 
       m_verticalLayout->addLayout(layout);
     }
-
+    if(m_horizontalLayouts.at(m_currentRow)!= NULL){
     m_horizontalLayouts.at(m_currentRow)->addWidget(cover);
     m_currentColumn++;
+    } else{}
 
     if(m_currentColumn == m_currentAlbumsPerRow) {
       m_currentColumn = 0;
       m_currentRow++;
     }
-  }
+  //}
 }
 
 quint8 AlbumView::albumsPerRow(quint16 width)
 {
-  return (width-12) / 206;
+  return (width - 12) / (Cover::COVER_WIDTH + 6);
 }

@@ -11,8 +11,8 @@ class BackgroundWidget : public QWidget
     explicit BackgroundWidget(QWidget* parent = 0);
 
   public slots:
-    virtual void setBackgroundColor(const QColor& color);
-    virtual void setBackgroundImage(const QPixmap& pixmap, bool blurred = true, bool blackWhite = false);
+    virtual void setBackgroundColor(const QColor& backgroundColor);
+    virtual void setBackgroundImage(const QPixmap& pixmap, bool blurred = false, bool blackWhite = false);
 
   protected:
     virtual void paintEvent(QPaintEvent* event);

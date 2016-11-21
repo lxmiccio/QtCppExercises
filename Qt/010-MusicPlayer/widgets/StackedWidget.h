@@ -3,22 +3,20 @@
 
 #include <QMainWindow>
 #include <QStackedWidget>
-#include <QWidget>
 
 class StackedWidget : public QMainWindow
 {
   Q_OBJECT
 
-  protected:
-    QStackedWidget* qStackedWidget;
-
   public:
     explicit StackedWidget(QWidget* parent = 0);
-
-    QStackedWidget* getQStackedWidget() { return this->qStackedWidget; }
+    QStackedWidget* stackedWidget();
 
   public slots:
     void previousView();
+
+  private:
+    QStackedWidget* m_stackedWidget;
 };
 
 #endif // STACKEDWIDGET_H

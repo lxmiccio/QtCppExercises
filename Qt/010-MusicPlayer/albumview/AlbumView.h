@@ -1,9 +1,8 @@
 #ifndef ALBUMVIEW_H
 #define ALBUMVIEW_H
 
-#include <QFileInfo>
-#include <QMimeData>
-#include <QResizeEvent>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "Album.h"
 #include "BackgroundWidget.h"
@@ -18,21 +17,19 @@ class AlbumView : public BackgroundWidget
 
     void clearLayout(QLayout* layout);
 
-    void dragEnterEvent(QDragEnterEvent* event);
-    void dropEvent(QDropEvent* event);
-
   public slots:
+    void onCoverClicked(const Album& album);
     void onScrollAreaPainted(QResizeEvent* event);
     void onTrackAdded(const Track& track);
 
   signals:
-    void fileDropped(const QFileInfo& fileInfo);
+    void coverClicked(const Album& album);
 
   private:
     QVector<const Album*> m_albums;
 
-    quint8 m_currentRow;
     quint8 m_currentColumn;
+    quint8 m_currentRow;
 
     quint8 m_currentAlbumsPerRow;
     quint8 albumsPerRow(quint16 width);

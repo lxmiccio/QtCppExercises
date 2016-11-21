@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     widgets/ImageButton.cpp \
     widgets/SeekSlider.cpp \
     widgets/ScrollArea.cpp \
-    widgets/StackedWidget.cpp
+    widgets/StackedWidget.cpp \
+    widgets/ClickableLabel.cpp
 
 HEADERS  += mainwindow.h \
     musicplayer.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     widgets/ImageButton.h \
     widgets/SeekSlider.h \
     widgets/ScrollArea.h \
-    widgets/StackedWidget.h
+    widgets/StackedWidget.h \
+    widgets/ClickableLabel.h
 
 FORMS    +=
 

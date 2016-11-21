@@ -9,6 +9,7 @@ Album::Album(const QString& title, Artist& artist)
 {
   this->title = title;
   this->artist = &artist;
+  this->image = QImage(":/images/queen-of-the-clouds.jpg");
 
   this->tracks = new QVector<Track>();
 }

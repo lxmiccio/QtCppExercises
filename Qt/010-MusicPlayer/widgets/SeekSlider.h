@@ -16,9 +16,9 @@ class SeekSlider : public QSlider
     void setValue(int value);
 
   protected:
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void wheelEvent(QWheelEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
+    virtual void mouseMoveEvent(QMouseEvent* event);
+    virtual void wheelEvent(QWheelEvent* event);
 
   private:
     bool m_acceptWheelEvents;

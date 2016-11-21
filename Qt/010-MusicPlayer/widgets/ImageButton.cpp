@@ -5,27 +5,34 @@
 
 ImageButton::ImageButton(QWidget* parent) : QAbstractButton(parent)
 {
-
 }
 
 void ImageButton::clear()
 {
-  this->setIcon(QIcon());
+  setIcon(QIcon());
 }
 
 void ImageButton::setPixmap(const QString& path)
 {
-  init(QPixmap(path));
+  QPixmap pixmap(path);
+
+  m_sizeHint = pixmap.size();
+
+  setPixmap(pixmap, QIcon::Off);
+  updateGeometry();
 }
 
 void ImageButton::setPixmap(const QPixmap& pixmap)
 {
-  init(pixmap);
+  m_sizeHint = pixmap.size();
+
+  setPixmap(pixmap, QIcon::Off);
+  updateGeometry();
 }
 
 void ImageButton::setPixmap(const QString& path, const QIcon::State state, QIcon::Mode mode)
 {
-  this->setPixmap(QPixmap(path), state, mode);
+  setPixmap(QPixmap(path), state, mode);
 }
 
 void ImageButton::setPixmap(const QPixmap& pixmap, const QIcon::State state, QIcon::Mode mode)
@@ -33,7 +40,12 @@ void ImageButton::setPixmap(const QPixmap& pixmap, const QIcon::State state, QIc
   QIcon icon = this->icon();
   icon.addPixmap(pixmap, mode, state);
 
-  this->setIcon(icon);
+  setIcon(icon);
+}
+
+QSize ImageButton::sizeHint() const
+{
+  return m_sizeHint;
 }
 
 void ImageButton::paintEvent(QPaintEvent* event)
@@ -41,25 +53,12 @@ void ImageButton::paintEvent(QPaintEvent* event)
   QPainter painter(this);
   painter.setClipRect(event->rect());
 
-  QIcon::Mode mode = this->isDown() ? QIcon::Active : QIcon::Normal;
-  QIcon::State state = this->isChecked() ? QIcon::On : QIcon::On;
+  QIcon::Mode mode = isDown() ? QIcon::Active : QIcon::Normal;
+  QIcon::State state = isChecked() ? QIcon::On : QIcon::On;
 
-  if(not this->isEnabled()) {
+  if(!isEnabled()) {
     painter.setOpacity(0.3);
   }
 
-  this->icon().paint(&painter, this->rect(), Qt::AlignCenter, mode, state);
-}
-
-void ImageButton::init(const QPixmap& pixmap)
-{
-  this->m_sizeHint = pixmap.size();
-
-  this->setPixmap(pixmap, QIcon::Off);
-  this->updateGeometry();
-}
-
-QSize ImageButton::sizeHint() const
-{
-  return this->m_sizeHint;
+  icon().paint(&painter, rect(), Qt::AlignCenter, mode, state);
 }

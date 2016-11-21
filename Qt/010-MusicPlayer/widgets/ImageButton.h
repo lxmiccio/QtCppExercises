@@ -2,7 +2,6 @@
 #define IMAGEBUTTON_H
 
 #include <QAbstractButton>
-#include <QIcon>
 
 class ImageButton : public QAbstractButton
 {
@@ -23,8 +22,6 @@ class ImageButton : public QAbstractButton
     virtual void paintEvent(QPaintEvent* event);
 
   private:
-    void init(const QPixmap& pixmap);
-
     QSize m_sizeHint;
 };
 

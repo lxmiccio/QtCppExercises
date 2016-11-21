@@ -64,6 +64,8 @@ public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
 
 public slots:
+  void onCoverClicked(const Album& album);
+
   void onFastBackwardClicked();
   void onBackwardClicked();
   void onPlayClicked();

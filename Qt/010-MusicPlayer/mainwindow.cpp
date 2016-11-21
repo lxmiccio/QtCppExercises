@@ -138,7 +138,8 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //vb->setMargin(10);
 
   AlbumView * aw = new AlbumView();
-  QObject::connect(aw, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
+  QObject::connect(a, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
+  QObject::connect(aw, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
 
 //a->setLayout(vb);
 a->setWidgetResizable(true);
@@ -191,6 +192,11 @@ this->layout->addWidget(remove);
   this->setLayout(layout);
 
   this->musicLibrary = new MusicLibrary();
+}
+
+void MainWindow::onCoverClicked(const Album &album)
+{
+  qDebug()<< album.getTitle();
 }
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)
@@ -536,8 +542,8 @@ void MainWindow::savePlaylistClicked()
 {
   SavePlaylistWindow* savePlaylist = new SavePlaylistWindow(this->stackedWidget, this->playlist);
 
-  this->stackedWidget->getQStackedWidget()->addWidget(savePlaylist);
-  this->stackedWidget->getQStackedWidget()->setCurrentWidget(savePlaylist);
+  this->stackedWidget->stackedWidget()->addWidget(savePlaylist);
+  this->stackedWidget->stackedWidget()->setCurrentWidget(savePlaylist);
 }
 
 void MainWindow::loadPlaylistClicked()
@@ -546,8 +552,8 @@ void MainWindow::loadPlaylistClicked()
 
   QObject::connect(loadPlaylist, SIGNAL(playlistLoaded(QString)), this, SLOT(playlistLoaded(QString)));
 
-  this->stackedWidget->getQStackedWidget()->addWidget(loadPlaylist);
-  this->stackedWidget->getQStackedWidget()->setCurrentWidget(loadPlaylist);
+  this->stackedWidget->stackedWidget()->addWidget(loadPlaylist);
+  this->stackedWidget->stackedWidget()->setCurrentWidget(loadPlaylist);
 }
 
 void MainWindow::playlistLoaded(QString playlistName)

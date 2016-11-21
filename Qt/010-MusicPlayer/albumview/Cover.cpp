@@ -1,27 +1,38 @@
 #include "Cover.h"
 
-Cover::Cover(const Album *album, QWidget *parent) : QWidget(parent)
+Cover::Cover(Album* album, QWidget* parent) : QWidget(parent)
 {
-  this->album = album;
+  m_album = album;
 
-  QImage image(":/images/queen-of-the-clouds.jpg");
+  m_cover = new ClickableLabel();
+  m_cover->setPixmap(QPixmap::fromImage(m_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+  QObject::connect(m_cover, SIGNAL(clicked()), this, SLOT(onClicked()));
 
-  this->cover = new ImageButton();
-  this->cover->setPixmap(QPixmap::fromImage(image.scaled(175, 175, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+  m_albumTitle = new ElidedLabel(album->getTitle());
+  m_albumTitle->setAlignment(Qt::AlignCenter);
+  QObject::connect(m_albumTitle, SIGNAL(clicked()), this, SLOT(onClicked()));
 
-  this->lblAlbum = new ElidedLabel(album->getTitle());
-  this->lblAlbum->setAlignment(Qt::AlignCenter);
+  m_artistName = new ElidedLabel(album->getArtist()->getName());
+  m_artistName->setAlignment(Qt::AlignCenter);
+  QObject::connect(m_artistName, SIGNAL(clicked()), this, SLOT(onClicked()));
 
-  this->lblArtist = new ElidedLabel(album->getArtist()->getName());
-  this->lblArtist->setAlignment(Qt::AlignCenter);
+  m_layout = new QVBoxLayout();
+  m_layout->setMargin(0);
+  m_layout->addWidget(m_cover);
+  m_layout->addWidget(m_albumTitle);
+  m_layout->addWidget(m_artistName);
 
-  QVBoxLayout* verticalLayout = new QVBoxLayout();
-  verticalLayout->setMargin(0);
-  verticalLayout->addWidget(this->cover);
-  verticalLayout->addWidget(this->lblAlbum);
-  verticalLayout->addWidget(this->lblArtist);
+  setLayout(m_layout);
 
-  this->setLayout(verticalLayout);
+  setFixedSize(Cover::COVER_WIDTH, Cover::COVER_HEIGHT);
+}
 
-  this->setFixedSize(175, 200);
+Album* Cover::album() const
+{
+  return m_album;
+}
+
+void Cover::onClicked()
+{
+  emit clicked(*m_album);
 }
