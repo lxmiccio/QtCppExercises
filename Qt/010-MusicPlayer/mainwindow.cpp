@@ -124,7 +124,6 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   /*
   gridLayout->addWidget(trackView,0,0,1,1);
   gridLayout->addWidget(this->audioControls, 3, 0, 1, 1);
-  gridLayout->addWidget(this->addSong,1,0,1,1);
   gridLayout->addWidget(this->remove,2,0,1,1);
   this->setLayout(gridLayout);*/
 
@@ -137,57 +136,21 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //QVBoxLayout* vb = new QVBoxLayout();
   //vb->setMargin(10);
 
-  AlbumView * aw = new AlbumView();
+  albumView = new AlbumView();
   QObject::connect(a, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
-  QObject::connect(aw, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
+  QObject::connect(albumView, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
 
-//a->setLayout(vb);
-a->setWidgetResizable(true);
-//vb->addWidget(aw);
-a->setWidget(aw);
+  //a->setLayout(vb);
+  a->setWidgetResizable(true);
+  //vb->addWidget(aw);
+  a->setWidget(albumView);
 
-QObject::connect(a, SIGNAL(resized(QResizeEvent*)), aw, SLOT(onScrollAreaPainted(QResizeEvent*)));
+  QObject::connect(a, SIGNAL(resized(QResizeEvent*)), albumView, SLOT(onScrollAreaPainted(QResizeEvent*)));
 
-QObject::connect(this, SIGNAL(trackAdded(const Track&)), aw, SLOT(onTrackAdded(const Track&)));
-/*
-  QScrollArea* sa = new QScrollArea();
-  sa->setWidgetResizable(true);
-  /*
-  this->albumView = new AlbumView(sa);
-  sa->setWidget(this->albumView);
-  sa->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  sa->setMinimumWidth(800);
+  QObject::connect(this, SIGNAL(trackAdded(const Track&)), albumView, SLOT(onTrackAdded(const Track&)));
 
-  sa->verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
-                                                     "background: %1;"
-                                                     "border: 0;"
-                                                     "margin: 0 0 0 0;"
-                                                     "width: 10px;"
-                                                   "}"
-                                                   "QScrollBar::handle:vertical {"
-                                                     "margin: 2px 2px 2px 0px;"
-                                                     "border-image: url(images/scrollbar.jpg);"
-                                                     "border-radius: 2px;"
-                                                   "}"
-                                                   "QScrollBar::add-line:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                   "}"
-                                                   "QScrollBar::sub-line:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                   "}"
-                                                   "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                     "width: 0;"
-                                                   "}")
-                                           .arg(QColor(255, 255, 255, 255).name()));
 
-*/
-this->layout->addWidget(a);
-this->layout->addWidget(remove);
-
+  this->layout->addWidget(a);
 
   this->setLayout(layout);
 
@@ -449,14 +412,17 @@ void MainWindow::addSongClicked()
 
     QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
     Track* t = this->musicLibrary->addTrack(tags);
-    if(t) {
-      TrackItem* ti = new TrackItem(*t);
+    if(t!=NULL) {
+      qDebug()<<"tv"<<t->getArtist();
+      /*TrackItem* ti = new TrackItem(*t);
       this->model->appendRow(ti->getItems());
-
-      this->musicLibrary->debug();
+*/
+      /*  this->musicLibrary->debug();
       this->items.push_back(ti);
 
-      //this->albumView->addCover(t->getAlbum());
+      //this->albumView->onTrackAdded(*t);
+      */
+      this->albumView->onTrackAdded(*t);
     }
     //Track track = Track(tags);
 
@@ -467,7 +433,7 @@ void MainWindow::addSongClicked()
 
     //qDebug() << track.getTitle();
     //qDebug() << track.getAlbum()->getTitle();
-
+    /*
     QDir dir {fileInfo.absoluteDir()};
     QStringList data {dir.filePath(*filename).split('/')};
 
@@ -482,6 +448,7 @@ void MainWindow::addSongClicked()
     //this->trackList->addItem(track.getTitle());
     //this->addSong->hide();
     this->remove->hide();
+    */
   }
 
   if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {

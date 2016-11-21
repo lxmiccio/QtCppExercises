@@ -11,50 +11,52 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
   m_currentColumn = 0;
   m_currentRow = 0;
 
-  m_currentAlbumsPerRow = albumsPerRow(rect().size().width());
+  m_albumsPerRow = albumsPerRow(rect().size().width());
 
-  m_verticalLayout = new QVBoxLayout();
-  m_horizontalLayouts = QVector<QHBoxLayout*>();
+  m_layout = new QVBoxLayout();
+  m_layouts = QVector<QHBoxLayout*>();
 
   m_widgets = QVector<Cover*>();
 
-  setAcceptDrops(true);
-  setLayout(m_verticalLayout);
+  setLayout(m_layout);
+}
+
+AlbumView::~AlbumView()
+{
+  foreach(Cover* widget, m_widgets) {
+    delete widget;
+  }
+
+  foreach(QHBoxLayout* layout, m_layouts) {
+    delete layout;
+  }
+
+  delete m_layout;
 }
 
 void AlbumView::clearLayout(QLayout* layout)
 {
   QLayoutItem* item;
 
-  while((item = layout->takeAt(0)) != NULL) {
+  while((item = layout->takeAt(0))) {
     if(item->layout()) {
       clearLayout(item->layout());
       delete item->layout();
     }
-#if 0
-    if(item->widget()) {
-      delete item->widget();
-    }
-#endif
     delete item;
   }
 }
 
-void AlbumView::onCoverClicked(const Album& album)
-{
-  emit coverClicked(album);
-}
-
 void AlbumView::onScrollAreaPainted(QResizeEvent* event)
 {
-  if(m_currentAlbumsPerRow != albumsPerRow(event->size().width())) {
-    m_currentAlbumsPerRow = albumsPerRow(event->size().width());
+  if(m_albumsPerRow != albumsPerRow(event->size().width())) {
+    m_albumsPerRow = albumsPerRow(event->size().width());
 
-    foreach(QHBoxLayout* layout, m_horizontalLayouts) {
+    foreach(QHBoxLayout* layout, m_layouts) {
       clearLayout(layout);
     }
 
-    m_horizontalLayouts.clear();
+    m_layouts.clear();
 
     m_currentColumn = 0;
     m_currentRow = 0;
@@ -64,15 +66,15 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
 
       if(m_currentColumn == 0) {
         QHBoxLayout* layout = new QHBoxLayout();
-        m_horizontalLayouts.push_back(layout);
+        m_layouts.push_back(layout);
 
-        m_verticalLayout->addLayout(layout);
+        m_layout->addLayout(layout);
       }
 
-      m_horizontalLayouts.at(m_currentRow)->addWidget(cover);
+      m_layouts.at(m_currentRow)->addWidget(cover);
       m_currentColumn++;
 
-      if(m_currentColumn == m_currentAlbumsPerRow) {
+      if(m_currentColumn == m_albumsPerRow) {
         m_currentColumn = 0;
         m_currentRow++;
       }
@@ -84,30 +86,39 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
 
 void AlbumView::onTrackAdded(const Track& track)
 {
-  //if(m_albums.indexOf(track.getAlbum()) == -1) {
-    m_albums.push_back(track.getAlbum());
+  Album* album = track.getAlbum();
 
-    Cover* cover = new Cover(track.getAlbum());
-    m_widgets.push_back(cover);
+  if(m_albums.indexOf(album) == -1) {
+    m_albums.push_back(album);
 
+    Cover* cover = new Cover(album);
     QObject::connect(cover, SIGNAL(clicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
 
+    m_widgets.push_back(cover);
+
+    QHBoxLayout* layout;
+
     if(m_currentColumn == 0) {
-      QHBoxLayout* layout = new QHBoxLayout();
-      m_horizontalLayouts.push_back(layout);
+      layout = new QHBoxLayout();
+      m_layouts.push_back(layout);
 
-      m_verticalLayout->addLayout(layout);
+      m_layout->addLayout(layout);
+    } else {
+      layout = m_layouts.at(m_currentRow);
     }
-    if(m_horizontalLayouts.at(m_currentRow)!= NULL){
-    m_horizontalLayouts.at(m_currentRow)->addWidget(cover);
-    m_currentColumn++;
-    } else{}
 
-    if(m_currentColumn == m_currentAlbumsPerRow) {
+    layout->addWidget(cover);
+
+    if(++m_currentColumn == m_albumsPerRow) {
       m_currentColumn = 0;
       m_currentRow++;
     }
-  //}
+  }
+}
+
+void AlbumView::onCoverClicked(const Album& album)
+{
+  emit coverClicked(album);
 }
 
 quint8 AlbumView::albumsPerRow(quint16 width)

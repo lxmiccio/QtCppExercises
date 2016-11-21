@@ -17,14 +17,21 @@ Cover::Cover(Album* album, QWidget* parent) : QWidget(parent)
   QObject::connect(m_artistName, SIGNAL(clicked()), this, SLOT(onClicked()));
 
   m_layout = new QVBoxLayout();
-  m_layout->setMargin(0);
   m_layout->addWidget(m_cover);
   m_layout->addWidget(m_albumTitle);
   m_layout->addWidget(m_artistName);
-
-  setLayout(m_layout);
+  m_layout->setMargin(0);
 
   setFixedSize(Cover::COVER_WIDTH, Cover::COVER_HEIGHT);
+  setLayout(m_layout);
+}
+
+Cover::~Cover()
+{
+  delete m_cover;
+  delete m_albumTitle;
+  delete m_artistName;
+  delete m_layout;
 }
 
 Album* Cover::album() const

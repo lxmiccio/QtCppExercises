@@ -182,17 +182,20 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       if(album != NULL) {
         track = new Track(tags, *album);
         album->addTrack(*track);
+        qDebug()<<"tove"<<artist;
       } else {
         album = new Album(tags["album"].toString(), *artist);
 
         track = new Track(tags, *album);
         album->addTrack(*track);
 
+        qDebug()<<artist;
         artist->addAlbum(*album);
       }
     } else {
       artist = new Artist(tags["artist"].toString());
 
+qDebug()<<artist;
       album = new Album(tags["album"].toString(), *artist);
 
       track = new Track(tags, *album);
@@ -201,6 +204,7 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       artist->addAlbum(*album);
 
       this->artists->push_back(*artist);
+      qDebug()<<album->getArtist();
     }
   }
 
