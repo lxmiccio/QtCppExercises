@@ -8,22 +8,25 @@
 #include <QVector>
 #include <QVBoxLayout>
 
-#include "gui/imagebutton.h"
 
-#include "tag/tagmanager.h"
 
 #include "gui/audiocontrols.h"
 #include "musicplayer.h"
 #include "playlist.h"
-#include "gui/stackedwidget.h"
-#include "engine/track.h"
-#include "engine/musiclibrary.h"
-#include "table/trackview.h"
-#include "table/trackdelegate.h"
-#include "table/trackitem.h"
-#include "scrollarea.h"
+#include "Track.h"
+#include "Musiclibrary.h"
 
-#include "albumview.h"
+#include "TagUtils.h"
+
+#include "TrackDelegate.h"
+#include "TrackItem.h"
+#include "TrackView.h"
+
+#include "AlbumView.h"
+#include "ScrollArea.h"
+
+#include "ImageButton.h"
+#include "StackedWidget.h"
 
 #include <QStandardItemModel>
 
@@ -97,7 +100,7 @@ public slots:
   void playlistLoaded(QString playlistName);
 
 signals:
-  void trackAdded(const Track* track);
+  void trackAdded(const Track& track);
   currentMediaChanged(Track &track);
   positionChanged(qint64 position, qint64 duration);
 };

@@ -18,15 +18,16 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
-#include "gui/imageutils.h"
 
-#include "gui/imageloader.h"
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
 
-#include "table/trackitem.h"
-#include "scrollarea.h"
-#include "gui/cover.h"
+#include "ImageUtils.h"
+
+#include "TrackItem.h"
+
+#include "ScrollArea.h"
+#include "Cover.h"
 
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
@@ -146,7 +147,7 @@ a->setWidget(aw);
 
 QObject::connect(a, SIGNAL(resized(QResizeEvent*)), aw, SLOT(onScrollAreaPainted(QResizeEvent*)));
 
-QObject::connect(this, SIGNAL(trackAdded(const Track*)), aw, SLOT(onTrackAdded(const Track*)));
+QObject::connect(this, SIGNAL(trackAdded(const Track&)), aw, SLOT(onTrackAdded(const Track&)));
 /*
   QScrollArea* sa = new QScrollArea();
   sa->setWidgetResizable(true);
@@ -194,17 +195,18 @@ this->layout->addWidget(remove);
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)
 {
-  QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+  QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
   Track* t = this->musicLibrary->addTrack(tags);
 
   if(t) {
     TrackItem* ti = new TrackItem(*t);
     this->model->appendRow(ti->getItems());
 
-    this->musicLibrary->debug();
+    qDebug()<<musicLibrary->getAlbums()->size();
+    //this->musicLibrary->debug();
     this->items.push_back(ti);
 
-    emit this->trackAdded(t);
+    emit this->trackAdded(*t);
   }
 }
 
@@ -439,7 +441,7 @@ void MainWindow::addSongClicked()
   for(QStringList::iterator filename {filenames.begin()}; filename != filenames.end(); filename++) {
     QFileInfo fileInfo {*filename};
 
-    QVariantMap tags = TagManager::readTags(fileInfo).toMap();
+    QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
     Track* t = this->musicLibrary->addTrack(tags);
     if(t) {
       TrackItem* ti = new TrackItem(*t);

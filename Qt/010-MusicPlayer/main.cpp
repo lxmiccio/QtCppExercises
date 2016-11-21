@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QFontDatabase>
 
-#include "gui/stackedwidget.h"
+#include "StackedWidget.h"
 
 int main(int argc, char *argv[])
 {

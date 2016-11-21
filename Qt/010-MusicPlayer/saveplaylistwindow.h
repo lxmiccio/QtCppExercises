@@ -7,7 +7,7 @@
 #include <QWidget>
 
 #include "playlist.h"
-#include "gui/stackedwidget.h"
+#include "StackedWidget.h"
 
 class SavePlaylistWindow : public QWidget
 {

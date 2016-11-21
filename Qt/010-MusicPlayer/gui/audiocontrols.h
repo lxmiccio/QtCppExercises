@@ -11,10 +11,10 @@
 
 #include <QTimeLine>
 
-#include "gui/backgroundwidget.h"
-#include "gui/imagebutton.h"
-#include "gui/seekslider.h"
-#include "engine/track.h"
+#include "BackgroundWidget.h"
+#include "ImageButton.h"
+#include "SeekSlider.h"
+#include "Track.h"
 
 namespace AC
 {

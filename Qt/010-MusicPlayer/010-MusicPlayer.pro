@@ -12,59 +12,67 @@ TARGET = 010-MusicPlayer
 TEMPLATE = app
 
 SOURCES += main.cpp\
-    engine/artist.cpp \
-    engine/album.cpp \
-    engine/track.cpp \
-    gui/audiocontrols.cpp \
-    gui/backgroundwidget.cpp \
-    gui/imagebutton.cpp \
-    gui/imageloader.cpp \
-    gui/imageutils.cpp \
-    gui/seekslider.cpp \
-    gui/stackedwidget.cpp \
-    tag/tagmanager.cpp \
-    tag/tagutils.cpp \
     mainwindow.cpp \
     musicplayer.cpp \
     playlist.cpp \
     saveplaylistwindow.cpp \
     loadplaylistwindow.cpp \
-    engine/musiclibrary.cpp \
-    table/trackitem.cpp \
-    table/trackview.cpp \
-    table/trackdelegate.cpp \
-    gui/cover.cpp \
-    gui/elidedlabel.cpp \
-    albumview.cpp \
-    scrollarea.cpp
+    gui/AudioControls.cpp \
+    albumview/AlbumView.cpp \
+    albumview/Cover.cpp \
+    data/Album.cpp \
+    data/Artist.cpp \
+    data/Musiclibrary.cpp \
+    data/Track.cpp \
+    trackview/TrackDelegate.cpp \
+    trackview/TrackItem.cpp \
+    trackview/TrackView.cpp \
+    utils/ImageUtils.cpp \
+    utils/TagUtils.cpp \
+    widgets/BackgroundWidget.cpp \
+    widgets/ElidedLabel.cpp \
+    widgets/ImageButton.cpp \
+    widgets/SeekSlider.cpp \
+    widgets/ScrollArea.cpp \
+    widgets/StackedWidget.cpp
 
-HEADERS  += engine/artist.h \
-    engine/album.h \
-    engine/track.h \
-    gui/audiocontrols.h \
-    gui/backgroundwidget.h \
-    gui/imagebutton.h \
-    gui/imageloader.h \
-    gui/imageutils.h \
-    gui/seekslider.h \
-    gui/stackedwidget.h \
-    tag/tagmanager.h \
-    tag/tagutils.h \
-    mainwindow.h \
+HEADERS  += mainwindow.h \
     musicplayer.h \
     playlist.h \
     saveplaylistwindow.h \
     loadplaylistwindow.h \
-    engine/musiclibrary.h\
-    table/trackitem.h \
-    table/trackview.h \
-    table/trackdelegate.h \
-    gui/cover.h \
-    gui/elidedlabel.h \
-    albumview.h \
-    scrollarea.h
+    gui/AudioControls.h \
+    albumview/AlbumView.h \
+    albumview/Cover.h \
+    data/Album.h \
+    data/Artist.h \
+    data/Musiclibrary.h\
+    data/Track.h \
+    trackview/TrackDelegate.h \
+    trackview/TrackItem.h \
+    trackview/TrackView.h \
+    utils/ImageUtils.h \
+    utils/TagUtils.h \
+    widgets/BackgroundWidget.h \
+    widgets/ElidedLabel.h \
+    widgets/ImageButton.h \
+    widgets/SeekSlider.h \
+    widgets/ScrollArea.h \
+    widgets/StackedWidget.h
 
 FORMS    +=
+
+INCLUDEPATH += $$PWD/albumview
+INCLUDEPATH += $$PWD/data
+INCLUDEPATH += $$PWD/trackview
+INCLUDEPATH += $$PWD/utils
+INCLUDEPATH += $$PWD/widgets
+
+
+INCLUDEPATH += $$PWD/tag
+INCLUDEPATH += $$PWD/table
+INCLUDEPATH += $$PWD/gui
+INCLUDEPATH += $$PWD/engine
 
 INCLUDEPATH += $$PWD/../taglib-1.10
 INCLUDEPATH += $$PWD/../taglib-1.10/taglib
@@ -96,4 +104,7 @@ INCLUDEPATH += $$PWD/../taglib-1.10/build/taglib
 DEPENDPATH += $$PWD/../taglib-1.10/build/taglib
 
 LIBS += -L$$PWD/taglib -ltaglib
+
+RESOURCES += \
+    resources.qrc
 
