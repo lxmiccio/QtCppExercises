@@ -10,37 +10,36 @@
 
 class AlbumView : public BackgroundWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
-    explicit AlbumView(QWidget* parent = 0);
-    ~AlbumView();
+    public:
+        explicit AlbumView(QWidget* parent = 0);
+        ~AlbumView();
 
-    void clearLayout(QLayout* layout);
+        void clearLayout(QLayout* layout);
 
-  public slots:
-    void onScrollAreaPainted(QResizeEvent* event);
-    void onTrackAdded(const Track& track);
+    public slots:
+        void onScrollAreaPainted(QResizeEvent* event);
+        void onTrackAdded(const Track& track);
 
-  signals:
-    void coverClicked(const Album& album);
+    signals:
+        void coverClicked(const Album& album);
 
-  private slots:
-    void onCoverClicked(const Album& album);
+    private slots:
+        void onCoverClicked(const Album& album);
 
-  private:
-    QVector<const Album*> m_albums;
+    private:
+        QVector<const Album*> m_albums;
 
-    quint8 m_currentColumn;
-    quint8 m_currentRow;
+        quint8 m_currentColumn;
+        quint8 m_currentRow;
 
-    quint8 m_albumsPerRow;
-    quint8 albumsPerRow(quint16 width);
+        quint8 m_albumsPerRow;
+        quint8 albumsPerRow(quint16 width);
 
-    QVBoxLayout* m_layout;
-    QVector<QHBoxLayout*> m_layouts;
-
-    QVector<Cover*> m_widgets;
+        QVector<Cover*> m_widgets;
+        QVector<QHBoxLayout*> m_layouts;
+        QVBoxLayout* m_layout;
 };
 
 #endif // ALBUMVIEW_H

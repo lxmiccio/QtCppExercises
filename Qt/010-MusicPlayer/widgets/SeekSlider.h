@@ -12,6 +12,8 @@ class SeekSlider : public QSlider
     void setAcceptWheelEvents(bool accept);
     void setTimeLine(QTimeLine* timeline);
 
+    static const quint8 WIDTH = 10;
+
   public slots:
     void setValue(int value);
 

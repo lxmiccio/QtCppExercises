@@ -269,16 +269,16 @@ void AudioControls::onRepeatClicked()
   switch (this->repeatMode)
   {
   case AC::REPEAT_NONE: {
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat_one.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat_one.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white));
+    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
     this->repeatMode = AC::REPEAT_ONE;
     break;
   }
 
   case AC::REPEAT_ONE: {
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat_all.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat_all.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::white));
+    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
 
     this->repeatMode = AC::REPEAT_ALL;
     break;
@@ -313,8 +313,8 @@ void AudioControls::onVolumeClicked()
   }
 
   case AC::VOLUME_NOT_MUTED: {
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume_muted.svg"), QSize(17, 17), 1.0, Qt::gray));
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume_muted.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::gray));
+    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
 
     this->volumeMode = AC::VOLUME_MUTED;
     break;

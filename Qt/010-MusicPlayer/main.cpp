@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
   QFont font = QApplication::font();
   font.setStyleStrategy(QFont::PreferAntialias);
   font.setFamily("Sniglet");
+  font.setPointSize(9);
   QApplication::setFont(font);
 
   StackedWidget stackedWidget;
