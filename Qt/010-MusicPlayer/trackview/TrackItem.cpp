@@ -2,42 +2,31 @@
 
 #include "trackview.h"
 
-TrackItem::TrackItem(Track& track)
+TrackItem::TrackItem(const Track* track)
 {
-  this->track = &track;
+  m_track = track;
 
-  this->items = QList<QStandardItem*>();
+  m_items = QList<QStandardItem*>();
 
-  QStandardItem* id = new QStandardItem(QString("%1").arg(this->track->getTrack()));
-  QStandardItem* title = new QStandardItem(this->track->getTitle());
-  QStandardItem* album = new QStandardItem(this->track->getAlbum()->getTitle());
-  QStandardItem* artist = new QStandardItem(this->track->getArtist()->getName());
-  QStandardItem* durarion = new QStandardItem(this->track->getDurationInMinutes());
+  QStandardItem* id = new QStandardItem(QString("%1").arg(m_track->track()));
+  QStandardItem* title = new QStandardItem(m_track->title());
+  QStandardItem* album = new QStandardItem(m_track->album()->title());
+  QStandardItem* artist = new QStandardItem(m_track->artist()->name());
+  QStandardItem* durarion = new QStandardItem(m_track->durationInMinutes());
 
-  this->items.append(id);
-  this->items.append(title);
-  this->items.append(album);
-  this->items.append(artist);
-  this->items.append(durarion);
+  m_items.append(id);
+  m_items.append(title);
+  m_items.append(album);
+  m_items.append(artist);
+  m_items.append(durarion);
 }
 
-QList<QStandardItem*> TrackItem::getItems() const
+QList<QStandardItem*> TrackItem::items() const
 {
-  return this->items;
+  return m_items;
 }
 
-Track* TrackItem::getTrack() const
+const Track* TrackItem::track() const
 {
-  return this->track;
-}
-
-void TrackItem::setTrack(Track& track)
-{
-  this->track = &track;
-
-  this->items.at(TrackView::TRACK)->setText(QString("%1").arg(track.getTrack()));
-  this->items.at(TrackView::TITLE)->setText(track.getTitle());
-  this->items.at(TrackView::ALBUM)->setText(track.getAlbum()->getTitle());
-  this->items.at(TrackView::ARTIST)->setText(track.getArtist()->getName());
-  this->items.at(TrackView::DURATION)->setText(track.getDurationInMinutes());
+  return m_track;
 }

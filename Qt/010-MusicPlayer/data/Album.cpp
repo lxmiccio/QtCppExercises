@@ -2,37 +2,37 @@
 
 Album::Album()
 {
-  this->tracks = new QVector<Track>();
+  m_tracks = new QVector<Track>();
 }
 
-Album::Album(const QString& title, Artist& artist)
+Album::Album(const QString& title, const Artist* artist)
 {
-  this->title = title;
-  this->artist = &artist;
-  this->image = QImage(":/images/queen-of-the-clouds.jpg");
+  m_title = title;
+  m_artist = artist;
+  m_image = QImage(":/images/queen-of-the-clouds.jpg");
 
-  this->tracks = new QVector<Track>();
+  m_tracks = new QVector<Track>();
 }
 
-const QString& Album::getTitle() const
+const QString& Album::title() const
 {
-  return this->title;
+  return m_title;
 }
 
 void Album::setTitle(const QString& title)
 {
-  this->title = title;
+  m_title = title;
 }
 
-QVector<Track>* Album::getTracks() const
+QVector<Track>* Album::tracks() const
 {
-  return this->tracks;
+  return m_tracks;
 }
 
-Track* Album::getTrack(const QString& title) const
+Track* Album::track(const QString& title) const
 {
-  for(QVector<Track>::iterator track = this->tracks->begin(); track != this->tracks->end(); ++track) {
-    if(track->getTitle() == title) {
+  for(QVector<Track>::iterator track = m_tracks->begin(); track != m_tracks->end(); ++track) {
+    if(track->title() == title) {
       return track;
     }
   }
@@ -42,36 +42,36 @@ Track* Album::getTrack(const QString& title) const
 
 void Album::addTrack(const Track& track)
 {
-  this->tracks->push_back(track);
+  m_tracks->push_back(track);
 }
 
 bool Album::removeTrack(Track* track)
 {
-  return this->tracks->removeOne(*track);
+  return m_tracks->removeOne(*track);
 }
 
 bool Album::removeTrack(const QString& title)
 {
-  for(QVector<Track>::iterator track = this->tracks->begin(); track != this->tracks->end(); ++track) {
-    if(track->getTitle() == title) {
-      return this->tracks->removeOne(*track);
+  for(QVector<Track>::iterator track = m_tracks->begin(); track != m_tracks->end(); ++track) {
+    if(track->title() == title) {
+      return m_tracks->removeOne(*track);
     }
   }
 
   return false;
 }
 
-Artist* Album::getArtist() const
+const Artist* Album::artist() const
 {
-  return this->artist;
+  return m_artist;
 }
 
 void Album::setArtist(Artist& artist)
 {
-  this->artist = &artist;
+  m_artist = &artist;
 }
 
 bool operator==(const Album& album1, const Album& album2)
 {
-  return album1.getTitle() == album2.getTitle();
+  return album1.title() == album2.title();
 }

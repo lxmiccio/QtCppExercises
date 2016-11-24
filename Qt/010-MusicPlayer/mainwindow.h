@@ -50,15 +50,12 @@ private:
   TrackView* trackView;
   TrackDelegate* trackDelegate;
 
-  QStandardItemModel* model;
+  MusicLibrary* m_musicLibrary;
 
-  MusicLibrary* musicLibrary;
+  QVBoxLayout* m_layout;
 
-  QVector<TrackItem*> items;
-
-  QVBoxLayout* layout;
-
-  AlbumView* albumView;
+  ScrollArea* m_scrollArea;
+  AlbumView* m_albumView;
 
 public:
   MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
@@ -78,6 +75,10 @@ public slots:
   void onRepeatClicked(AC::RepeatMode_t repeatMode);
   void onVolumeClicked(AC::VolumeMode_t volumeMode);
 
+  void itemClicked(const QModelIndex &){
+    m_scrollArea->show();
+    trackView->hide();
+  }
 
   void onCurrentMediaChanged(QMediaContent);
 

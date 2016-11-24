@@ -1,10 +1,18 @@
 #include "TrackView.h"
 
+#include <QResizeEvent>
 #include <QScrollBar>
 
 TrackView::TrackView(QWidget* parent) : QTableView(parent)
 {
-  this->verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
+  m_trackItems = QVector<TrackItem*>();
+
+  m_model = new QStandardItemModel();
+  setModel(m_model);
+
+  QObject::connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+
+  verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
                                                      "background: %1;"
                                                      "border: 0;"
                                                      "margin: 0 0 0 0;"
@@ -12,7 +20,7 @@ TrackView::TrackView(QWidget* parent) : QTableView(parent)
                                                    "}"
                                                    "QScrollBar::handle:vertical {"
                                                      "margin: 2px 2px 2px 0px;"
-                                                     "border-image: url(images/scrollbar.jpg);"
+                                                     "border-image: url(:/images/scroll-bar.jpg);"
                                                      "border-radius: 2px;"
                                                    "}"
                                                    "QScrollBar::add-line:vertical {"
@@ -29,6 +37,27 @@ TrackView::TrackView(QWidget* parent) : QTableView(parent)
                                                      "width: 0;"
                                                    "}")
                                            .arg(QColor(255, 255, 255, 255).name()));
+}
+
+TrackView::~TrackView()
+{
+  delete m_model;
+}
+
+void TrackView::onAlbumSelected(const Album& album)
+{
+  for(QVector<Track>::iterator track = album.tracks()->begin(); track != album.tracks()->end(); ++track) {
+    TrackItem* trackItem = new TrackItem(track);
+    m_trackItems.push_back(trackItem);
+
+    m_model->appendRow(trackItem->items());
+  }
+}
+
+void TrackView::onDoubleClicked(const QModelIndex& index)
+{
+  const Track* track = m_trackItems.at(index.row())->track();
+  emit doubleClicked(*track);
 }
 
 void TrackView::resizeEvent(QResizeEvent* event)

@@ -1,15 +1,19 @@
 #ifndef TRACKVIEW_H
 #define TRACKVIEW_H
 
-#include <QResizeEvent>
+#include <QStandardItemModel>
 #include <QTableView>
+
+#include "Track.h"
+#include "TrackItem.h"
 
 class TrackView : public QTableView
 {
-  public:
-    explicit TrackView(QWidget * parent = 0);
+  Q_OBJECT
 
-    void resizeEvent(QResizeEvent* event);
+public:
+    explicit TrackView(QWidget* parent = 0);
+    ~TrackView();
 
     static const quint8 TRACK = 0;
     static const quint8 TITLE = 1;
@@ -23,6 +27,23 @@ class TrackView : public QTableView
     static constexpr double TITLE_WIDTH_PERCENTAGE = 0.4;
     static constexpr double ALBUM_WIDTH_PERCENTAGE = 0.4;
     static constexpr double ARTIST_WIDTH_PERCENTAGE = 0.2;
+
+  public slots:
+    void onAlbumSelected(const Album& album);
+
+  signals:
+    void doubleClicked(const Track&);
+
+  private slots:
+    void onDoubleClicked(const QModelIndex& index);
+
+  protected:
+    virtual void resizeEvent(QResizeEvent* event);
+
+  private:
+    QStandardItemModel* m_model;
+
+    QVector<TrackItem*> m_trackItems;
 };
 
 #endif // TRACKVIEW_H

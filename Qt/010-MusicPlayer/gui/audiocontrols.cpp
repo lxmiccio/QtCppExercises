@@ -1,5 +1,6 @@
 #include "AudioControls.h"
 
+#include <QApplication>
 #include <QFontDatabase>
 
 #include "ImageUtils.h"
@@ -9,10 +10,8 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   QImage i(":/images/tove-lo.jpg");
   this->setBackgroundImage(QPixmap::fromImage(ImageUtils::blur(i, i.rect(), 30, false, true)));
 
-  QFont font = this->font();
-  font.setBold(true);
-  font.setFamily("Roboto Condensed");
-  font.setPointSize(13);
+  QFont font = QApplication::font();
+  font.setPointSize(11);
 
   this->upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
@@ -71,7 +70,7 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
-  this->lowerSpacer5 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+  this->lowerSpacer5 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
 
   this->fastForward = new ImageButton();
   this->fastForward->setPixmap(ImageUtils::pixmap(QString("images/fast_forward.svg"), QSize(17, 17), 1.0, Qt::gray));
@@ -80,8 +79,7 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer6 = new QSpacerItem(120, 8, QSizePolicy::Fixed);
 
-  font.setBold(true);
-  font.setPointSize(10);
+  font.setPointSize(9);
 
   this->eslapsedTime = new QLabel("00:00");
   this->eslapsedTime->setFont(font);

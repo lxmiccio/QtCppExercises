@@ -1,20 +1,23 @@
 #include "Cover.h"
 
-Cover::Cover(Album* album, QWidget* parent) : QWidget(parent)
+Cover::Cover(const Album* album, QWidget* parent) : QWidget(parent)
 {
   m_album = album;
 
+  QPixmap pixmap(QPixmap::fromImage(m_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
   m_cover = new ClickableLabel();
-  m_cover->setPixmap(QPixmap::fromImage(m_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
-  QObject::connect(m_cover, SIGNAL(clicked()), this, SLOT(onClicked()));
+  m_cover->setPixmap(pixmap);
 
-  m_albumTitle = new ElidedLabel(album->getTitle());
+  m_albumTitle = new ElidedLabel(album->title());
   m_albumTitle->setAlignment(Qt::AlignCenter);
-  QObject::connect(m_albumTitle, SIGNAL(clicked()), this, SLOT(onClicked()));
 
-  m_artistName = new ElidedLabel(album->getArtist()->getName());
+  m_artistName = new ElidedLabel(album->artist()->name());
   m_artistName->setAlignment(Qt::AlignCenter);
-  QObject::connect(m_artistName, SIGNAL(clicked()), this, SLOT(onClicked()));
+
+  QObject::connect(m_cover, SIGNAL(clicked()), this, SLOT(onCoverClicked()));
+  QObject::connect(m_albumTitle, SIGNAL(clicked()), this, SLOT(onCoverClicked()));
+  QObject::connect(m_artistName, SIGNAL(clicked()), this, SLOT(onCoverClicked()));
 
   m_layout = new QVBoxLayout();
   m_layout->addWidget(m_cover);
@@ -28,18 +31,18 @@ Cover::Cover(Album* album, QWidget* parent) : QWidget(parent)
 
 Cover::~Cover()
 {
+  delete m_layout;
   delete m_cover;
   delete m_albumTitle;
   delete m_artistName;
-  delete m_layout;
 }
 
-Album* Cover::album() const
+const Album& Cover::album() const
 {
-  return m_album;
+  return *m_album;
 }
 
-void Cover::onClicked()
+void Cover::onCoverClicked()
 {
-  emit clicked(*m_album);
+  emit coverClicked(*m_album);
 }

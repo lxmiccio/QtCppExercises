@@ -9,17 +9,17 @@
 class TrackItem
 {
 public:
-  TrackItem(Track& track);
+  explicit TrackItem(const Track* track);
 
-  QList<QStandardItem*> getItems() const;
+  QList<QStandardItem*> items() const;
 
-  Track* getTrack() const;
-  void setTrack(Track& track);
+  const Track* track() const;
+  void setTrack(const Track* track) {m_track = track;}
 
 private:
-  QList<QStandardItem*> items;
+  QList<QStandardItem*> m_items;
 
-  Track* track;
+  const Track* m_track;
 };
 
 #endif // TRACKITEM_H

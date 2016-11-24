@@ -7,7 +7,12 @@ int main(int argc, char *argv[])
 {
   QApplication application(argc, argv);
 
-  QFontDatabase::addApplicationFont("fonts/RobotoCondensed-Light.ttf");
+  QFontDatabase::addApplicationFont("fonts/Sniglet-Regular.ttf");
+
+  QFont font = QApplication::font();
+  font.setStyleStrategy(QFont::PreferAntialias);
+  font.setFamily("Sniglet");
+  QApplication::setFont(font);
 
   StackedWidget stackedWidget;
   stackedWidget.show();

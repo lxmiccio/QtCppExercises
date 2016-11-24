@@ -7,132 +7,132 @@ Track::Track()
 
 }
 
-Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, Album& album)
+Track::Track(const QString& title, quint8 track, quint8 year, quint32 duration, quint32 bitrate, const QString& url, quint64 size, const Album* album)
 {
-  this->title = title;
-  this->track = track;
-  this->year = year;
-  this->duration = duration;
-  this->bitrate = bitrate;
-  this->url = url;
-  this->size = size;
-  this->album = &album;
+  m_title = title;
+  m_track = track;
+  m_year = year;
+  m_duration = duration;
+  m_bitrate = bitrate;
+  m_url = url;
+  m_size = size;
+  m_album = album;
 
-  this->mediaContent = QMediaContent(QUrl(QFileInfo(this->url).absoluteFilePath()));
+  m_mediaContent = QMediaContent(QUrl(QFileInfo(m_url).absoluteFilePath()));
 }
 
-Track::Track(const QVariantMap& tags, Album& album)
+Track::Track(const QVariantMap& tags, const Album* album)
 {
-  this->title = QString(tags["title"].toString());
-  this->track = (quint8) tags["track"].toUInt();
-  this->year = (quint8) tags["year"].toUInt();
-  this->duration = (quint32) tags["duration"].toUInt();
-  this->bitrate = (quint32) tags["bitrate"].toUInt();
-  this->url = QString(tags["url"].toString());
-  this->size = (quint64) tags["size"].toULongLong();
-  this->album = &album;
+  m_title = QString(tags["title"].toString());
+  m_track = (quint8) tags["track"].toUInt();
+  m_year = (quint8) tags["year"].toUInt();
+  m_duration = (quint32) tags["duration"].toUInt();
+  m_bitrate = (quint32) tags["bitrate"].toUInt();
+  m_url = QString(tags["url"].toString());
+  m_size = (quint64) tags["size"].toULongLong();
+  m_album = album;
 
-  this->mediaContent = QMediaContent(QUrl(QFileInfo(this->url).absoluteFilePath()));
+  m_mediaContent = QMediaContent(QUrl(QFileInfo(m_url).absoluteFilePath()));
 }
 
-quint8 Track::getTrack()
+quint8 Track::track() const
 {
-  return this->track;
+  return m_track;
 }
 
 void Track::setTrack(quint8 track)
 {
-  this->track = track;
+  m_track = track;
 }
 
-const QString& Track::getTitle() const
+const QString& Track::title() const
 {
-  return this->title;
+  return m_title;
 }
 
 void Track::setTitle(const QString& title)
 {
-  this->title = title;
+  m_title = title;
 }
 
-quint8 Track::getYear() const
+quint8 Track::year() const
 {
-  return this->year;
+  return m_year;
 }
 
 void Track::setYear(quint8 year)
 {
-  this->year = year;
+  m_year = year;
 }
 
-quint32 Track::getDuration() const
+quint32 Track::duration() const
 {
-  return this->duration;
+  return m_duration;
 }
 
-QString Track::getDurationInMinutes() const
+QString Track::durationInMinutes() const
 {
-  return QString("%1:%2").arg(this->duration / 60, 2, 10, QChar('0')).arg(this->duration % 60, 2, 10, QChar('0'));
+  return QString("%1:%2").arg(m_duration / 60, 2, 10, QChar('0')).arg(m_duration % 60, 2, 10, QChar('0'));
 }
 
 void Track::setDuration(quint32 duration)
 {
-  this->duration = duration;
+  m_duration = duration;
 }
 
-quint32 Track::getBitrate() const
+quint32 Track::bitrate() const
 {
-  return this->bitrate;
+  return m_bitrate;
 }
 
 void Track::setBitrate(quint32 bitrate)
 {
-  this->bitrate = bitrate;
+  m_bitrate = bitrate;
 }
 
-const QString& Track::getUrl() const
+const QString& Track::url() const
 {
-  return this->url;
+  return m_url;
 }
 
 void Track::setUrl(const QString &url)
 {
-  this->url = url;
+  m_url = url;
 }
 
-quint64 Track::getSize() const
+quint64 Track::size() const
 {
-  return this->size;
+  return m_size;
 }
 
 void Track::setSize(quint64 size)
 {
-  this->size = size;
+  m_size = size;
 }
 
-QMediaContent Track::getMediaContent() const
+const QMediaContent& Track::mediaContent() const
 {
-  return this->mediaContent;
+  return m_mediaContent;
 }
 
 void Track::setMediaContent(const QMediaContent& mediaContent)
 {
-  this->mediaContent = mediaContent;
+  m_mediaContent = mediaContent;
 }
 
-Album* Track::getAlbum() const
+const Album* Track::album() const
 {
-  return this->album;
+  return m_album;
 }
 
 void Track::setAlbum(Album& album)
 {
-  this->album = &album;
+  m_album = &album;
 }
 
-Artist* Track::getArtist() const
+const Artist* Track::artist() const
 {
-  return this->album->getArtist();
+  return m_album->artist();
 }
 
 bool Track::isSupportedSuffix(const QString& suffix)
@@ -148,5 +148,5 @@ bool Track::isSupportedSuffix(const QString& suffix)
 
 bool operator==(const Track& track1, const Track& track2)
 {
-  return track1.getTitle() == track2.getTitle();
+  return track1.title() == track2.title();
 }

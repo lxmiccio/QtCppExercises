@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileDialog>
-#include <QGridLayout>
 #include <QMediaMetaData>
 #include <QString>
 #include <QStringList>
@@ -31,8 +30,6 @@
 
 MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(parent)
 {
-  this->items = QVector<TrackItem*>();
-
   this->stackedWidget = stackedWidget;
 
   this->musicPlayer = new MusicPlayer();
@@ -78,17 +75,16 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   this->loadPlaylist = new QPushButton("Load Playlist");
   QObject::connect(this->loadPlaylist, SIGNAL(clicked()), this, SLOT(loadPlaylistClicked()));
   /*
-  QGridLayout* gridLayout = new QGridLayout();
+  QGridm_layout* gridm_layout = new QGridm_layout();
 
-  gridLayout->setSpacing(0);
-  gridLayout->setMargin(0);
-  //gridLayout->addWidget(this->trackList, 2, 0, 6, 1);
+  gridm_layout->setSpacing(0);
+  gridm_layout->setMargin(0);
+  //gridm_layout->addWidget(this->trackList, 2, 0, 6, 1);
 
 
-  this->setLayout(gridLayout);
+  this->setm_layout(gridm_layout);
 */
 
-  model = new QStandardItemModel(0,0,this);
   // Generate data
 
   // Attach (tie) the model to the view
@@ -102,7 +98,6 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //trackView->hideColumn(0);
   trackView->horizontalHeader()->hide();
   trackView->verticalHeader()->hide();
-  trackView->setModel(model);
   trackView->setShowGrid(false);
   trackView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
@@ -122,58 +117,74 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
 
   QObject::connect(this->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
   /*
-  gridLayout->addWidget(trackView,0,0,1,1);
-  gridLayout->addWidget(this->audioControls, 3, 0, 1, 1);
-  gridLayout->addWidget(this->remove,2,0,1,1);
-  this->setLayout(gridLayout);*/
+  gridm_layout->addWidget(trackView,0,0,1,1);
+  gridm_layout->addWidget(this->audioControls, 3, 0, 1, 1);
+  gridm_layout->addWidget(this->remove,2,0,1,1);
+  this->setm_layout(gridm_layout);*/
 
 
-  this->layout = new QVBoxLayout();
-  this->layout->setMargin(0);
-  this->layout->setSpacing(0);
+  this->m_layout = new QVBoxLayout();
+  this->m_layout->setMargin(0);
+  this->m_layout->setSpacing(0);
 
-  ScrollArea* a = new ScrollArea();
-  //QVBoxLayout* vb = new QVBoxLayout();
+  //ScrollArea* a = new ScrollArea();
+  //QVBoxm_layout* vb = new QVBoxm_layout();
   //vb->setMargin(10);
 
-  albumView = new AlbumView();
-  QObject::connect(a, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
-  QObject::connect(albumView, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
-
-  //a->setLayout(vb);
-  a->setWidgetResizable(true);
+  //a->setm_layout(vb);
+  //a->setWidgetResizable(true);
   //vb->addWidget(aw);
-  a->setWidget(albumView);
-
-  QObject::connect(a, SIGNAL(resized(QResizeEvent*)), albumView, SLOT(onScrollAreaPainted(QResizeEvent*)));
-
-  QObject::connect(this, SIGNAL(trackAdded(const Track&)), albumView, SLOT(onTrackAdded(const Track&)));
+  //a->setWidget(m_albumView);
 
 
-  this->layout->addWidget(a);
 
-  this->setLayout(layout);
 
-  this->musicLibrary = new MusicLibrary();
+  m_albumView = new AlbumView();
+  QObject::connect(this, SIGNAL(trackAdded(const Track&)), m_albumView, SLOT(onTrackAdded(const Track&)));
+  QObject::connect(m_albumView, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
+
+  m_scrollArea = new ScrollArea();
+  m_scrollArea->setWidgetResizable(true);
+  m_scrollArea->setWidget(m_albumView);
+  QObject::connect(m_scrollArea, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
+
+  QObject::connect(m_scrollArea, SIGNAL(resized(QResizeEvent*)), m_albumView, SLOT(onScrollAreaPainted(QResizeEvent*)));
+
+  this->m_layout->addWidget(m_scrollArea);
+  this->m_layout->addWidget(trackView);
+  this->m_layout->addWidget(audioControls);
+  trackView->hide();
+
+  this->setLayout(m_layout);
+
+  m_musicLibrary = new MusicLibrary();
 }
 
 void MainWindow::onCoverClicked(const Album &album)
 {
-  qDebug()<< album.getTitle();
+  qDebug()<< album.title();
+  m_scrollArea->hide();
+  trackView->show();
+  trackView->onAlbumSelected(album);
 }
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)
 {
   QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
-  Track* t = this->musicLibrary->addTrack(tags);
+  Track* t = this->m_musicLibrary->addTrack(tags);
+
+
+  /*qSort(t->getAlbum()->getTracks()->begin(), t->getAlbum()->getTracks()->end(),
+        [](Track* a, Track* b) -> bool { return a->getTrack() < b->getTrack(); });
+        */
 
   if(t) {
-    TrackItem* ti = new TrackItem(*t);
-    this->model->appendRow(ti->getItems());
+    TrackItem* ti = new TrackItem(t);
+    //this->model->appendRow(ti->getItems());
 
-    qDebug()<<musicLibrary->getAlbums()->size();
-    //this->musicLibrary->debug();
-    this->items.push_back(ti);
+    qDebug()<<m_musicLibrary->getAlbums()->size();
+    //this->m_musicLibrary->debug();
+    //this->items.push_back(ti);
 
     emit this->trackAdded(*t);
   }
@@ -334,7 +345,7 @@ void MainWindow::volumeValueChanged(int value)
 void MainWindow::trackListItemDoubleClicked(const QModelIndex& index)
 {
   qDebug() << index.row();
-  qDebug() << this->items.at(index.row())->getTrack()->getTitle();
+  // qDebug() << this->items.at(index.row())->getTrack()->getTitle();
   /*for(int i {0}; i < this->trackList->count(); i++) {
     if(item->text() == this->trackList->item(i)->text()) {
       this->musicPlayer->getMediaPlaylist()->setCurrentIndex(i);
@@ -411,18 +422,18 @@ void MainWindow::addSongClicked()
     QFileInfo fileInfo {*filename};
 
     QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
-    Track* t = this->musicLibrary->addTrack(tags);
+    Track* t = this->m_musicLibrary->addTrack(tags);
     if(t!=NULL) {
-      qDebug()<<"tv"<<t->getArtist();
+      qDebug()<<"tv"<<t->artist();
       /*TrackItem* ti = new TrackItem(*t);
       this->model->appendRow(ti->getItems());
 */
-      /*  this->musicLibrary->debug();
+      /*  this->m_musicLibrary->debug();
       this->items.push_back(ti);
 
-      //this->albumView->onTrackAdded(*t);
+      //this->m_albumView->onTrackAdded(*t);
       */
-      this->albumView->onTrackAdded(*t);
+      this->m_albumView->onTrackAdded(*t);
     }
     //Track track = Track(tags);
 
@@ -493,8 +504,8 @@ void MainWindow::removeClicked()
   QModelIndexList list = this->trackView->selectionModel()->selectedRows();
 
   for(qint16 i = list.size() - 1; i >= 0; --i) {
-    this->items.removeAt(list.at(i).row());
-    this->model->removeRow(list.at(i).row());
+    //this->items.removeAt(list.at(i).row());
+    //this->model->removeRow(list.at(i).row());
   }
 }
 

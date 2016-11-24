@@ -23,6 +23,11 @@ public:
   void setName(QString name);
   QString getName();
 
+#ifdef TEST_PARASOFT
+        // Emitting a signal to fill the queue
+        ArtModeChange_t mode;
+        emit ModeChangeToSend(mode);
+#endif
   void addTrack(Track track);
   void removeTrack(Track &track);
   void removeAllTracks();

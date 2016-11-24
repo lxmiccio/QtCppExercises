@@ -9,13 +9,13 @@
 
 class Cover : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
   public:
-    Cover(Album* album, QWidget* parent = 0);
+    Cover(const Album* album, QWidget* parent = 0);
     ~Cover();
 
-    Album* album() const;
+    const Album& album() const;
 
     static const quint16 COVER_HEIGHT = 215;
     static const quint16 COVER_WIDTH = 175;
@@ -23,14 +23,14 @@ class Cover : public QWidget
     static const quint16 IMAGE_HEIGHT = 175;
     static const quint16 IMAGE_WIDTH = 175;
 
-  private slots:
-    void onClicked();
-
   signals:
-    void clicked(const Album& album);
+    void coverClicked(const Album& album);
+
+  private slots:
+    void onCoverClicked();
 
   private:
-    Album* m_album;
+    const Album* m_album;
 
     QVBoxLayout* m_layout;
     ClickableLabel* m_cover;

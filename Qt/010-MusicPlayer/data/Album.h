@@ -13,33 +13,33 @@ class Track;
 
 class Album
 {
-  public:
-    explicit Album();
-    explicit Album(const QString& title, Artist& artist);
+public:
+  explicit Album();
+  explicit Album(const QString& title, const Artist* artist);
 
-    const QString& getTitle() const;
-    void setTitle(const QString& title);
+  const QString& title() const;
+  void setTitle(const QString& title);
 
-    QVector<Track>* getTracks() const;
-    Track* getTrack(const QString& title) const;
-    void addTrack(const Track& track);
-    bool removeTrack(Track* track);
-    bool removeTrack(const QString& title);
+  QVector<Track>* tracks() const;
+  Track* track(const QString& title) const;
+  void addTrack(const Track& track);
+  bool removeTrack(Track* track);
+  bool removeTrack(const QString& title);
 
-    Artist* getArtist() const;
-    void setArtist(Artist& artist);
+  const Artist* artist() const;
+  void setArtist(Artist& artist);
 
-    QImage& getImage()
-    {
-      return this->image;
-    }
+  QImage getImage() const
+  {
+    return m_image;
+  }
 
-  private:
-    QString title;
-    QImage image;
+private:
+  QString m_title;
+  QImage m_image;
 
-    QVector<Track>* tracks;
-    Artist* artist;
+  QVector<Track>* m_tracks;
+  const Artist* m_artist;
 };
 
 bool operator==(const Album& album1, const Album& album2);

@@ -86,7 +86,7 @@ void AlbumView::onScrollAreaPainted(QResizeEvent* event)
 
 void AlbumView::onTrackAdded(const Track& track)
 {
-  Album* album = track.getAlbum();
+  const Album* album = track.album();
 
   if(m_albums.indexOf(album) == -1) {
     m_albums.push_back(album);

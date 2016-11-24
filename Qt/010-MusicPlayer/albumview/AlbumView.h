@@ -13,7 +13,7 @@ class AlbumView : public BackgroundWidget
   Q_OBJECT
 
   public:
-    AlbumView(QWidget* parent = 0);
+    explicit AlbumView(QWidget* parent = 0);
     ~AlbumView();
 
     void clearLayout(QLayout* layout);
@@ -22,11 +22,11 @@ class AlbumView : public BackgroundWidget
     void onScrollAreaPainted(QResizeEvent* event);
     void onTrackAdded(const Track& track);
 
-private slots:
-  void onCoverClicked(const Album& album);
+  signals:
+    void coverClicked(const Album& album);
 
-signals:
-  void coverClicked(const Album& album);
+  private slots:
+    void onCoverClicked(const Album& album);
 
   private:
     QVector<const Album*> m_albums;
