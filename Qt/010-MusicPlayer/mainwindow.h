@@ -77,7 +77,7 @@ public slots:
 
   void itemClicked(const QModelIndex &){
     m_scrollArea->show();
-    trackView->hide();
+   // trackView->hide();
   }
 
   void onCurrentMediaChanged(QMediaContent);

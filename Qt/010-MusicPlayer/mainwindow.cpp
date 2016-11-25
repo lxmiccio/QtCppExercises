@@ -96,18 +96,19 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   trackView = new TrackView();
   //trackView->setStyleSheet("QHeaderView {background-color: transparent;}");
   //trackView->hideColumn(0);
+  /*
   trackView->horizontalHeader()->hide();
   trackView->verticalHeader()->hide();
   trackView->setShowGrid(false);
-  trackView->setSelectionBehavior(QAbstractItemView::SelectRows);
+  trackView->setSelectionBehavior(QAbstractItemView::SelectRows);*/
 
 
-  this->trackDelegate = new TrackDelegate(trackView);
-  trackView->setItemDelegate(this->trackDelegate);
+  ////this->trackDelegate = new TrackDelegate(trackView);
+  //trackView->setItemDelegate(this->trackDelegate);
   //ui->trackView->setItemDelegate(myDelegate);
 
   //connect(ui->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
-  connect(trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+  /////////connect(trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
 
 
   // Tie the View with the new MyDelegate instance
@@ -115,7 +116,7 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   //ui->trackView->resizeColumnsToContents();
   //ui->trackView->setFixedSize(100,100);
 
-  QObject::connect(this->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
+  ///////QObject::connect(this->trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
   /*
   gridm_layout->addWidget(trackView,0,0,1,1);
   gridm_layout->addWidget(this->audioControls, 3, 0, 1, 1);
@@ -151,9 +152,9 @@ MainWindow::MainWindow(StackedWidget *stackedWidget, QWidget *parent) : QWidget(
   QObject::connect(m_scrollArea, SIGNAL(resized(QResizeEvent*)), m_albumView, SLOT(onScrollAreaPainted(QResizeEvent*)));
 
   this->m_layout->addWidget(m_scrollArea);
-  this->m_layout->addWidget(trackView);
+  /////this->m_layout->addWidget(trackView);
   this->m_layout->addWidget(audioControls);
-  trackView->hide();
+  /////trackView->hide();
 
   this->setLayout(m_layout);
 
@@ -164,7 +165,7 @@ void MainWindow::onCoverClicked(const Album &album)
 {
   qDebug()<< album.title();
   m_scrollArea->hide();
-  trackView->show();
+  ////trackView->show();
   trackView->onAlbumSelected(album);
 }
 
@@ -501,12 +502,12 @@ void MainWindow::addDirectoryClicked()
 
 void MainWindow::removeClicked()
 {
-  QModelIndexList list = this->trackView->selectionModel()->selectedRows();
+  //////QModelIndexList list = this->trackView->selectionModel()->selectedRows();
 
-  for(qint16 i = list.size() - 1; i >= 0; --i) {
+  //for(qint16 i = list.size() - 1; i >= 0; --i) {
     //this->items.removeAt(list.at(i).row());
     //this->model->removeRow(list.at(i).row());
-  }
+  //}
 }
 
 void MainWindow::removeAllClicked()

@@ -2,16 +2,15 @@
 
 TrackItem::TrackItem(const Track* track)
 {
-    m_track = track;
+    c_track = track;
+
+    QStandardItem* id = new QStandardItem(QString(c_track->track()));
+    QStandardItem* title = new QStandardItem(c_track->title());
+    QStandardItem* album = new QStandardItem(c_track->album()->title());
+    QStandardItem* artist = new QStandardItem(c_track->artist()->name());
+    QStandardItem* durarion = new QStandardItem(c_track->durationInMinutes());
 
     m_items = QList<QStandardItem*>();
-
-    QStandardItem* id = new QStandardItem(QString("%1").arg(m_track->track()));
-    QStandardItem* title = new QStandardItem(m_track->title());
-    QStandardItem* album = new QStandardItem(m_track->album()->title());
-    QStandardItem* artist = new QStandardItem(m_track->artist()->name());
-    QStandardItem* durarion = new QStandardItem(m_track->durationInMinutes());
-
     m_items.append(id);
     m_items.append(title);
     m_items.append(album);
@@ -19,12 +18,13 @@ TrackItem::TrackItem(const Track* track)
     m_items.append(durarion);
 }
 
+const Track* TrackItem::track() const
+{
+    return c_track;
+}
+
+
 QList<QStandardItem*> TrackItem::items() const
 {
     return m_items;
-}
-
-const Track* TrackItem::track() const
-{
-    return m_track;
 }

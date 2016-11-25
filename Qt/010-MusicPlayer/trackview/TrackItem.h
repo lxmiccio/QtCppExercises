@@ -14,7 +14,7 @@ class TrackItem
         QList<QStandardItem*> items() const;
 
     private:
-        const Track* m_track;
+        const Track* c_track;
         QList<QStandardItem*> m_items;
 };
 

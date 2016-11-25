@@ -1,74 +1,49 @@
 #include "TrackView.h"
 
+#include <QHeaderView>
 #include <QResizeEvent>
 #include <QScrollBar>
 
-TrackView::TrackView(QWidget* parent) : QTableView(parent)
+TrackView::TrackView(QWidget* parent) : QWidget(parent)
 {
-  m_trackItems = QVector<TrackItem*>();
+    m_tableView = new TrackTableView();
+    m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_tableView->horizontalHeader()->hide();
+    m_tableView->verticalHeader()->hide();
+    m_tableView->setShowGrid(false);
 
-  m_model = new QStandardItemModel();
-  setModel(m_model);
+    m_delegate = new TrackDelegate(m_tableView);
+    m_tableView->setItemDelegate(m_delegate);
 
-  QObject::connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+    m_model = new QStandardItemModel();
+    m_tableView->setModel(m_model);
 
-  verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
-                                                     "background: %1;"
-                                                     "border: 0;"
-                                                     "margin: 0 0 0 0;"
-                                                     "width: 10px;"
-                                                   "}"
-                                                   "QScrollBar::handle:vertical {"
-                                                     "margin: 2px 2px 2px 0px;"
-                                                     "border-image: url(:/images/scroll-bar.jpg);"
-                                                     "border-radius: 2px;"
-                                                   "}"
-                                                   "QScrollBar::add-line:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                   "}"
-                                                   "QScrollBar::sub-line:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                   "}"
-                                                   "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {"
-                                                     "border: 0;"
-                                                     "height: 0;"
-                                                     "width: 0;"
-                                                   "}")
-                                           .arg(QColor(255, 255, 255, 255).name()));
+    QObject::connect(m_tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+
+    m_items = QVector<TrackItem*>();
 }
 
 TrackView::~TrackView()
 {
-  delete m_model;
+    foreach (TrackItem* i_trackItem, m_items)
+        delete i_trackItem;
+
+    delete m_model;
+    delete m_tableView;
 }
 
 void TrackView::onAlbumSelected(const Album& album)
 {
-  for(QVector<Track>::iterator track = album.tracks()->begin(); track != album.tracks()->end(); ++track) {
-    TrackItem* trackItem = new TrackItem(track);
-    m_trackItems.push_back(trackItem);
-
-    m_model->appendRow(trackItem->items());
-  }
+    for(QVector<Track>::iterator i_track = album.tracks()->begin(); i_track != album.tracks()->end(); ++i_track)
+    {
+        TrackItem* item = new TrackItem(i_track);
+        m_items.push_back(item);
+        m_model->appendRow(item->items());
+    }
 }
 
 void TrackView::onDoubleClicked(const QModelIndex& index)
 {
-  const Track* track = m_trackItems.at(index.row())->track();
-  emit doubleClicked(*track);
-}
-
-void TrackView::resizeEvent(QResizeEvent* event)
-{
-  int width = event->size().width() - TrackView::TRACK_WIDTH - TrackView::DURATION_WIDTH;
-
-  this->setColumnWidth(TrackView::TRACK, TrackView::TRACK_WIDTH);
-  this->setColumnWidth(TrackView::TITLE, TrackView::TITLE_WIDTH_PERCENTAGE * width);
-  this->setColumnWidth(TrackView::ALBUM, TrackView::ALBUM_WIDTH_PERCENTAGE * width);
-  this->setColumnWidth(TrackView::ARTIST, TrackView::ARTIST_WIDTH_PERCENTAGE * width);
-  this->setColumnWidth(TrackView::DURATION, TrackView::DURATION_WIDTH);
-
-  QTableView::resizeEvent(event);
+    const Track* track = m_items.at(index.row())->track();
+    emit doubleClicked(*track);
 }

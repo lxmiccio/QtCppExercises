@@ -29,17 +29,17 @@ class AlbumView : public BackgroundWidget
         void onCoverClicked(const Album& album);
 
     private:
+        quint8 albumsPerRow(quint16 width);
+
         QVector<const Album*> m_albums;
+
+        QVector<Cover*> m_covers;
+        QVector<QHBoxLayout*> m_layouts;
+        QVBoxLayout* m_layout;
 
         quint8 m_currentColumn;
         quint8 m_currentRow;
-
         quint8 m_albumsPerRow;
-        quint8 albumsPerRow(quint16 width);
-
-        QVector<Cover*> m_widgets;
-        QVector<QHBoxLayout*> m_layouts;
-        QVBoxLayout* m_layout;
 };
 
 #endif // ALBUMVIEW_H

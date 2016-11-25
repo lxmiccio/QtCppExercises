@@ -30,7 +30,7 @@ class Cover : public QWidget
         void onCoverClicked();
 
     private:
-        const Album* m_album;
+        const Album* c_album;
 
         ClickableLabel* m_cover;
         ElidedLabel* m_albumTitle;

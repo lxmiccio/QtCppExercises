@@ -2,9 +2,9 @@
 
 Cover::Cover(const Album* album, QWidget* parent) : QWidget(parent)
 {
-    m_album = album;
+    c_album = album;
 
-    QPixmap pixmap(QPixmap::fromImage(m_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    QPixmap pixmap(QPixmap::fromImage(c_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
     m_cover = new ClickableLabel();
     m_cover->setPixmap(pixmap);
@@ -39,10 +39,10 @@ Cover::~Cover()
 
 const Album& Cover::album() const
 {
-    return *m_album;
+    return *c_album;
 }
 
 void Cover::onCoverClicked()
 {
-    emit coverClicked(*m_album);
+    emit coverClicked(*c_album);
 }
