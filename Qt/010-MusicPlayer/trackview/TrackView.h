@@ -2,36 +2,41 @@
 #define TRACKVIEW_H
 
 #include <QStandardItemModel>
+#include <QVBoxLayout>
 
+#include "BackgroundWidget.h"
 #include "Track.h"
 #include "TrackDelegate.h"
 #include "TrackItem.h"
 #include "TrackTableView.h"
 
-class TrackView : public QWidget
+class TrackView : public BackgroundWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit TrackView(QWidget* parent = 0);
     ~TrackView();
 
-
-  public slots:
+public slots:
     void onAlbumSelected(const Album& album);
 
-  signals:
+signals:
     void doubleClicked(const Track&);
 
-  private slots:
+private slots:
     void onDoubleClicked(const QModelIndex& index);
 
-  private:
+private:
+    void clear();
+
     TrackTableView* m_tableView;
-    TrackDelegate* m_delegate;
     QStandardItemModel* m_model;
+    TrackDelegate* m_delegate;
 
     QVector<TrackItem*> m_items;
+
+    QVBoxLayout* m_layout;
 };
 
 #endif // TRACKVIEW_H

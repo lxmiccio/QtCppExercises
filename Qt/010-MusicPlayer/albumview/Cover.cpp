@@ -11,9 +11,11 @@ Cover::Cover(const Album* album, QWidget* parent) : QWidget(parent)
 
     m_albumTitle = new ElidedLabel(album->title());
     m_albumTitle->setAlignment(Qt::AlignCenter);
+    m_albumTitle->setStyleSheet(QString("color: white;"));
 
     m_artistName = new ElidedLabel(album->artist()->name());
     m_artistName->setAlignment(Qt::AlignCenter);
+    m_artistName->setStyleSheet(QString("color: white;"));
 
     QObject::connect(m_cover, SIGNAL(clicked()), this, SLOT(onCoverClicked()));
     QObject::connect(m_albumTitle, SIGNAL(clicked()), this, SLOT(onCoverClicked()));

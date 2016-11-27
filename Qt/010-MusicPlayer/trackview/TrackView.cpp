@@ -4,7 +4,9 @@
 #include <QResizeEvent>
 #include <QScrollBar>
 
-TrackView::TrackView(QWidget* parent) : QWidget(parent)
+#include "ImageUtils.h"
+
+TrackView::TrackView(QWidget* parent) : BackgroundWidget(parent)
 {
     m_tableView = new TrackTableView();
     m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -12,15 +14,21 @@ TrackView::TrackView(QWidget* parent) : QWidget(parent)
     m_tableView->verticalHeader()->hide();
     m_tableView->setShowGrid(false);
 
-    m_delegate = new TrackDelegate(m_tableView);
-    m_tableView->setItemDelegate(m_delegate);
+    QObject::connect(m_tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
 
     m_model = new QStandardItemModel();
     m_tableView->setModel(m_model);
 
-    QObject::connect(m_tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+    m_delegate = new TrackDelegate(m_tableView);
+    m_tableView->setItemDelegate(m_delegate);
 
     m_items = QVector<TrackItem*>();
+
+    m_layout = new QVBoxLayout();
+    m_layout->setMargin(16);
+    m_layout->addWidget(m_tableView);
+
+    setLayout(m_layout);
 }
 
 TrackView::~TrackView()
@@ -30,10 +38,13 @@ TrackView::~TrackView()
 
     delete m_model;
     delete m_tableView;
+    delete m_layout;
 }
 
 void TrackView::onAlbumSelected(const Album& album)
 {
+    clear();
+
     for(QVector<Track>::iterator i_track = album.tracks()->begin(); i_track != album.tracks()->end(); ++i_track)
     {
         TrackItem* item = new TrackItem(i_track);
@@ -46,4 +57,13 @@ void TrackView::onDoubleClicked(const QModelIndex& index)
 {
     const Track* track = m_items.at(index.row())->track();
     emit doubleClicked(*track);
+}
+
+void TrackView::clear()
+{
+    foreach(TrackItem* i_item, m_items)
+        delete i_item;
+    m_items.clear();
+
+    m_model->clear();
 }

@@ -1,7 +1,7 @@
 #ifndef COVER_H
 #define COVER_H
 
-#include "QVBoxLayout"
+#include <QVBoxLayout>
 
 #include "Album.h"
 #include "ClickableLabel.h"

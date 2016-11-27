@@ -9,6 +9,7 @@ class TrackItem
 {
     public:
         explicit TrackItem(const Track* track);
+        ~TrackItem();
 
         const Track* track() const;
         QList<QStandardItem*> items() const;

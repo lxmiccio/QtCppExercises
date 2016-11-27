@@ -182,9 +182,8 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       if(album != NULL) {
         track = new Track(tags, album);
         album->addTrack(*track);
-        qDebug()<<"tove"<<artist;
 
-        //qSort(album->getTracks()->begin(), album->getTracks()->end(), [](const Track& a, const Track& b) -> bool { return a.getTrack() < b.getTrack(); });
+        qSort(album->tracks()->begin(), album->tracks()->end(), [](const Track& a, const Track& b) -> bool { return a.track() < b.track(); });
 
       } else {
         album = new Album(tags["album"].toString(), artist);
@@ -192,13 +191,11 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
         track = new Track(tags, album);
         album->addTrack(*track);
 
-        qDebug()<<artist;
         artist->addAlbum(*album);
       }
     } else {
       artist = new Artist(tags["artist"].toString());
 
-qDebug()<<artist;
       album = new Album(tags["album"].toString(), artist);
 
       track = new Track(tags, album);

@@ -20,29 +20,25 @@ QWidget* TrackDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem
 
 void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    if(option.state & QStyle::State_Selected)
-        painter->fillRect(option.rect, QColor(0, 0, 0, 5));
+   if(option.state & QStyle::State_Selected)
+        painter->fillRect(option.rect, QColor(0, 0, 0, 10));
     else
         painter->fillRect(option.rect, QColor(0, 0, 0, 0));
 
-    QString text = index.data().toString();
-
     QFont font = QApplication::font();
     painter->setFont(font);
+
+    QPen pen;
+    pen.setColor(Qt::white);
+    painter->setPen(pen);
+
+    QString text = index.data().toString();
 
     switch(index.column())
     {
         case TrackTableView::TRACK:
         {
             painter->drawText(option.rect.adjusted(TrackTableView::LEFT_MARGIN, 0, -TrackTableView::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
-            break;
-        }
-
-        case TrackTableView::TITLE:
-        {
-            font.setWeight(QFont::DemiBold);
-            painter->setFont(font);
-            painter->drawText(option.rect.adjusted(TrackTableView::MARGIN, 0, -TrackTableView::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
             break;
         }
 

@@ -7,11 +7,8 @@
 
 AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 {
-  QImage i(":/images/tove-lo.jpg");
-  this->setBackgroundImage(QPixmap::fromImage(ImageUtils::blur(i, i.rect(), 30, false, true)));
-
   QFont font = QApplication::font();
-  font.setPointSize(11);
+  font.setPointSize(13);
 
   this->upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
@@ -38,19 +35,12 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
   this->lowerSpacer1 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
-  this->fastBackward = new ImageButton();
-  this->fastBackward->setPixmap(ImageUtils::pixmap(QString("images/fast_backward.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->fastBackward->setPixmap(ImageUtils::pixmap(QString("images/fast_backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->fastBackward, SIGNAL(clicked()), this, SLOT(onFastBackwardClicked()));
-
-  this->lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
-
   this->backward = new ImageButton();
   this->backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
 
-  this->lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+  this->lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
   this->play = new ImageButton();
   this->play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::gray));
@@ -63,29 +53,22 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->pause->hide();
   QObject::connect(this->pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
 
-  this->lowerSpacer4 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+  this->lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
   this->forward = new ImageButton();
   this->forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::gray));
   this->forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
-  this->lowerSpacer5 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
-
-  this->fastForward = new ImageButton();
-  this->fastForward->setPixmap(ImageUtils::pixmap(QString("images/fast_forward.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->fastForward->setPixmap(ImageUtils::pixmap(QString("images/fast_forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->fastForward, SIGNAL(clicked()), this, SLOT(onFastForwardClicked()));
-
-  this->lowerSpacer6 = new QSpacerItem(120, 8, QSizePolicy::Fixed);
+  this->lowerSpacer4 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
 
   font.setPointSize(9);
 
-  this->eslapsedTime = new QLabel("00:00");
-  this->eslapsedTime->setFont(font);
-  this->eslapsedTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
+  this->elapsedTime = new QLabel("00:00");
+  this->elapsedTime->setFont(font);
+  this->elapsedTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-  this->lowerSpacer7 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+  this->lowerSpacer5 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
 
   this->musicSlider = new SeekSlider(Qt::Horizontal);
   this->musicSlider->setFixedHeight(6);
@@ -94,13 +77,13 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->musicSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
   QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(onMusicSliderMoved(int)));
 
-  this->lowerSpacer8 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+  this->lowerSpacer6 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
 
   this->remainingTime = new QLabel("00:00");
   this->remainingTime->setFont(font);
   this->remainingTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-  this->lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+  this->lowerSpacer7 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
   this->shuffle = new ImageButton();
   this->shuffle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -108,7 +91,7 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->shuffle, SIGNAL(clicked()), this, SLOT(onShuffleClicked()));
 
-  this->lowerSpacer10 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+  this->lowerSpacer8 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
   this->repeat = new ImageButton();
   this->repeat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -116,7 +99,7 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
   QObject::connect(this->repeat, SIGNAL(clicked()), this, SLOT(onRepeatClicked()));
 
-  this->lowerSpacer11 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+  this->lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
   this->volume = new ImageButton();
   this->volume->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -130,34 +113,30 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
   this->volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
   QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
 
-  this->lowerSpacer12 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
+  this->lowerSpacer10 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
   this->lowerHorizontalLayout = new QHBoxLayout();
   this->lowerHorizontalLayout->addItem(this->lowerSpacer1);
-  //this->lowerHorizontalLayout->addWidget(this->fastBackward);
-  //this->lowerHorizontalLayout->addItem(this->lowerSpacer2);
   this->lowerHorizontalLayout->addWidget(this->backward);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer3);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer2);
   this->lowerHorizontalLayout->addWidget(this->play);
   this->lowerHorizontalLayout->addWidget(this->pause);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer4);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer3);
   this->lowerHorizontalLayout->addWidget(this->forward);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer4);
+  this->lowerHorizontalLayout->addWidget(this->elapsedTime);
   this->lowerHorizontalLayout->addItem(this->lowerSpacer5);
-  //this->lowerHorizontalLayout->addWidget(this->fastForward);
-  //this->lowerHorizontalLayout->addItem(this->lowerSpacer6);
-  this->lowerHorizontalLayout->addWidget(this->eslapsedTime);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer7);
   this->lowerHorizontalLayout->addWidget(this->musicSlider);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer8);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer6);
   this->lowerHorizontalLayout->addWidget(this->remainingTime);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer9);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer7);
   this->lowerHorizontalLayout->addWidget(this->shuffle);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer10);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer8);
   this->lowerHorizontalLayout->addWidget(this->repeat);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer11);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer9);
   this->lowerHorizontalLayout->addWidget(this->volume);
   this->lowerHorizontalLayout->addWidget(this->volumeSlider);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer12);
+  this->lowerHorizontalLayout->addItem(this->lowerSpacer10);
 
   this->verticalLayout = new QVBoxLayout();
   this->verticalLayout->setMargin(16);

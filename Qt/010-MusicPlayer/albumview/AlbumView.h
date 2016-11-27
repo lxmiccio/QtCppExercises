@@ -19,7 +19,7 @@ class AlbumView : public BackgroundWidget
         void clearLayout(QLayout* layout);
 
     public slots:
-        void onScrollAreaPainted(QResizeEvent* event);
+        void onScrollAreaResized(QResizeEvent* event);
         void onTrackAdded(const Track& track);
 
     signals:

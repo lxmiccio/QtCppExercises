@@ -17,6 +17,7 @@
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 
+
 #include "loadplaylistwindow.h"
 #include "saveplaylistwindow.h"
 
@@ -39,26 +40,27 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
     m_scrollArea = new ScrollArea(this);
     m_albumView = new AlbumView(m_scrollArea);
     m_scrollArea->setWidget(m_albumView);
-    QObject::connect(m_scrollArea, SIGNAL(resized(QResizeEvent*)), m_albumView, SLOT(onScrollAreaResized(QResizeEvent*)));
+    QObject::connect(m_scrollArea, SIGNAL(resized(QResizeEvent*)), m_albumView, SLOT(onScrollAreaPainted(QResizeEvent*)));
     QObject::connect(m_scrollArea, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
     QObject::connect(this, SIGNAL(trackAdded(const Track&)), m_albumView, SLOT(onTrackAdded(const Track&)));
     QObject::connect(m_albumView, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
 
     m_trackView = new TrackView(this);
-    QObject::connect(m_trackView, SIGNAL(doubleClicked(const Track&)), this, SLOT(itemDoubleClicked(const Track&)));
+    QObject::connect(m_trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(itemClicked(const QModelIndex &)));
+    QObject::connect(this->m_trackView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(trackListItemDoubleClicked(const QModelIndex&)));
 
     m_audioControls = new AudioControls(this);
     m_audioControls->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    //QObject::connect(m_audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(playClicked()), this, SLOT(onPlayClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(musicSliderMoved(int, int, int)), this, SLOT(onMusicSliderMoved(int, int, int)));
-    //QObject::connect(m_audioControls, SIGNAL(shuffleClicked(AC::ShuffleMode_t)), this, SLOT(onShuffleClicked(AC::ShuffleMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(repeatClicked(AC::RepeatMode_t)), this, SLOT(onRepeatClicked(AC::RepeatMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(volumeClicked(AC::VolumeMode_t)), this, SLOT(onVolumeClicked(AC::VolumeMode_t)));
-    //QObject::connect(this, SIGNAL(currentMediaChanged(const Track&)), m_audioControls, SLOT(onCurrentMediaChanged(const Track&)));
-    //QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), m_audioControls, SLOT(onPositionChanged(qint64, qint64)));
+    QObject::connect(m_audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
+    QObject::connect(m_audioControls, SIGNAL(playClicked()), this, SLOT(onPlayClicked()));
+    QObject::connect(m_audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
+    QObject::connect(m_audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
+    QObject::connect(m_audioControls, SIGNAL(musicSliderMoved(int, int, int)), this, SLOT(onMusicSliderMoved(int, int, int)));
+    QObject::connect(m_audioControls, SIGNAL(shuffleClicked(AC::ShuffleMode_t)), this, SLOT(onShuffleClicked(AC::ShuffleMode_t)));
+    QObject::connect(m_audioControls, SIGNAL(repeatClicked(AC::RepeatMode_t)), this, SLOT(onRepeatClicked(AC::RepeatMode_t)));
+    QObject::connect(m_audioControls, SIGNAL(volumeClicked(AC::VolumeMode_t)), this, SLOT(onVolumeClicked(AC::VolumeMode_t)));
+    // QObject::connect(this, SIGNAL(currentMediaChanged(const Track&)), m_audioControls, SLOT(onCurrentMediaChanged(const Track&)));
+    // QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), m_audioControls, SLOT(onPositionChanged(qint64, qint64)));
 
     m_layout = new QVBoxLayout();
     m_layout->setMargin(0);
@@ -74,9 +76,10 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
 
 void MainWindow::onCoverClicked(const Album &album)
 {
+    qDebug()<< album.title();
+    m_scrollArea->hide();
     m_trackView->show();
     m_trackView->onAlbumSelected(album);
-    m_scrollArea->hide();
 }
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)
@@ -213,7 +216,7 @@ void MainWindow::onCurrentMediaChanged(QMediaContent mediaContent)
     QString filename {mediaContent.canonicalUrl().toString().split('/').last()};
 
     //for(QVector<Track>::iterator track {this->playlist->getTracks()->begin()}; track != this->playlist->getTracks()->end(); ++track) {
-    /*if(track->getFilename() == filename) {
+        /*if(track->getFilename() == filename) {
       emit this->currentMediaChanged(*track);
     }*/
     //}
@@ -272,7 +275,7 @@ void MainWindow::trackListItemDoubleClicked(const QModelIndex& index)
 
 void MainWindow::playClicked()
 {
-    // this->musicPlayer->getMediaPlayer()->play();
+   // this->musicPlayer->getMediaPlayer()->play();
 
     //this->play->hide();
     //this->stop->show();
@@ -280,7 +283,7 @@ void MainWindow::playClicked()
 
 void MainWindow::stopClicked()
 {
-    // this->musicPlayer->getMediaPlayer()->pause();
+   // this->musicPlayer->getMediaPlayer()->pause();
 
     //this->stop->hide();
     //this->play->show();
@@ -372,7 +375,7 @@ void MainWindow::addSongClicked()
     this->remove->hide();
     */
     }
-    /*
+/*
     if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
         this->musicPlayer->getMediaPlaylist()->setCurrentIndex(0);
     }

@@ -27,38 +27,30 @@
 
 #include "ImageButton.h"
 #include "StackedWidget.h"
+#include "BackgroundWidget.h"
 
 #include <QStandardItemModel>
 
-class MainWindow : public QWidget
+class MainWindow : public BackgroundWidget
 {
   Q_OBJECT
 
 private:
-  StackedWidget* stackedWidget;
-  MusicPlayer* musicPlayer;
-  Playlist* playlist;
-  QListWidget* trackList;
-  AudioControls* audioControls;
-  QPushButton* addSong;
-  QPushButton* addDirectory;
-  QPushButton* remove;
-  QPushButton* removeAll;
-  QPushButton* savePlaylist;
-  QPushButton* loadPlaylist;
+  const StackedWidget* c_stackedWidget;
 
-  TrackView* trackView;
-  TrackDelegate* trackDelegate;
+  AlbumView* m_albumView;
+  ScrollArea* m_scrollArea;
 
-  MusicLibrary* m_musicLibrary;
+  TrackView* m_trackView;
+
+  AudioControls* m_audioControls;
 
   QVBoxLayout* m_layout;
 
-  ScrollArea* m_scrollArea;
-  AlbumView* m_albumView;
+  MusicLibrary* m_musicLibrary;
 
 public:
-  MainWindow(StackedWidget *stackedWidget, QWidget *parent = 0);
+  MainWindow(const StackedWidget* stackedWidget, QWidget* parent = 0);
 
 public slots:
   void onCoverClicked(const Album& album);
@@ -75,9 +67,9 @@ public slots:
   void onRepeatClicked(AC::RepeatMode_t repeatMode);
   void onVolumeClicked(AC::VolumeMode_t volumeMode);
 
-  void itemClicked(const QModelIndex &){
+  void itemDoubleClicked(const Track&){
     m_scrollArea->show();
-   // trackView->hide();
+    m_trackView->hide();
   }
 
   void onCurrentMediaChanged(QMediaContent);

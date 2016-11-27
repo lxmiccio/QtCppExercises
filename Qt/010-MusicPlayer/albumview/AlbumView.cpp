@@ -4,8 +4,6 @@
 
 AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 {
-    m_albums = QVector<const Album*>();
-
     m_covers = QVector<Cover*>();
     m_layouts = QVector<QHBoxLayout*>();
     m_layout = new QVBoxLayout();
@@ -43,7 +41,7 @@ void AlbumView::clearLayout(QLayout* layout)
     }
 }
 
-void AlbumView::onScrollAreaPainted(QResizeEvent* event)
+void AlbumView::onScrollAreaResized(QResizeEvent* event)
 {
     quint8 currentAlbumsPerRow = albumsPerRow(event->size().width());
 
