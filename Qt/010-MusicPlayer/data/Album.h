@@ -20,7 +20,7 @@ public:
   const QString& title() const;
   void setTitle(const QString& title);
 
-  QVector<Track>* tracks() const;
+  QVector<Track> tracks() const;
   Track* track(const QString& title) const;
   void addTrack(const Track& track);
   bool removeTrack(Track* track);
@@ -38,7 +38,7 @@ private:
   QString m_title;
   QImage m_image;
 
-  QVector<Track>* m_tracks;
+  QVector<Track> m_tracks;
   const Artist* m_artist;
 };
 

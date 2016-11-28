@@ -1,313 +1,340 @@
 #include "AudioControls.h"
 
 #include <QApplication>
-#include <QFontDatabase>
 
 #include "ImageUtils.h"
 
 AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 {
-  QFont font = QApplication::font();
-  font.setPointSize(13);
+    QFont font = QApplication::font();
+    font.setPointSize(13);
 
-  this->upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    m_upperSpacer1 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
-  this->artist = new QLabel("WTF Love Is");
-  this->artist->setFont(font);
-  this->artist->setStyleSheet(QString("color: white;"));
+    m_artist = new QLabel("WTF Love Is");
+    m_artist->setFont(font);
+    m_artist->setStyleSheet(QString("color: white;"));
 
-  this->dash = new QLabel("-");
-  this->dash->setFont(font);
-  this->dash->setStyleSheet(QString("color: white;"));
+    m_dash = new QLabel("-");
+    m_dash->setFont(font);
+    m_dash->setStyleSheet(QString("color: white;"));
 
-  this->track = new QLabel("Tove Lo");
-  this->track->setFont(font);
-  this->track->setStyleSheet(QString("color: white;"));
+    m_track = new QLabel("Tove Lo");
+    m_track->setFont(font);
+    m_track->setStyleSheet(QString("color: white;"));
 
-  this->upperSpacer2 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    m_upperSpacer2 = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
-  this->upperHorizontalLayout = new QHBoxLayout();
-  this->upperHorizontalLayout->addItem(this->upperSpacer1);
-  this->upperHorizontalLayout->addWidget(this->artist);
-  this->upperHorizontalLayout->addWidget(this->dash);
-  this->upperHorizontalLayout->addWidget(this->track);
-  this->upperHorizontalLayout->addItem(this->upperSpacer2);
+    m_upperHorizontalLayout = new QHBoxLayout();
+    m_upperHorizontalLayout->addItem(m_upperSpacer1);
+    m_upperHorizontalLayout->addWidget(m_artist);
+    m_upperHorizontalLayout->addWidget(m_dash);
+    m_upperHorizontalLayout->addWidget(m_track);
+    m_upperHorizontalLayout->addItem(m_upperSpacer2);
 
-  this->lowerSpacer1 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
+    m_lowerSpacer1 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
-  this->backward = new ImageButton();
-  this->backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
+    m_backward = new ImageButton();
+    m_backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    QObject::connect(m_backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
 
-  this->lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+    m_lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->play = new ImageButton();
-  this->play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->play, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
+    m_play = new ImageButton();
+    m_play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    QObject::connect(m_play, SIGNAL(clicked()), this, SLOT(onPlayClicked()));
 
-  this->pause = new ImageButton();
-  this->pause->setPixmap(ImageUtils::pixmap(QString(":/svg/pause.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->pause->setPixmap(ImageUtils::pixmap(QString(":/svg/pause.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  this->pause->hide();
-  QObject::connect(this->pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
+    m_pause = new ImageButton();
+    m_pause->setPixmap(ImageUtils::pixmap(QString(":/svg/pause.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_pause->setPixmap(ImageUtils::pixmap(QString(":/svg/pause.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    m_pause->hide();
+    QObject::connect(m_pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
 
-  this->lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+    m_lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
 
-  this->forward = new ImageButton();
-  this->forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
+    m_forward = new ImageButton();
+    m_forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    QObject::connect(m_forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
-  this->lowerSpacer4 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
+    m_lowerSpacer4 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
 
-  font.setPointSize(9);
+    font.setPointSize(9);
 
-  this->elapsedTime = new QLabel("00:00");
-  this->elapsedTime->setFont(font);
-  this->elapsedTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
+    m_elapsedTime = new QLabel("00:00");
+    m_elapsedTime->setFont(font);
+    m_elapsedTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-  this->lowerSpacer5 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+    m_lowerSpacer5 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
 
-  this->musicSlider = new SeekSlider(Qt::Horizontal);
-  this->musicSlider->setFixedHeight(6);
-  this->musicSlider->setMinimumWidth(256);
+    m_musicSlider = new SeekSlider(Qt::Horizontal);
+    m_musicSlider->setFixedHeight(6);
+    m_musicSlider->setMinimumWidth(256);
 
-  this->musicSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-  QObject::connect(this->musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(onMusicSliderMoved(int)));
+    m_musicSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    QObject::connect(m_musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(onMusicSliderMoved(int)));
 
-  this->lowerSpacer6 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+    m_lowerSpacer6 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
 
-  this->remainingTime = new QLabel("00:00");
-  this->remainingTime->setFont(font);
-  this->remainingTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
+    m_remainingTime = new QLabel("00:00");
+    m_remainingTime->setFont(font);
+    m_remainingTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-  this->lowerSpacer7 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer7 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->shuffle = new ImageButton();
-  this->shuffle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->shuffle, SIGNAL(clicked()), this, SLOT(onShuffleClicked()));
+    m_shuffle = new ImageButton();
+    m_shuffle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    QObject::connect(m_shuffle, SIGNAL(clicked()), this, SLOT(onShuffleClicked()));
 
-  this->lowerSpacer8 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer8 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->repeat = new ImageButton();
-  this->repeat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::gray));
-  this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-  QObject::connect(this->repeat, SIGNAL(clicked()), this, SLOT(onRepeatClicked()));
+    m_repeat = new ImageButton();
+    m_repeat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::gray));
+    m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    QObject::connect(m_repeat, SIGNAL(clicked()), this, SLOT(onRepeatClicked()));
 
-  this->lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
 
-  this->volume = new ImageButton();
-  this->volume->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::white));
-  this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
-  QObject::connect(this->volume, SIGNAL(clicked()), this, SLOT(onVolumeClicked()));
+    m_volume = new ImageButton();
+    m_volume->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::white));
+    m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+    QObject::connect(m_volume, SIGNAL(clicked()), this, SLOT(onVolumeClicked()));
 
-  this->volumeSlider = new SeekSlider(Qt::Horizontal);
-  this->volumeSlider->setFixedHeight(6);
-  this->volumeSlider->setMinimumWidth(120);
-  this->volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-  QObject::connect(this->volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
+    m_volumeSlider = new SeekSlider(Qt::Horizontal);
+    m_volumeSlider->setFixedHeight(6);
+    m_volumeSlider->setMinimumWidth(120);
+    m_volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(m_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
 
-  this->lowerSpacer10 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
+    m_lowerSpacer10 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
 
-  this->lowerHorizontalLayout = new QHBoxLayout();
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer1);
-  this->lowerHorizontalLayout->addWidget(this->backward);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer2);
-  this->lowerHorizontalLayout->addWidget(this->play);
-  this->lowerHorizontalLayout->addWidget(this->pause);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer3);
-  this->lowerHorizontalLayout->addWidget(this->forward);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer4);
-  this->lowerHorizontalLayout->addWidget(this->elapsedTime);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer5);
-  this->lowerHorizontalLayout->addWidget(this->musicSlider);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer6);
-  this->lowerHorizontalLayout->addWidget(this->remainingTime);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer7);
-  this->lowerHorizontalLayout->addWidget(this->shuffle);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer8);
-  this->lowerHorizontalLayout->addWidget(this->repeat);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer9);
-  this->lowerHorizontalLayout->addWidget(this->volume);
-  this->lowerHorizontalLayout->addWidget(this->volumeSlider);
-  this->lowerHorizontalLayout->addItem(this->lowerSpacer10);
+    m_lowerHorizontalLayout = new QHBoxLayout();
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer1);
+    m_lowerHorizontalLayout->addWidget(m_backward);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer2);
+    m_lowerHorizontalLayout->addWidget(m_play);
+    m_lowerHorizontalLayout->addWidget(m_pause);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer3);
+    m_lowerHorizontalLayout->addWidget(m_forward);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer4);
+    m_lowerHorizontalLayout->addWidget(m_elapsedTime);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer5);
+    m_lowerHorizontalLayout->addWidget(m_musicSlider);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer6);
+    m_lowerHorizontalLayout->addWidget(m_remainingTime);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer7);
+    m_lowerHorizontalLayout->addWidget(m_shuffle);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer8);
+    m_lowerHorizontalLayout->addWidget(m_repeat);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer9);
+    m_lowerHorizontalLayout->addWidget(m_volume);
+    m_lowerHorizontalLayout->addWidget(m_volumeSlider);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer10);
 
-  this->verticalLayout = new QVBoxLayout();
-  this->verticalLayout->setMargin(16);
-  this->verticalLayout->setSpacing(8);
-  this->verticalLayout->addLayout(this->upperHorizontalLayout);
-  this->verticalLayout->addLayout(this->lowerHorizontalLayout);
+    m_verticalLayout = new QVBoxLayout();
+    m_verticalLayout->setMargin(16);
+    m_verticalLayout->setSpacing(8);
+    m_verticalLayout->addLayout(m_upperHorizontalLayout);
+    m_verticalLayout->addLayout(m_lowerHorizontalLayout);
 
-  this->setLayout(this->verticalLayout);
+    setLayout(m_verticalLayout);
 
-  this->repeatMode = AC::REPEAT_NONE;
-  this->shuffleMode = AC::SHUFFLE_OFF;
-  this->volumeMode = AC::VOLUME_NOT_MUTED;
+    m_repeatMode = AudioControls::REPEAT_NONE;
+    m_shuffleMode = AudioControls::SHUFFLE_OFF;
+    m_volumeMode = AudioControls::VOLUME_NOT_MUTED;
+}
+
+AudioControls::~AudioControls()
+{
+    delete m_upperSpacer1;
+    delete m_artist;
+    delete m_dash;
+    delete m_track;
+    delete m_upperSpacer2;
+    delete m_upperHorizontalLayout;
+
+    delete m_lowerSpacer1;
+    delete m_backward;
+    delete m_lowerSpacer2;
+    delete m_play;
+    delete m_pause;
+    delete m_lowerSpacer3;
+    delete m_forward;
+    delete m_lowerSpacer4;
+    delete m_elapsedTime;
+    delete m_lowerSpacer5;
+    delete m_musicSlider;
+    delete m_lowerSpacer6;
+    delete m_remainingTime;
+    delete m_lowerSpacer7;
+    delete m_shuffle;
+    delete m_lowerSpacer8;
+    delete m_repeat;
+    delete m_lowerSpacer9;
+    delete m_volume;
+    delete m_volumeSlider;
+    delete m_lowerSpacer10;
+    delete m_lowerHorizontalLayout;
+
+    delete m_verticalLayout;
 }
 
 void AudioControls::showPlay(bool show)
 {
-  show ? this->play->show() : this->play->hide();
+    show ? m_play->show() : m_play->hide();
 }
 
 void AudioControls::showPause(bool show)
 {
-  show ? this->pause->show() : this->pause->hide();
+    show ? m_pause->show() : m_pause->hide();
 }
 
-void AudioControls::onCurrentMediaChanged(Track& track)
+void AudioControls::onCurrentMediaChanged(const Track& track)
 {
-  //this->artist->setText(track.getArtist());
-  //this->track->setText(track.getTitle());
+    m_artist->setText(track.artist()->name());
+    m_track->setText(track.title());
 }
 
 void AudioControls::onPositionChanged(qint64 position, qint64 duration)
 {
-  if(duration != 0) {
-    this->musicSlider->setValue((this->musicSlider->maximum() - this->musicSlider->minimum()) * position / duration);
-  }
-}
-
-void AudioControls::onFastBackwardClicked()
-{
-  emit this->fastBackwardClicked();
+    if(duration != 0) {
+        m_musicSlider->setValue((m_musicSlider->maximum() - m_musicSlider->minimum()) * position / duration);
+    }
 }
 
 void AudioControls::onBackwardClicked()
 {
-  emit this->backwardClicked();
+    emit backwardClicked();
 }
 
 void AudioControls::onPlayClicked()
 {
-  this->play->hide();
-  this->pause->show();
+    m_play->hide();
+    m_pause->show();
 
-  emit this->playClicked();
+    emit playClicked();
 }
 
 void AudioControls::onPauseClicked()
 {
-  this->pause->hide();
-  this->play->show();
+    m_pause->hide();
+    m_play->show();
 
-  emit this->pauseClicked();
+    emit pauseClicked();
 }
 
 void AudioControls::onForwardClicked()
 {
-  emit this->forwardClicked();
-}
-
-void AudioControls::onFastForwardClicked()
-{
-  emit this->fastForwardClicked();
+    emit forwardClicked();
 }
 
 void AudioControls::onMusicSliderMoved(int position)
 {
-  emit this->musicSliderMoved(position, this->musicSlider->minimum(), this->musicSlider->maximum());
+    emit musicSliderMoved(position, m_musicSlider->minimum(), m_musicSlider->maximum());
 }
 
 void AudioControls::onShuffleClicked()
 {
-  switch (this->shuffleMode)
-  {
-  case AC::SHUFFLE_OFF: {
-    this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 0.5, Qt::gray), QIcon::Off, QIcon::Active);
+    switch (m_shuffleMode)
+    {
+        case AudioControls::SHUFFLE_OFF:
+        {
+            m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white));
+            m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 0.5, Qt::gray), QIcon::Off, QIcon::Active);
+            m_shuffleMode = AudioControls::SHUFFLE_ON;
+            break;
+        }
 
-    this->shuffleMode = AC::SHUFFLE_ON;
-    break;
-  }
+        case AudioControls::SHUFFLE_ON:
+        {
+            m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::gray));
+            m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+            m_shuffleMode = AudioControls::SHUFFLE_OFF;
+            break;
+        }
 
-  case AC::SHUFFLE_ON: {
-    this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::gray));
-    this->shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+        default:
+        {
+            break;
+        }
+    }
 
-    this->shuffleMode = AC::SHUFFLE_OFF;
-    break;
-  }
-
-  default: {
-    break;
-  }
-  }
-
-  emit this->shuffleClicked(this->shuffleMode);
+    emit shuffleClicked(m_shuffleMode);
 }
 
 void AudioControls::onRepeatClicked()
 {
-  switch (this->repeatMode)
-  {
-  case AC::REPEAT_NONE: {
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+    switch (m_repeatMode)
+    {
+        case AudioControls::REPEAT_NONE:
+        {
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white));
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-one.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+            m_repeatMode = AudioControls::REPEAT_ONE;
+            break;
+        }
 
-    this->repeatMode = AC::REPEAT_ONE;
-    break;
-  }
+        case AudioControls::REPEAT_ONE:
+        {
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::white));
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+            m_repeatMode = AudioControls::REPEAT_ALL;
+            break;
+        }
 
-  case AC::REPEAT_ONE: {
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat-all.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+        case AudioControls::REPEAT_ALL:
+        {
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::gray));
+            m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+            m_repeatMode = AudioControls::REPEAT_NONE;
+            break;
+        }
 
-    this->repeatMode = AC::REPEAT_ALL;
-    break;
-  }
+        default:
+        {
+            break;
+        }
+    }
 
-  case AC::REPEAT_ALL: {
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::gray));
-    this->repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
-
-    this->repeatMode = AC::REPEAT_NONE;
-    break;
-  }
-
-  default: {
-    break;
-  }
-  }
-
-  emit this->repeatClicked(this->repeatMode);
+    emit repeatClicked(m_repeatMode);
 }
 
 void AudioControls::onVolumeClicked()
 {
-  switch (this->volumeMode)
-  {
-  case AC::VOLUME_MUTED: {
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::white));
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+    switch (m_volumeMode)
+    {
+        case AudioControls::VOLUME_MUTED:
+        {
+            m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::white));
+            m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume.svg"), QSize(17, 17), 1.0, Qt::gray), QIcon::Off, QIcon::Active);
+            m_volumeMode = AudioControls::VOLUME_NOT_MUTED;
+            break;
+        }
 
-    this->volumeMode = AC::VOLUME_NOT_MUTED;
-    break;
-  }
+        case AudioControls::VOLUME_NOT_MUTED:
+        {
+            m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::gray));
+            m_volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+            m_volumeMode = AudioControls::VOLUME_MUTED;
+            break;
+        }
 
-  case AC::VOLUME_NOT_MUTED: {
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::gray));
-    this->volume->setPixmap(ImageUtils::pixmap(QString(":/svg/volume-muted.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
+        default:
+        {
+            break;
+        }
+    }
 
-    this->volumeMode = AC::VOLUME_MUTED;
-    break;
-  }
-
-  default: {
-    break;
-  }
-  }
-
-  emit this->volumeClicked(this->volumeMode);
+    emit volumeClicked(m_volumeMode);
 }
 
 void AudioControls::onVolumeSliderMoved(int position)
 {
-  emit this->volumeSliderMoved(position);
+    emit volumeSliderMoved(position);
 }

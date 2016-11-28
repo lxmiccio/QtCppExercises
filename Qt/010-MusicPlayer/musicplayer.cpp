@@ -2,46 +2,49 @@
 
 MusicPlayer::MusicPlayer()
 {
-  this->mediaPlayer = new QMediaPlayer();
-  this->mediaPlayer->setVolume(100);
-  this->mediaPlaylist = new QMediaPlaylist();
-  this->mediaPlayer->setPlaylist(this->mediaPlaylist);
+    m_mediaPlayer = new QMediaPlayer();
+    m_mediaPlayer->setVolume(100);
+
+    m_mediaPlaylist = new QMediaPlaylist();
+    m_mediaPlayer->setPlaylist(m_mediaPlaylist);
 }
 
-QMediaPlayer* MusicPlayer::getMediaPlayer()
+void MusicPlayer::addTrack(const Track& track)
 {
-  return this->mediaPlayer;
+    m_tracks.push_back(&track);
+    m_mediaPlaylist->addMedia(track.mediaContent());
 }
 
-void MusicPlayer::addTrack(Track &track)
+void MusicPlayer::addTracks(const QVector<const Track*>& tracks)
 {
-  //qDebug() << track.getPath();
-  //this->mediaPlaylist->addMedia(track.getMediaContent());
+    foreach(const Track* i_track, tracks)
+    {
+        m_tracks.push_back(i_track);
+        m_mediaPlaylist->addMedia(i_track->mediaContent());
+    }
 }
 
-void MusicPlayer::addTracks(QVector<Track> &tracks)
+void MusicPlayer::removeTrack(const Track& track)
 {
-  for(QVector<Track>::iterator track {tracks.begin()}; track != tracks.end(); ++track) {
-    //this->mediaPlaylist->addMedia(track->getMediaContent());
-  }
-}
-
-void MusicPlayer::removeTrack(Track &track)
-{
-  for(int i {0}; i < this->mediaPlaylist->mediaCount(); ++i) {
-    //if(this->mediaPlaylist->media(i) == track.getMediaContent()) {
-      //this->mediaPlaylist->removeMedia(i);
-      //break;
-    //}
-  }
+    for(int i {0}; i < m_mediaPlaylist->mediaCount(); ++i) {
+        //if(m_mediaPlaylist->media(i) == track.getMediaContent()) {
+        //m_mediaPlaylist->removeMedia(i);
+        //break;
+        //}
+    }
 }
 
 void MusicPlayer::removeAllTracks()
 {
-  this->mediaPlaylist->clear();
+    m_mediaPlaylist->clear();
 }
 
-QMediaPlaylist* MusicPlayer::getMediaPlaylist()
+QMediaPlayer* MusicPlayer::mediaPlayer() const
 {
-  return this->mediaPlaylist;
+    return m_mediaPlayer;
+}
+
+QMediaPlaylist* MusicPlayer::mediaPlaylist() const
+{
+    return m_mediaPlaylist;
 }

@@ -9,6 +9,8 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <QTimeLine>
+
 #include "BackgroundWidget.h"
 #include "ImageButton.h"
 #include "SeekSlider.h"
@@ -16,6 +18,27 @@
 
 namespace AC
 {
+  typedef enum ShuffleMode
+  {
+    SHUFFLE_OFF = 0,
+    SHUFFLE_ON
+  }
+  ShuffleMode_t;
+
+  typedef enum RepeatMode
+  {
+    REPEAT_NONE = 0,
+    REPEAT_ONE,
+    REPEAT_ALL
+  }
+  RepeatMode_t;
+
+  typedef enum VolumeMode
+  {
+    VOLUME_MUTED = 0,
+    VOLUME_NOT_MUTED
+  }
+  VolumeMode_t;
 }
 
 class AudioControls : public BackgroundWidget
@@ -24,43 +47,18 @@ class AudioControls : public BackgroundWidget
 
   public:
     explicit AudioControls(QWidget* parent = 0);
-    ~AudioControls();
 
     void showPlay(bool show);
     void showPause(bool show);
 
-    typedef enum ShuffleMode
-    {
-      SHUFFLE_OFF = 0,
-      SHUFFLE_ON
-    }
-    ShuffleMode_t;
-
-    typedef enum RepeatMode
-    {
-      REPEAT_NONE = 0,
-      REPEAT_ONE,
-      REPEAT_ALL
-    }
-    RepeatMode_t;
-
-    typedef enum VolumeMode
-    {
-      VOLUME_MUTED = 0,
-      VOLUME_NOT_MUTED
-    }
-    VolumeMode_t;
-
   private:
     QVBoxLayout* m_verticalLayout;
-
     QHBoxLayout* m_upperHorizontalLayout;
     QSpacerItem* m_upperSpacer1;
     QLabel* m_artist;
     QLabel* m_dash;
     QLabel* m_track;
     QSpacerItem* m_upperSpacer2;
-
     QHBoxLayout* m_lowerHorizontalLayout;
     QSpacerItem* m_lowerSpacer1;
     ImageButton* m_backward;
@@ -84,9 +82,9 @@ class AudioControls : public BackgroundWidget
     QSlider* m_volumeSlider;
     QSpacerItem* m_lowerSpacer10;
 
-    RepeatMode_t m_repeatMode;
-    ShuffleMode_t m_shuffleMode;
-    VolumeMode_t m_volumeMode;
+    AC::RepeatMode_t m_repeatMode;
+    AC::ShuffleMode_t m_shuffleMode;
+    AC::VolumeMode_t m_volumeMode;
 
   public slots:
     void onCurrentMediaChanged(const Track& track);
@@ -106,14 +104,16 @@ class AudioControls : public BackgroundWidget
     void onVolumeSliderMoved(int position);
 
   signals:
+    void fastBackwardClicked();
     void backwardClicked();
     void playClicked();
     void pauseClicked();
     void forwardClicked();
+    void fastForwardClicked();
     void musicSliderMoved(int position, int minimum, int maximum);
-    void shuffleClicked(AudioControls::ShuffleMode_t shuffleMode);
-    void repeatClicked(AudioControls::RepeatMode_t repeatMode);
-    void volumeClicked(AudioControls::VolumeMode_t volumeMode);
+    void shuffleClicked(AC::ShuffleMode_t shuffleMode);
+    void repeatClicked(AC::RepeatMode_t repeatMode);
+    void volumeClicked(AC::VolumeMode_t volumeMode);
     void volumeSliderMoved(int position);
 };
 

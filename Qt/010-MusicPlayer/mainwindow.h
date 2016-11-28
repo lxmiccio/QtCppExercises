@@ -49,6 +49,8 @@ private:
 
   MusicLibrary* m_musicLibrary;
 
+  MusicPlayer* m_musicPlayer;
+
 public:
   MainWindow(const StackedWidget* stackedWidget, QWidget* parent = 0);
 
@@ -63,13 +65,15 @@ public slots:
   void onForwardClicked();
   void onFileDropped(const QFileInfo& fileInfo);
   void onMusicSliderMoved(int position, int minimum, int maximum);
-  void onShuffleClicked(AC::ShuffleMode_t shuffleMode);
-  void onRepeatClicked(AC::RepeatMode_t repeatMode);
-  void onVolumeClicked(AC::VolumeMode_t volumeMode);
+  void onShuffleClicked(AudioControls::ShuffleMode_t shuffleMode);
+  void onRepeatClicked(AudioControls::RepeatMode_t repeatMode);
+  void onVolumeClicked(AudioControls::VolumeMode_t volumeMode);
 
-  void itemDoubleClicked(const Track&){
+  void itemDoubleClicked(const Track& track){
     m_scrollArea->show();
     m_trackView->hide();
+    m_musicPlayer->mediaPlaylist()->setCurrentIndex(track.track() - 1);
+    m_musicPlayer->mediaPlayer()->play();
   }
 
   void onCurrentMediaChanged(QMediaContent);

@@ -54,9 +54,9 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
     //QObject::connect(m_audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
     //QObject::connect(m_audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
     //QObject::connect(m_audioControls, SIGNAL(musicSliderMoved(int, int, int)), this, SLOT(onMusicSliderMoved(int, int, int)));
-    //QObject::connect(m_audioControls, SIGNAL(shuffleClicked(AC::ShuffleMode_t)), this, SLOT(onShuffleClicked(AC::ShuffleMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(repeatClicked(AC::RepeatMode_t)), this, SLOT(onRepeatClicked(AC::RepeatMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(volumeClicked(AC::VolumeMode_t)), this, SLOT(onVolumeClicked(AC::VolumeMode_t)));
+    //QObject::connect(m_audioControls, SIGNAL(shuffleClicked(AudioControls::ShuffleMode_t)), this, SLOT(onShuffleClicked(AudioControls::ShuffleMode_t)));
+    //QObject::connect(m_audioControls, SIGNAL(repeatClicked(AudioControls::RepeatMode_t)), this, SLOT(onRepeatClicked(AudioControls::RepeatMode_t)));
+    //QObject::connect(m_audioControls, SIGNAL(volumeClicked(AudioControls::VolumeMode_t)), this, SLOT(onVolumeClicked(AudioControls::VolumeMode_t)));
     //QObject::connect(this, SIGNAL(currentMediaChanged(const Track&)), m_audioControls, SLOT(onCurrentMediaChanged(const Track&)));
     //QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), m_audioControls, SLOT(onPositionChanged(qint64, qint64)));
 
@@ -70,6 +70,8 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
     setLayout(m_layout);
 
     m_musicLibrary = new MusicLibrary();
+
+    m_musicPlayer = new MusicPlayer();
 }
 
 void MainWindow::onCoverClicked(const Album &album)
@@ -77,6 +79,9 @@ void MainWindow::onCoverClicked(const Album &album)
     m_trackView->show();
     m_trackView->onAlbumSelected(album);
     m_scrollArea->hide();
+
+    foreach(Track i_track, album.tracks())
+        qDebug()<< i_track.title();
 }
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)
@@ -143,16 +148,16 @@ void MainWindow::onMusicSliderMoved(int position, int minimum, int maximum)
     }*/
 }
 
-void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
+void MainWindow::onShuffleClicked(AudioControls::ShuffleMode_t shuffleMode)
 {/*
     switch (shuffleMode)
     {
-    case AC::SHUFFLE_OFF: {
+    case AudioControls::SHUFFLE_OFF: {
         this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
         break;
     }
 
-    case AC::SHUFFLE_ON: {
+    case AudioControls::SHUFFLE_ON: {
         this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
         break;
     }
@@ -163,21 +168,21 @@ void MainWindow::onShuffleClicked(AC::ShuffleMode_t shuffleMode)
     }*/
 }
 
-void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
+void MainWindow::onRepeatClicked(AudioControls::RepeatMode_t repeatMode)
 {/*
     switch (repeatMode)
     {
-    case AC::REPEAT_NONE: {
+    case AudioControls::REPEAT_NONE: {
         this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Sequential);
         break;
     }
 
-    case AC::REPEAT_ONE: {
+    case AudioControls::REPEAT_ONE: {
         this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
         break;
     }
 
-    case AC::REPEAT_ALL: {
+    case AudioControls::REPEAT_ALL: {
         this->musicPlayer->getMediaPlaylist()->setPlaybackMode(QMediaPlaylist::Loop);
         break;
     }
@@ -188,16 +193,16 @@ void MainWindow::onRepeatClicked(AC::RepeatMode_t repeatMode)
     }*/
 }
 
-void MainWindow::onVolumeClicked(AC::VolumeMode_t volumeMode)
+void MainWindow::onVolumeClicked(AudioControls::VolumeMode_t volumeMode)
 {/*
     switch (volumeMode)
     {
-    case AC::VOLUME_MUTED: {
+    case AudioControls::VOLUME_MUTED: {
         this->musicPlayer->getMediaPlayer()->setMuted(true);
         break;
     }
 
-    case AC::VOLUME_NOT_MUTED: {
+    case AudioControls::VOLUME_NOT_MUTED: {
         this->musicPlayer->getMediaPlayer()->setMuted(false);
         break;
     }

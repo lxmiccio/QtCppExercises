@@ -3,26 +3,27 @@
 
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include <QVector>
 
 #include "Track.h"
 
 class MusicPlayer
 {
-private:
-  QMediaPlayer* mediaPlayer;
-  QMediaPlaylist* mediaPlaylist;
+    public:
+        MusicPlayer();
 
-public:
-  MusicPlayer();
+        void addTrack(const Track& track);
+        void addTracks(const QVector<const Track*>& tracks);
+        void removeTrack(const Track& track);
+        void removeAllTracks();
 
-  QMediaPlayer* getMediaPlayer();
+        QMediaPlayer* mediaPlayer() const;
+        QMediaPlaylist* mediaPlaylist() const;
 
-  void addTrack(Track& track);
-  void addTracks(QVector<Track> &tracks);
-  void removeTrack(Track& track);
-  void removeAllTracks();
-  QMediaPlaylist* getMediaPlaylist();
+    private:
+        QVector<const Track*> m_tracks;
+
+        QMediaPlayer* m_mediaPlayer;
+        QMediaPlaylist* m_mediaPlaylist;
 };
 
 #endif // MUSICPLAYER_H
