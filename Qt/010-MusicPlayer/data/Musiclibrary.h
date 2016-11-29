@@ -19,14 +19,14 @@ public:
   bool removeArtist(const QString& name);
 
   QVector<Album>* getAlbums() const;
-  QVector<Album>* getAlbumsOfArtist(const QString& name) const;
+  QVector<Album*>* getAlbumsOfArtist(const QString& name) const;
   Album* getAlbum(const QString& title) const;
   bool removeAlbum(Album* album);
   bool removeAlbum(const QString& albumName, const QString &artistName);
 
   QVector<Track>* getTracks() const;
   QVector<Track>* getTracksOfArtist(const QString& name) const;
-  QVector<Track>* getTracksOfAlbum(const QString& title) const;
+  QVector<Track*>* getTracksOfAlbum(const QString& title) const;
   bool removeTrack(Track* track);
   bool removeTrack(const QString& trackTitle, const QString& albumTitle);
 

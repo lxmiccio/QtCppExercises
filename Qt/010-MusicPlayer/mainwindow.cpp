@@ -80,8 +80,8 @@ void MainWindow::onCoverClicked(const Album &album)
     m_trackView->onAlbumSelected(album);
     m_scrollArea->hide();
 
-    foreach(Track i_track, album.tracks())
-        qDebug()<< i_track.title();
+    foreach(Track* i_track, album.tracks())
+        qDebug()<< i_track->title();
 }
 
 void MainWindow::onFileDropped(const QFileInfo& fileInfo)

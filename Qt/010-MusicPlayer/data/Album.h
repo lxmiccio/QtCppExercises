@@ -5,8 +5,8 @@
 #include <QString>
 #include <QVector>
 
-#include "artist.h"
-#include "track.h"
+#include "Artist.h"
+#include "Track.h"
 
 class Artist;
 class Track;
@@ -20,9 +20,9 @@ public:
   const QString& title() const;
   void setTitle(const QString& title);
 
-  QVector<Track> tracks() const;
-  Track* track(const QString& title) const;
-  void addTrack(const Track& track);
+  QVector<Track*> tracks() const;
+  Track* track(const QString& title);
+  void addTrack(Track& track);
   bool removeTrack(Track* track);
   bool removeTrack(const QString& title);
 
@@ -38,7 +38,7 @@ private:
   QString m_title;
   QImage m_image;
 
-  QVector<Track> m_tracks;
+  QVector<Track*> m_tracks;
   const Artist* m_artist;
 };
 

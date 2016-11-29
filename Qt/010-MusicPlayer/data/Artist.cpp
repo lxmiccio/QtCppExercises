@@ -2,14 +2,14 @@
 
 Artist::Artist()
 {
-  m_albums = new QVector<Album>();
+  m_albums = QVector<Album*>();
 }
 
 Artist::Artist(const QString& name)
 {
   m_name = name;
 
-  m_albums = new QVector<Album>();
+  m_albums = QVector<Album*>();
 }
 
 const QString& Artist::name() const
@@ -22,37 +22,37 @@ void Artist::setName(const QString& name)
   m_name = name;
 }
 
-QVector<Album>* Artist::albums() const
+QVector<Album*> Artist::albums() const
 {
   return m_albums;
 }
 
-Album* Artist::album(const QString& title) const
+Album* Artist::album(const QString& title)
 {
-  for(QVector<Album>::iterator album = m_albums->begin(); album != m_albums->end(); ++album) {
-    if(album->title() == title) {
-      return album;
+  foreach(Album* i_album, m_albums) {
+    if(i_album->title() == title) {
+      return i_album;
     }
   }
 
   return NULL;
 }
 
-void Artist::addAlbum(const Album &album)
+void Artist::addAlbum(Album &album)
 {
-  m_albums->push_back(album);
+  m_albums.push_back(&album);
 }
 
-bool Artist::removeAlbum(const Album& album)
+bool Artist::removeAlbum(Album& album)
 {
-  return m_albums->removeOne(album);
+  return m_albums.removeOne(&album);
 }
 
 bool Artist::removeAlbum(const QString& title)
 {
-  for(QVector<Album>::iterator album = m_albums->begin(); album != m_albums->end(); ++album) {
-    if(album->title() == title) {
-      return m_albums->removeOne(*album);
+  foreach(Album* i_album, m_albums) {
+    if(i_album->title() == title) {
+      return m_albums.removeOne(i_album);
     }
   }
 
@@ -63,9 +63,9 @@ QVector<Track>* Artist::tracks() const
 {
   QVector<Track>* tracks = new QVector<Track>();
 
-  for(QVector<Album>::iterator album = m_albums->begin(); album != m_albums->end(); ++album) {
-    for(QVector<Track>::iterator track = album->tracks()->begin(); track != album->tracks()->end(); ++track) {
-      tracks->push_back(*track);
+  foreach(Album* i_album, m_albums) {
+    foreach(Track* i_track, i_album->tracks()) {
+      tracks->push_back(*i_track);
     }
   }
 

@@ -16,11 +16,15 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 
 AlbumView::~AlbumView()
 {
-    foreach(Cover* i_widget, m_covers)
-        delete i_widget;
+    foreach(Cover* i_cover, m_covers)
+        delete i_cover;
+
+    m_covers.clear();
 
     foreach(QHBoxLayout* i_layout, m_layouts)
         delete i_layout;
+
+    m_layouts.clear();
 
     delete m_layout;
 }

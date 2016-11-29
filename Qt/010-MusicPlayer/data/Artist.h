@@ -18,17 +18,17 @@ class Artist
     const QString& name() const;
     void setName(const QString& name);
 
-    QVector<Album>* albums() const;
-    Album* album(const QString& title) const;
-    void addAlbum(const Album& album);
-    bool removeAlbum(const Album& album);
+    QVector<Album*> albums() const;
+    Album* album(const QString& title);
+    void addAlbum(Album& album);
+    bool removeAlbum(Album& album);
     bool removeAlbum(const QString& title);
 
     QVector<Track>* tracks() const;
 
   private:
     QString m_name;
-    QVector<Album>* m_albums;
+    QVector<Album*> m_albums;
 };
 
 bool operator==(const Artist& artist1, const Artist& artist2);

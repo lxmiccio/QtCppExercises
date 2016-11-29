@@ -2,6 +2,7 @@
 #include <QFontDatabase>
 
 #include "StackedWidget.h"
+#include <QMap>
 
 int main(int argc, char *argv[])
 {

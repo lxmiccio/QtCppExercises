@@ -45,7 +45,7 @@ void TrackView::onAlbumSelected(const Album& album)
 {
     clear();
 
-    for(QVector<Track>::iterator i_track = album.tracks()->begin(); i_track != album.tracks()->end(); ++i_track)
+    foreach(Track* i_track, album.tracks())
     {
         TrackItem* item = new TrackItem(i_track);
         m_items.push_back(item);

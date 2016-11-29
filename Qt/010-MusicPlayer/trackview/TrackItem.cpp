@@ -21,7 +21,9 @@ TrackItem::TrackItem(const Track* track)
 TrackItem::~TrackItem()
 {
     foreach(QStandardItem* i_item, m_items)
-    delete i_item;
+        delete i_item;
+
+    m_items.clear();
 }
 
 const Track* TrackItem::track() const
