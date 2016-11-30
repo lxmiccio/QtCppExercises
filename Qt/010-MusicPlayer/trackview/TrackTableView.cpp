@@ -1,5 +1,6 @@
 #include "TrackTableView.h"
 
+#include <QCommonStyle>
 #include <QResizeEvent>
 #include <QScrollBar>
 
@@ -13,15 +14,17 @@ TrackTableView::TrackTableView(QWidget* parent) : QTableView(parent)
                           "background: transparent;"
                           "}"));
 
-    verticalScrollBar()->setVisible(false);
+    /* Workaround */
+    verticalScrollBar()->setStyle(new QCommonStyle);
+
     verticalScrollBar()->setStyleSheet(QString("QScrollBar:vertical {"
-                                               "background: %1;"
+                                               "background: transparent;"
                                                "border: 0;"
                                                "margin: 0 0 0 0;"
                                                "width: 10px;"
                                                "}"
                                                "QScrollBar::handle:vertical {"
-                                               "margin: 2px 2px 2px 0px;"
+                                               "margin: 2px 2px 2px 2px;"
                                                "border-image: url(:/images/scroll-bar.jpg);"
                                                "border-radius: 2px;"
                                                "}"
@@ -37,8 +40,7 @@ TrackTableView::TrackTableView(QWidget* parent) : QTableView(parent)
                                                "border: 0;"
                                                "height: 0;"
                                                "width: 0;"
-                                               "}")
-                                       .arg(QColor(255, 255, 255, 255).name()));
+                                               "}"));
 }
 
 void TrackTableView::resizeEvent(QResizeEvent* event)
