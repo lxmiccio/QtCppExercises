@@ -6,7 +6,7 @@
 
 #include "ImageUtils.h"
 
-TrackView::TrackView(QWidget* parent) : BackgroundWidget(parent)
+TrackView::TrackView(QWidget* parent) : QWidget(parent)
 {
     m_tableView = new TrackTableView();
     m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -33,12 +33,14 @@ TrackView::TrackView(QWidget* parent) : BackgroundWidget(parent)
 
 TrackView::~TrackView()
 {
+    /*
     foreach (TrackItem* i_trackItem, m_items)
         delete i_trackItem;
 
     delete m_model;
     delete m_tableView;
     delete m_layout;
+    */
 }
 
 void TrackView::onAlbumSelected(const Album& album)

@@ -2,7 +2,7 @@
 
 #include <QResizeEvent>
 
-AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
+AlbumView::AlbumView(QWidget* parent) : QWidget(parent)
 {
     m_covers = QVector<Cover*>();
     m_layouts = QVector<QHBoxLayout*>();
@@ -16,6 +16,7 @@ AlbumView::AlbumView(QWidget* parent) : BackgroundWidget(parent)
 
 AlbumView::~AlbumView()
 {
+    /*
     foreach(Cover* i_cover, m_covers)
         delete i_cover;
 
@@ -27,6 +28,7 @@ AlbumView::~AlbumView()
     m_layouts.clear();
 
     delete m_layout;
+    */
 }
 
 void AlbumView::clearLayout(QLayout* layout)

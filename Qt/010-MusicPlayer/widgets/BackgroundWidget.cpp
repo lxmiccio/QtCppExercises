@@ -26,7 +26,7 @@ void BackgroundWidget::setBackgroundImage(const QPixmap& pixmap, bool blurred, b
     m_blurred = blurred;
 
     if(m_blurred)
-        m_background = QPixmap::fromImage(ImageUtils::blur(pixmap.toImage(), pixmap.rect(), 17, false, blackWhite));
+        m_background = QPixmap::fromImage(ImageUtils::blur(pixmap.toImage(), pixmap.rect(), 10, false, blackWhite));
     else
         m_background = pixmap;
 
@@ -45,7 +45,7 @@ void BackgroundWidget::paintEvent(QPaintEvent* event)
 
     if(!m_backgroundSlice.isNull())
     {
-        painter.drawPixmap(event->rect(), m_backgroundSlice.copy(event->rect()));
+        painter.drawPixmap(contentsRect(), m_backgroundSlice.copy(contentsRect()));
 
         if(m_blurred)
         {
@@ -71,7 +71,7 @@ void BackgroundWidget::paintEvent(QPaintEvent* event)
 
 void BackgroundWidget::resizeEvent(QResizeEvent* event)
 {
-    m_backgroundSlice = QPixmap();
-
     QWidget::resizeEvent(event);
+
+    m_backgroundSlice = QPixmap();
 }

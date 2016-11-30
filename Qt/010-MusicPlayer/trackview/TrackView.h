@@ -10,7 +10,7 @@
 #include "TrackItem.h"
 #include "TrackTableView.h"
 
-class TrackView : public BackgroundWidget
+class TrackView : public QWidget
 {
     Q_OBJECT
 

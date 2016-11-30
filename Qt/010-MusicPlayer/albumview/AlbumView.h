@@ -8,7 +8,7 @@
 #include "BackgroundWidget.h"
 #include "Cover.h"
 
-class AlbumView : public BackgroundWidget
+class AlbumView : public QWidget
 {
     Q_OBJECT
 

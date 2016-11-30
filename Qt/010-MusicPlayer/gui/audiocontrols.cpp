@@ -4,7 +4,7 @@
 
 #include "ImageUtils.h"
 
-AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
+AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
 {
     QFont font = QApplication::font();
     font.setPointSize(13);
@@ -152,6 +152,7 @@ AudioControls::AudioControls(QWidget* parent) : BackgroundWidget(parent)
 
 AudioControls::~AudioControls()
 {
+    /*
     delete m_upperSpacer1;
     delete m_artist;
     delete m_dash;
@@ -183,6 +184,7 @@ AudioControls::~AudioControls()
     delete m_lowerHorizontalLayout;
 
     delete m_verticalLayout;
+    */
 }
 
 void AudioControls::showPlay(bool show)

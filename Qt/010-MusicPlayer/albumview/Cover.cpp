@@ -33,10 +33,12 @@ Cover::Cover(const Album* album, QWidget* parent) : QWidget(parent)
 
 Cover::~Cover()
 {
+    /*
     delete m_cover;
     delete m_albumTitle;
     delete m_artistName;
     delete m_layout;
+    */
 }
 
 const Album& Cover::album() const

@@ -18,7 +18,7 @@ namespace AC
 {
 }
 
-class AudioControls : public BackgroundWidget
+class AudioControls : public QWidget
 {
   Q_OBJECT
 

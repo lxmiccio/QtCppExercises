@@ -187,7 +187,13 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
         track = new Track(tags, album);
         album->addTrack(*track);
 
-        //qSort(album->tracks().begin(), album->tracks().end(), [](const Track& a, const Track& b) -> bool { return a.track() < b.track(); });
+        QVector<Track> tracks = QVector<Track>();
+
+        foreach (Track* i_item, album->tracks()) {
+            tracks.append(*i_item);
+        }
+
+        qSort(tracks.begin(), tracks.end(), [](const Track& a, const Track& b) -> bool { return a.track() < b.track(); });
 
       } else {
         album = new Album(tags["album"].toString(), artist);
