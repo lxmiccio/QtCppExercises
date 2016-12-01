@@ -2,8 +2,9 @@
 #define TRACKVIEW_H
 
 #include <QStandardItemModel>
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 
+#include "AlbumWidget.h"
 #include "BackgroundWidget.h"
 #include "Track.h"
 #include "TrackDelegate.h"
@@ -30,13 +31,15 @@ private slots:
 private:
     void clear();
 
+    AlbumWidget* m_albumView;
+
     TrackTableView* m_tableView;
     QStandardItemModel* m_model;
     TrackDelegate* m_delegate;
 
     QVector<TrackItem*> m_items;
 
-    QVBoxLayout* m_layout;
+    QHBoxLayout* m_layout;
 };
 
 #endif // TRACKVIEW_H

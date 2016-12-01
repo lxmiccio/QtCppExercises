@@ -24,7 +24,9 @@ TrackView::TrackView(QWidget* parent) : QWidget(parent)
 
     m_items = QVector<TrackItem*>();
 
-    m_layout = new QVBoxLayout();
+    m_layout = new QHBoxLayout();
+    m_albumView = new AlbumWidget();
+    m_layout->addWidget(m_albumView);
     m_layout->setMargin(16);
     m_layout->addWidget(m_tableView);
 
@@ -53,6 +55,8 @@ void TrackView::onAlbumSelected(const Album& album)
         m_items.push_back(item);
         m_model->appendRow(item->items());
     }
+
+    m_albumView->setAlbum(&album);
 }
 
 void TrackView::onDoubleClicked(const QModelIndex& index)

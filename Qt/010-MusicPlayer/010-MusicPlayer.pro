@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     widgets/ScrollArea.cpp \
     widgets/StackedWidget.cpp \
     widgets/ClickableLabel.cpp \
-    trackview/TrackTableView.cpp
+    trackview/TrackTableView.cpp \
+    trackview/AlbumWidget.cpp
 
 HEADERS  += mainwindow.h \
     musicplayer.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     widgets/ScrollArea.h \
     widgets/StackedWidget.h \
     widgets/ClickableLabel.h \
-    trackview/TrackTableView.h
+    trackview/TrackTableView.h \
+    trackview/AlbumWidget.h
 
 FORMS    +=
 
