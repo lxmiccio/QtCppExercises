@@ -57,11 +57,9 @@ public:
 public slots:
   void onCoverClicked(const Album& album);
 
-  void onFastBackwardClicked();
   void onBackwardClicked();
   void onPlayClicked();
   void onPauseClicked();
-  void onFastForwardClicked();
   void onForwardClicked();
   void onFileDropped(const QFileInfo& fileInfo);
   void onMusicSliderMoved(int position, int minimum, int maximum);

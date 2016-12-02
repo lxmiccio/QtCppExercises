@@ -29,10 +29,7 @@ public:
   const Artist* artist() const;
   void setArtist(Artist& artist);
 
-  QImage getImage() const
-  {
-    return m_image;
-  }
+  const QImage& image() const;
 
 private:
   QString m_title;

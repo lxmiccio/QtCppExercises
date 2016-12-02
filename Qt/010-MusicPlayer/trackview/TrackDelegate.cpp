@@ -47,7 +47,7 @@ void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
             painter->drawText(option.rect.adjusted(TrackTableView::MARGIN, 0, -(c_trackTableView->verticalScrollBar()->isVisible() ? TrackTableView::RIGHT_MARGIN_SCROLLBAR : TrackTableView::RIGHT_MARGIN), 0), Qt::AlignVCenter | Qt::AlignRight, text);
             break;
         }
-\
+
         default:
         {
             painter->drawText(option.rect.adjusted(TrackTableView::MARGIN, 0, -TrackTableView::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);

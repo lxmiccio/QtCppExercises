@@ -71,6 +71,11 @@ void Album::setArtist(Artist& artist)
   m_artist = &artist;
 }
 
+const QImage& Album::image() const
+{
+    return m_image;
+}
+
 bool operator==(const Album& album1, const Album& album2)
 {
   return album1.title() == album2.title();

@@ -93,12 +93,10 @@ class AudioControls : public QWidget
     void onPositionChanged(qint64 position, qint64 duration);
 
   private slots:
-    void onFastBackwardClicked();
     void onBackwardClicked();
     void onPlayClicked();
     void onPauseClicked();
     void onForwardClicked();
-    void onFastForwardClicked();
     void onMusicSliderMoved(int position);
     void onShuffleClicked();
     void onRepeatClicked();

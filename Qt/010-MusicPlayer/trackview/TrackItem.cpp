@@ -13,8 +13,10 @@ TrackItem::TrackItem(const Track* track)
     m_items = QList<QStandardItem*>();
     m_items.append(id);
     m_items.append(title);
+#ifdef SHOW_FULL_TRACK
     m_items.append(album);
     m_items.append(artist);
+#endif
     m_items.append(durarion);
 }
 

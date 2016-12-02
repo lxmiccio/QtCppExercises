@@ -36,8 +36,8 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
 
     c_stackedWidget = stackedWidget;
 
-    m_scrollArea = new ScrollArea(this);
-    m_albumView = new AlbumView(m_scrollArea);
+    m_scrollArea = new ScrollArea();
+    m_albumView = new AlbumView();
     m_scrollArea->setWidget(m_albumView);
     QObject::connect(m_scrollArea, SIGNAL(resized(QResizeEvent*)), m_albumView, SLOT(onScrollAreaResized(QResizeEvent*)));
     QObject::connect(m_scrollArea, SIGNAL(fileDropped(const QFileInfo&)), this, SLOT(onFileDropped(const QFileInfo&)));
@@ -106,16 +106,6 @@ void MainWindow::onFileDropped(const QFileInfo& fileInfo)
     }
 }
 
-void MainWindow::onFastBackwardClicked()
-{/*
-    this->musicPlayer->getMediaPlaylist()->previous();
-
-    if(this->musicPlayer->getMediaPlaylist()->currentIndex() == -1) {
-        m_audioControls->showPause(false);
-        m_audioControls->showPlay(true);
-    }*/
-}
-
 void MainWindow::onBackwardClicked()
 {/*
     this->musicPlayer->getMediaPlayer()->setPosition(0);*/
@@ -134,11 +124,6 @@ void MainWindow::onPauseClicked()
 void MainWindow::onForwardClicked()
 {/*
     this->musicPlayer->getMediaPlaylist()->next();*/
-}
-
-void MainWindow::onFastForwardClicked()
-{/*
-    this->musicPlayer->getMediaPlaylist()->setCurrentIndex(this->musicPlayer->getMediaPlaylist()->currentIndex() + 2);*/
 }
 
 void MainWindow::onMusicSliderMoved(int position, int minimum, int maximum)

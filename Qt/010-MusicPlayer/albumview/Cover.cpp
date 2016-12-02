@@ -4,7 +4,7 @@ Cover::Cover(const Album* album, QWidget* parent) : QWidget(parent)
 {
     c_album = album;
 
-    QPixmap pixmap(QPixmap::fromImage(c_album->getImage().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    QPixmap pixmap(QPixmap::fromImage(c_album->image().scaled(Cover::COVER_WIDTH, Cover::COVER_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
     m_cover = new ClickableLabel();
     m_cover->setPixmap(pixmap);

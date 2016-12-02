@@ -47,11 +47,17 @@ void TrackTableView::resizeEvent(QResizeEvent* event)
 {
     int width = event->size().width() - TrackTableView::TRACK_WIDTH - TrackTableView::DURATION_WIDTH;
 
+#ifndef SHOW_FULL_TRACK
+    this->setColumnWidth(TrackTableView::TRACK, TrackTableView::TRACK_WIDTH);
+    this->setColumnWidth(TrackTableView::TITLE, width);
+    this->setColumnWidth(TrackTableView::DURATION, TrackTableView::DURATION_WIDTH);
+#else
     this->setColumnWidth(TrackTableView::TRACK, TrackTableView::TRACK_WIDTH);
     this->setColumnWidth(TrackTableView::TITLE, TrackTableView::TITLE_WIDTH_PERCENTAGE * width);
     this->setColumnWidth(TrackTableView::ALBUM, TrackTableView::ALBUM_WIDTH_PERCENTAGE * width);
     this->setColumnWidth(TrackTableView::ARTIST, TrackTableView::ARTIST_WIDTH_PERCENTAGE * width);
     this->setColumnWidth(TrackTableView::DURATION, TrackTableView::DURATION_WIDTH);
+#endif
 
     QTableView::resizeEvent(event);
 }

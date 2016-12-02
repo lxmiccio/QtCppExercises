@@ -13,7 +13,8 @@
 class AlbumWidget : public QWidget
 {
 public:
-    AlbumWidget(QWidget* parent = 0);
+    explicit AlbumWidget(QWidget* parent = 0);
+    ~AlbumWidget();
 
     void setAlbum(const Album* album);
 

@@ -101,6 +101,8 @@ bool ElidedLabel::wordWrap()
 void ElidedLabel::setWordWrap(bool wordWrap)
 {
   m_wordWrap = wordWrap;
+
+  repaint();
 }
 
 QSize ElidedLabel::sizeHint() const
@@ -173,6 +175,7 @@ void ElidedLabel::paintEvent(QPaintEvent* event)
 
     int lineCount = 0;
     int lineLimit = rect.height() / fontMetrics().height();
+
     int widthUsed = 0;
 
     textLayout.beginLayout();
