@@ -42,6 +42,7 @@ void TrackList::resizeEvent(QResizeEvent* event)
     this->setColumnWidth(TrackList::TRACK, TrackList::TRACK_WIDTH);
     this->setColumnWidth(TrackList::DURATION, TrackList::DURATION_WIDTH);
 
+#if 0
     if(!isColumnHidden(TrackList::ALBUM))
     {
         this->setColumnWidth(TrackList::ALBUM, TrackList::ALBUM_WIDTH_PERCENTAGE * width);
@@ -53,6 +54,7 @@ void TrackList::resizeEvent(QResizeEvent* event)
         this->setColumnWidth(TrackList::ARTIST, TrackList::ARTIST_WIDTH_PERCENTAGE * width);
         width -= TrackList::ARTIST_WIDTH_PERCENTAGE * width;
     }
+#endif
 
     this->setColumnWidth(TrackList::TITLE, width);
 

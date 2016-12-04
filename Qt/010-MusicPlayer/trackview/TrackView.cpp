@@ -20,7 +20,7 @@ TrackView::TrackView(QWidget* parent) : QWidget(parent)
     QObject::connect(m_tableList, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
 
     m_layout = new QHBoxLayout();
-    m_layout->setContentsMargins(40, 16, 40, 8);
+    m_layout->setContentsMargins(40, 16, 40, 12);
     m_layout->addWidget(m_albumView);
     m_layout->addItem(m_spacer);
     m_layout->addWidget(m_tableList);
