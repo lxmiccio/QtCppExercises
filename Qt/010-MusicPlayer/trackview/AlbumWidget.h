@@ -6,8 +6,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include "ElidedLabel.h"
-
 #include "Album.h"
 
 class AlbumWidget : public QWidget
@@ -18,14 +16,20 @@ public:
 
     void setAlbum(const Album* album);
 
+    static const quint16 WIDGET_HEIGHT = 275;
+    static const quint16 WIDGET_WIDTH = 200;
+
+    static const quint16 IMAGE_HEIGHT = 200;
+    static const quint16 IMAGE_WIDTH = 200;
+
 private:
     const Album* c_album;
 
     QLabel* m_cover;
     QSpacerItem* m_spacer1;
-    ElidedLabel* m_albumTitle;
+    QLabel* m_albumTitle;
     QSpacerItem* m_spacer2;
-    ElidedLabel* m_artistName;
+    QLabel* m_artistName;
     QSpacerItem* m_spacer3;
     QVBoxLayout* m_layout;
 };

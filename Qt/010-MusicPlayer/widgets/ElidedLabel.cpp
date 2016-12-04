@@ -189,7 +189,9 @@ void ElidedLabel::paintEvent(QPaintEvent* event)
 
       line.setLineWidth(rect.width());
       widthUsed += line.naturalTextWidth();
+      this->setMinimumHeight(300);
     }
+
 
     textLayout.endLayout();
     widthUsed += rect.width();

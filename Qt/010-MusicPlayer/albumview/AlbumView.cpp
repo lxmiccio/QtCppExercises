@@ -1,9 +1,15 @@
 #include "AlbumView.h"
 
+#include <QApplication>
 #include <QResizeEvent>
+#include <QtConcurrent/QtConcurrent>
 
 AlbumView::AlbumView(QWidget* parent) : QWidget(parent)
 {
+    m_watcher = new QFutureWatcher<Cover*>(this);
+    connect(m_watcher, SIGNAL(resultReadyAt(int)), SLOT(showImage(int)));
+    connect(m_watcher, SIGNAL(finished()), SLOT(finished()));
+
     m_covers = QVector<Cover*>();
     m_layouts = QVector<QHBoxLayout*>();
     m_layout = new QVBoxLayout();
@@ -42,13 +48,37 @@ void AlbumView::clearLayout(QLayout* layout)
             clearLayout(i_item->layout());
             delete i_item->layout();
         }
-
+        if(i_item->widget()) {
+            delete i_item->widget();
+        }
         delete i_item;
     }
 }
 
+Cover* scale(const Album imageFileName)
+{
+    //Cover* c = new Cover(&imageFileName);
+    //QImage image(imageFileName);
+    //return c;
+}
+
 void AlbumView::onScrollAreaResized(QResizeEvent* event)
 {
+    if (m_watcher->isRunning()) {
+            m_watcher->cancel();
+            m_watcher->waitForFinished();
+        }
+
+    /*QList<const Album*>aa =QList<const Album*>::fromVector(m_albums);
+
+        QVector<const Album>bb = QVector<const Album>();
+        Album a = Album();
+        bb.push_back(a);
+*/
+
+    //m_watcher->setFuture(QtConcurrent::mapped(bb.begin(), bb.end(), scale));
+
+
     quint8 currentAlbumsPerRow = albumsPerRow(event->size().width());
 
     if(m_albumsPerRow != currentAlbumsPerRow)
@@ -63,6 +93,33 @@ void AlbumView::onScrollAreaResized(QResizeEvent* event)
         m_currentColumn = 0;
         m_currentRow = 0;
 
+
+        m_covers.clear();
+        foreach(const Album* i_album, m_albums)
+        {
+            Cover* cover = new Cover(i_album);
+            m_covers.push_back(cover);
+
+            QObject::connect(cover, SIGNAL(coverClicked(const Album&)), this, SLOT(onCoverClicked(const Album&)));
+
+            if(m_currentColumn == 0)
+            {
+                QHBoxLayout* layout = new QHBoxLayout();
+                m_layouts.push_back(layout);
+                m_layout->addLayout(layout);
+            }
+
+            m_layouts.at(m_currentRow)->addWidget(cover);
+
+            if(++m_currentColumn == m_albumsPerRow)
+            {
+                m_currentColumn = 0;
+                m_currentRow++;
+            }
+
+            //QApplication::processEvents();
+        }
+#if 0
         foreach(Cover* i_cover, m_covers)
         {
             i_cover->hide();
@@ -83,7 +140,11 @@ void AlbumView::onScrollAreaResized(QResizeEvent* event)
             }
 
             i_cover->show();
+
+
+            //QApplication::processEvents();
         }
+#endif
     }
 }
 

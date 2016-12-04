@@ -5,12 +5,12 @@
 
 #include "SeekSlider.h"
 
-class TrackTableView : public QTableView
+class TrackList : public QTableView
 {
     Q_OBJECT
 
     public:
-        explicit TrackTableView(QWidget* parent = 0);
+        explicit TrackList(QWidget* parent = 0);
 
         static const quint8 TRACK = 0;
         static const quint8 TITLE = 1;
@@ -27,7 +27,7 @@ class TrackTableView : public QTableView
         static const quint8 LEFT_MARGIN = 38;
         static const quint8 MARGIN = 10;
         static const quint8 RIGHT_MARGIN = 38;
-        static const quint8 RIGHT_MARGIN_SCROLLBAR = RIGHT_MARGIN - SeekSlider::WIDTH;
+        static const quint8 RIGHT_MARGIN_SCROLLBAR = RIGHT_MARGIN + SeekSlider::WIDTH * 2;
 
     protected:
         virtual void resizeEvent(QResizeEvent* event);

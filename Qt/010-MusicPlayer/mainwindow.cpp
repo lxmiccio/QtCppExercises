@@ -90,6 +90,7 @@ void MainWindow::onFileDropped(const QFileInfo& fileInfo)
     Track* t = this->m_musicLibrary->addTrack(tags);
 
 
+
     /*qSort(t->getAlbum()->getTracks()->begin(), t->getAlbum()->getTracks()->end(),
         [](Track* a, Track* b) -> bool { return a->getTrack() < b->getTrack(); });
         */
@@ -104,6 +105,8 @@ void MainWindow::onFileDropped(const QFileInfo& fileInfo)
 
         emit this->trackAdded(*t);
     }
+
+
 }
 
 void MainWindow::onBackwardClicked()

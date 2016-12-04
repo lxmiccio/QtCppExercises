@@ -62,27 +62,25 @@ class AudioControls : public QWidget
     QSpacerItem* m_upperSpacer2;
 
     QHBoxLayout* m_lowerHorizontalLayout;
-    QSpacerItem* m_lowerSpacer1;
     ImageButton* m_backward;
-    QSpacerItem* m_lowerSpacer2;
+    QSpacerItem* m_lowerSpacer1;
     ImageButton* m_play;
     ImageButton* m_pause;
-    QSpacerItem* m_lowerSpacer3;
+    QSpacerItem* m_lowerSpacer2;
     ImageButton* m_forward;
-    QSpacerItem* m_lowerSpacer4;
+    QSpacerItem* m_lowerSpacer3;
     QLabel* m_elapsedTime;
-    QSpacerItem* m_lowerSpacer5;
+    QSpacerItem* m_lowerSpacer4;
     SeekSlider* m_musicSlider;
-    QSpacerItem* m_lowerSpacer6;
+    QSpacerItem* m_lowerSpacer5;
     QLabel* m_remainingTime;
-    QSpacerItem* m_lowerSpacer7;
+    QSpacerItem* m_lowerSpacer6;
     ImageButton* m_shuffle;
-    QSpacerItem* m_lowerSpacer8;
+    QSpacerItem* m_lowerSpacer7;
     ImageButton* m_repeat;
-    QSpacerItem* m_lowerSpacer9;
+    QSpacerItem* m_lowerSpacer8;
     ImageButton* m_volume;
     QSlider* m_volumeSlider;
-    QSpacerItem* m_lowerSpacer10;
 
     RepeatMode_t m_repeatMode;
     ShuffleMode_t m_shuffleMode;

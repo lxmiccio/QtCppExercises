@@ -32,7 +32,7 @@ ScrollArea::ScrollArea(QWidget* parent) : QScrollArea(parent)
                                                "QScrollBar::handle:vertical {"
                                                    "border-image: url(:/images/scroll-bar.jpg);"
                                                    "border-radius: 2px;"
-                                                   "margin: 2px 2px 2px 2px;"
+                                                   "margin: 2px 4px 2px 0px;"
                                                "}"
                                                "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,"
                                                "QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {"

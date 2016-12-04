@@ -1,6 +1,7 @@
 #ifndef TRACKVIEW_H
 #define TRACKVIEW_H
 
+#include <QSpacerItem>
 #include <QStandardItemModel>
 #include <QHBoxLayout>
 
@@ -9,7 +10,7 @@
 #include "Track.h"
 #include "TrackDelegate.h"
 #include "TrackItem.h"
-#include "TrackTableView.h"
+#include "TrackList.h"
 
 class TrackView : public QWidget
 {
@@ -18,6 +19,8 @@ class TrackView : public QWidget
 public:
     explicit TrackView(QWidget* parent = 0);
     ~TrackView();
+
+    static const quint16 WIDGET_HEIGHT = 415;
 
 public slots:
     void onAlbumSelected(const Album& album);
@@ -33,7 +36,9 @@ private:
 
     AlbumWidget* m_albumView;
 
-    TrackTableView* m_tableView;
+    QSpacerItem* m_spacer;
+
+    TrackList* m_tableList;
     QStandardItemModel* m_model;
     TrackDelegate* m_delegate;
 

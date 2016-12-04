@@ -65,5 +65,6 @@ class Track
 };
 
 bool operator==(const Track& track1, const Track& track2);
+bool operator<(const Track& track1, const Track& track2);
 
 #endif // TRACK_H

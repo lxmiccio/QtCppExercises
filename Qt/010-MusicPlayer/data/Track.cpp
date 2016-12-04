@@ -150,3 +150,8 @@ bool operator==(const Track& track1, const Track& track2)
 {
   return track1.title() == track2.title();
 }
+
+bool operator<(const Track& track1, const Track& track2)
+{
+  return track1.title() < track2.title();
+}

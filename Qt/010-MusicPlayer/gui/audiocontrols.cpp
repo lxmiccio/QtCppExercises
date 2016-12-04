@@ -32,14 +32,12 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_upperHorizontalLayout->addWidget(m_track);
     m_upperHorizontalLayout->addItem(m_upperSpacer2);
 
-    m_lowerSpacer1 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
-
     m_backward = new ImageButton();
     m_backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::gray));
     m_backward->setPixmap(ImageUtils::pixmap(QString(":/svg/backward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
     QObject::connect(m_backward, SIGNAL(clicked()), this, SLOT(onBackwardClicked()));
 
-    m_lowerSpacer2 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+    m_lowerSpacer1 = new QSpacerItem(16, 0, QSizePolicy::Fixed);
 
     m_play = new ImageButton();
     m_play->setPixmap(ImageUtils::pixmap(QString(":/svg/play.svg"), QSize(17, 17), 1.0, Qt::gray));
@@ -52,14 +50,14 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_pause->hide();
     QObject::connect(m_pause, SIGNAL(clicked()), this, SLOT(onPauseClicked()));
 
-    m_lowerSpacer3 = new QSpacerItem(16, 8, QSizePolicy::Fixed);
+    m_lowerSpacer2 = new QSpacerItem(16, 0, QSizePolicy::Fixed);
 
     m_forward = new ImageButton();
     m_forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::gray));
     m_forward->setPixmap(ImageUtils::pixmap(QString(":/svg/forward.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
     QObject::connect(m_forward, SIGNAL(clicked()), this, SLOT(onForwardClicked()));
 
-    m_lowerSpacer4 = new QSpacerItem(204, 8, QSizePolicy::Fixed);
+    m_lowerSpacer3 = new QSpacerItem(204, 0, QSizePolicy::Fixed);
 
     font.setPointSize(9);
 
@@ -67,7 +65,7 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_elapsedTime->setFont(font);
     m_elapsedTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-    m_lowerSpacer5 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+    m_lowerSpacer4 = new QSpacerItem(6, 0, QSizePolicy::Fixed);
 
     m_musicSlider = new SeekSlider(Qt::Horizontal);
     m_musicSlider->setFixedHeight(6);
@@ -76,13 +74,13 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_musicSlider->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     QObject::connect(m_musicSlider, SIGNAL(sliderMoved(int)), this, SLOT(onMusicSliderMoved(int)));
 
-    m_lowerSpacer6 = new QSpacerItem(6, 8, QSizePolicy::Fixed);
+    m_lowerSpacer5 = new QSpacerItem(6, 0, QSizePolicy::Fixed);
 
     m_remainingTime = new QLabel("00:00");
     m_remainingTime->setFont(font);
     m_remainingTime->setStyleSheet(QString("color: white; margin-top: -2px;"));
 
-    m_lowerSpacer7 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer6 = new QSpacerItem(36, 0, QSizePolicy::Fixed);
 
     m_shuffle = new ImageButton();
     m_shuffle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -90,7 +88,7 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_shuffle->setPixmap(ImageUtils::pixmap(QString(":/svg/shuffle.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
     QObject::connect(m_shuffle, SIGNAL(clicked()), this, SLOT(onShuffleClicked()));
 
-    m_lowerSpacer8 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer7 = new QSpacerItem(36, 0, QSizePolicy::Fixed);
 
     m_repeat = new ImageButton();
     m_repeat->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -98,7 +96,7 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_repeat->setPixmap(ImageUtils::pixmap(QString(":/svg/repeat.svg"), QSize(17, 17), 1.0, Qt::white), QIcon::Off, QIcon::Active);
     QObject::connect(m_repeat, SIGNAL(clicked()), this, SLOT(onRepeatClicked()));
 
-    m_lowerSpacer9 = new QSpacerItem(36, 8, QSizePolicy::Fixed);
+    m_lowerSpacer8 = new QSpacerItem(36, 0, QSizePolicy::Fixed);
 
     m_volume = new ImageButton();
     m_volume->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -112,33 +110,29 @@ AudioControls::AudioControls(QWidget* parent) : QWidget(parent)
     m_volumeSlider->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect(m_volumeSlider, SIGNAL(sliderMoved(int)), this, SLOT(onVolumeSliderMoved(int)));
 
-    m_lowerSpacer10 = new QSpacerItem(24, 8, QSizePolicy::Fixed);
-
     m_lowerHorizontalLayout = new QHBoxLayout();
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer1);
     m_lowerHorizontalLayout->addWidget(m_backward);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer2);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer1);
     m_lowerHorizontalLayout->addWidget(m_play);
     m_lowerHorizontalLayout->addWidget(m_pause);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer3);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer2);
     m_lowerHorizontalLayout->addWidget(m_forward);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer4);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer3);
     m_lowerHorizontalLayout->addWidget(m_elapsedTime);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer5);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer4);
     m_lowerHorizontalLayout->addWidget(m_musicSlider);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer6);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer5);
     m_lowerHorizontalLayout->addWidget(m_remainingTime);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer7);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer6);
     m_lowerHorizontalLayout->addWidget(m_shuffle);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer8);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer7);
     m_lowerHorizontalLayout->addWidget(m_repeat);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer9);
+    m_lowerHorizontalLayout->addItem(m_lowerSpacer8);
     m_lowerHorizontalLayout->addWidget(m_volume);
     m_lowerHorizontalLayout->addWidget(m_volumeSlider);
-    m_lowerHorizontalLayout->addItem(m_lowerSpacer10);
 
     m_verticalLayout = new QVBoxLayout();
-    m_verticalLayout->setMargin(16);
+    m_verticalLayout->setContentsMargins(40, 8, 40, 16);
     m_verticalLayout->setSpacing(8);
     m_verticalLayout->addLayout(m_upperHorizontalLayout);
     m_verticalLayout->addLayout(m_lowerHorizontalLayout);

@@ -46,17 +46,13 @@ QVector<Album>* MusicLibrary::getAlbums() const
   return albums;
 }
 
-QVector<Album*>* MusicLibrary::getAlbumsOfArtist(const QString& name) const
+QVector<Album*> MusicLibrary::getAlbumsOfArtist(const QString& name) const
 {
   if(this->getArtist(name)) {
-      /*
-    return &this->getArtist(name)->albums();
-    */
+    return this->getArtist(name)->albums();
       //TO DO
       //FOR NEED
   }
-
-  return NULL;
 }
 
 Album* MusicLibrary::getAlbum(const QString& title) const
@@ -186,15 +182,6 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       if(album != NULL) {
         track = new Track(tags, album);
         album->addTrack(*track);
-
-        QVector<Track> tracks = QVector<Track>();
-
-        foreach (Track* i_item, album->tracks()) {
-            tracks.append(*i_item);
-        }
-
-        qSort(tracks.begin(), tracks.end(), [](const Track& a, const Track& b) -> bool { return a.track() < b.track(); });
-
       } else {
         album = new Album(tags["album"].toString(), artist);
 
@@ -214,7 +201,6 @@ Track* MusicLibrary::addTrack(const QVariantMap& tags)
       artist->addAlbum(*album);
 
       this->artists->push_back(*artist);
-      qDebug()<<album->artist();
     }
   }
 

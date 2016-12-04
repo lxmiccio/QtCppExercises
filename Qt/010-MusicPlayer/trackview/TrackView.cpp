@@ -8,29 +8,33 @@
 
 TrackView::TrackView(QWidget* parent) : QWidget(parent)
 {
-    m_tableView = new TrackTableView();
-    m_tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_tableView->horizontalHeader()->hide();
-    m_tableView->verticalHeader()->hide();
-    m_tableView->setShowGrid(false);
+    m_albumView = new AlbumWidget();
 
-    QObject::connect(m_tableView, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+    m_spacer = new QSpacerItem(16, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    m_tableList = new TrackList();
+    m_tableList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_tableList->setShowGrid(false);
+    m_tableList->horizontalHeader()->hide();
+    m_tableList->verticalHeader()->hide();
+    QObject::connect(m_tableList, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+
+    m_layout = new QHBoxLayout();
+    m_layout->setContentsMargins(40, 16, 40, 8);
+    m_layout->addWidget(m_albumView);
+    m_layout->addItem(m_spacer);
+    m_layout->addWidget(m_tableList);
+    setLayout(m_layout);
+
+    m_delegate = new TrackDelegate(m_tableList);
+    m_tableList->setItemDelegate(m_delegate);
 
     m_model = new QStandardItemModel();
-    m_tableView->setModel(m_model);
-
-    m_delegate = new TrackDelegate(m_tableView);
-    m_tableView->setItemDelegate(m_delegate);
+    m_tableList->setModel(m_model);
 
     m_items = QVector<TrackItem*>();
 
-    m_layout = new QHBoxLayout();
-    m_albumView = new AlbumWidget();
-    m_layout->addWidget(m_albumView);
-    m_layout->setMargin(16);
-    m_layout->addWidget(m_tableView);
-
-    setLayout(m_layout);
+    setMinimumHeight(TrackView::WIDGET_HEIGHT);
 }
 
 TrackView::~TrackView()
@@ -40,7 +44,7 @@ TrackView::~TrackView()
         delete i_trackItem;
 
     delete m_model;
-    delete m_tableView;
+    delete m_tableList;
     delete m_layout;
     */
 }
