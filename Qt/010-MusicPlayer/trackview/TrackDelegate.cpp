@@ -27,13 +27,21 @@ void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
         QRect rect;
 
         if(index.column() == TrackList::TRACK)
+        {
             rect = QRect(QPoint(option.rect.topLeft().x() + SeekSlider::WIDTH, option.rect.topLeft().y()), option.rect.bottomRight());
+            painter->fillRect(rect, QColor(0, 0, 0, 10));
+        }
         else if(index.column() == TrackList::DURATION)
+        {
             rect = QRect(option.rect.topLeft(), QPoint(option.rect.bottomRight().x() - SeekSlider::WIDTH, option.rect.bottomRight().y()));
+            painter->fillRect(rect, QColor(0, 0, 0, 10));
+        }
         else
+        {
             rect = option.rect;
+            painter->fillRect(rect, QColor(0, 0, 0, 10));
+        }
 
-        painter->fillRect(rect, QColor(0, 0, 0, 10));
     }
     else
     {
@@ -59,7 +67,7 @@ void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     case TrackList::DURATION:
     {
-        painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -(c_trackList->verticalScrollBar()->isVisible() ? TrackList::RIGHT_MARGIN_SCROLLBAR : TrackList::RIGHT_MARGIN), 0), Qt::AlignVCenter | Qt::AlignRight, text);
+        painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -TrackList::RIGHT_MARGIN, 0), Qt::AlignVCenter | Qt::AlignRight, text);
         break;
     }
 

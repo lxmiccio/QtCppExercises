@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     widgets/StackedWidget.cpp \
     widgets/ClickableLabel.cpp \
     trackview/AlbumWidget.cpp \
-    trackview/TrackList.cpp
+    trackview/TrackList.cpp \
+    trackview/TrackModel.cpp
 
 HEADERS  += mainwindow.h \
     musicplayer.h \
@@ -64,7 +65,8 @@ HEADERS  += mainwindow.h \
     widgets/StackedWidget.h \
     widgets/ClickableLabel.h \
     trackview/AlbumWidget.h \
-    trackview/TrackList.h
+    trackview/TrackList.h \
+    trackview/TrackModel.h
 
 FORMS    +=
 

@@ -69,9 +69,9 @@ public slots:
 
   void itemDoubleClicked(const Track& track){
     m_scrollArea->show();
-    m_trackView->hide();
+    m_trackView->hide();/*
     m_musicPlayer->mediaPlaylist()->setCurrentIndex(track.track() - 1);
-    m_musicPlayer->mediaPlayer()->play();
+    m_musicPlayer->mediaPlayer()->play();*/
   }
 
   void onCurrentMediaChanged(QMediaContent);

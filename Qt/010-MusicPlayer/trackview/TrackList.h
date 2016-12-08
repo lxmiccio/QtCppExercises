@@ -29,7 +29,6 @@ class TrackList : public QTableView
         static const quint8 LEFT_MARGIN = 38;
         static const quint8 MARGIN = 10;
         static const quint8 RIGHT_MARGIN = 38;
-        static const quint8 RIGHT_MARGIN_SCROLLBAR = RIGHT_MARGIN + SeekSlider::WIDTH * 2;
 
     protected:
         virtual void resizeEvent(QResizeEvent* event);

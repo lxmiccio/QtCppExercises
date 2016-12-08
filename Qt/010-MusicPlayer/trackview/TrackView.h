@@ -11,6 +11,7 @@
 #include "TrackDelegate.h"
 #include "TrackItem.h"
 #include "TrackList.h"
+#include "TrackModel.h"
 
 class TrackView : public QWidget
 {
@@ -39,7 +40,7 @@ private:
     QSpacerItem* m_spacer;
 
     TrackList* m_tableList;
-    QStandardItemModel* m_model;
+    TrackModel* m_model;
     TrackDelegate* m_delegate;
 
     QVector<TrackItem*> m_items;
