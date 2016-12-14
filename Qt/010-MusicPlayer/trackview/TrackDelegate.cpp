@@ -9,6 +9,11 @@ TrackDelegate::TrackDelegate(const TrackList* trackList, QObject* parent) : QSty
     c_trackList = trackList;
 }
 
+TrackDelegate::~TrackDelegate()
+{
+
+}
+
 QWidget* TrackDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     Q_UNUSED(parent);
@@ -18,30 +23,32 @@ QWidget* TrackDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem
     return NULL;
 }
 
-#include <QDebug>
-
 void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     if(option.state & QStyle::State_Selected)
     {
-        QRect rect;
+        switch(index.column())
+        {
+            case TrackList::TRACK:
+            {
+                QRect rect(QPoint(option.rect.topLeft().x() + SeekSlider::WIDTH, option.rect.topLeft().y()), option.rect.bottomRight());
+                painter->fillRect(rect, QColor(0, 0, 0, 10));
+                break;
+            }
 
-        if(index.column() == TrackList::TRACK)
-        {
-            rect = QRect(QPoint(option.rect.topLeft().x() + SeekSlider::WIDTH, option.rect.topLeft().y()), option.rect.bottomRight());
-            painter->fillRect(rect, QColor(0, 0, 0, 10));
-        }
-        else if(index.column() == TrackList::DURATION)
-        {
-            rect = QRect(option.rect.topLeft(), QPoint(option.rect.bottomRight().x() - SeekSlider::WIDTH, option.rect.bottomRight().y()));
-            painter->fillRect(rect, QColor(0, 0, 0, 10));
-        }
-        else
-        {
-            rect = option.rect;
-            painter->fillRect(rect, QColor(0, 0, 0, 10));
-        }
+            case TrackList::DURATION:
+            {
+                QRect rect(option.rect.topLeft(), QPoint(option.rect.bottomRight().x() - SeekSlider::WIDTH, option.rect.bottomRight().y()));
+                painter->fillRect(rect, QColor(0, 0, 0, 10));
+                break;
+            }
 
+            default:
+            {
+                painter->fillRect(option.rect, QColor(0, 0, 0, 10));
+                break;
+            }
+        }
     }
     else
     {
@@ -59,22 +66,22 @@ void TrackDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
     switch(index.column())
     {
-    case TrackList::TRACK:
-    {
-        painter->drawText(option.rect.adjusted(TrackList::LEFT_MARGIN, 0, -TrackList::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
-        break;
-    }
+        case TrackList::TRACK:
+        {
+            painter->drawText(option.rect.adjusted(TrackList::LEFT_MARGIN, 0, -TrackList::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
+            break;
+        }
 
-    case TrackList::DURATION:
-    {
-        painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -TrackList::RIGHT_MARGIN, 0), Qt::AlignVCenter | Qt::AlignRight, text);
-        break;
-    }
+        case TrackList::DURATION:
+        {
+            painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -TrackList::RIGHT_MARGIN, 0), Qt::AlignVCenter | Qt::AlignRight, text);
+            break;
+        }
 
-    default:
-    {
-        painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -TrackList::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
-        break;
-    }
+        default:
+        {
+            painter->drawText(option.rect.adjusted(TrackList::MARGIN, 0, -TrackList::MARGIN, 0), Qt::AlignVCenter | Qt::AlignLeft, text);
+            break;
+        }
     }
 }

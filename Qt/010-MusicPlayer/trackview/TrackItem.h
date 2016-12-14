@@ -10,6 +10,8 @@ class TrackItem
         explicit TrackItem(const Track* track, TrackItem* parent = 0);
         ~TrackItem();
 
+        QVariant data(int column) const;
+
         TrackItem* parent() const;
         int row() const;
 
@@ -17,10 +19,13 @@ class TrackItem
         int columnCount() const;
         int rowCount() const;
 
-        QVariant data(int column) const;
+        void prependChild(TrackItem* item);
+        void appendChild(TrackItem* item);
+        void insertChildAt(TrackItem* item, int row);
 
-        void appendChild(TrackItem* child);
-        void removeChild(int row);
+        void removeFirstChild();
+        void removeLastChild();
+        void removeChildAt(int row);
         void clear();
 
         const Track* track() const;

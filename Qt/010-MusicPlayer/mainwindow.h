@@ -15,7 +15,7 @@
 #include "playlist.h"
 #include "Track.h"
 #include "Musiclibrary.h"
-
+#include "Menu.h"
 #include "TagUtils.h"
 
 #include "TrackDelegate.h"
@@ -37,6 +37,8 @@ class MainWindow : public BackgroundWidget
 
 private:
   const StackedWidget* c_stackedWidget;
+
+  Menu* m_menu;
 
   AlbumView* m_albumView;
   ScrollArea* m_scrollArea;

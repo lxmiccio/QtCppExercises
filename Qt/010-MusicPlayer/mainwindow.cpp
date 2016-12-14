@@ -36,6 +36,8 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
 
     c_stackedWidget = stackedWidget;
 
+    m_menu = new Menu();
+
     m_scrollArea = new ScrollArea();
     m_albumView = new AlbumView();
     m_scrollArea->setWidget(m_albumView);
@@ -49,20 +51,11 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
 
     m_audioControls = new AudioControls(this);
     m_audioControls->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    //QObject::connect(m_audioControls, SIGNAL(backwardClicked()), this, SLOT(onBackwardClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(playClicked()), this, SLOT(onPlayClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(pauseClicked()), this, SLOT(onPauseClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(forwardClicked()), this, SLOT(onForwardClicked()));
-    //QObject::connect(m_audioControls, SIGNAL(musicSliderMoved(int, int, int)), this, SLOT(onMusicSliderMoved(int, int, int)));
-    //QObject::connect(m_audioControls, SIGNAL(shuffleClicked(AudioControls::ShuffleMode_t)), this, SLOT(onShuffleClicked(AudioControls::ShuffleMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(repeatClicked(AudioControls::RepeatMode_t)), this, SLOT(onRepeatClicked(AudioControls::RepeatMode_t)));
-    //QObject::connect(m_audioControls, SIGNAL(volumeClicked(AudioControls::VolumeMode_t)), this, SLOT(onVolumeClicked(AudioControls::VolumeMode_t)));
-    //QObject::connect(this, SIGNAL(currentMediaChanged(const Track&)), m_audioControls, SLOT(onCurrentMediaChanged(const Track&)));
-    //QObject::connect(this, SIGNAL(positionChanged(qint64, qint64)), m_audioControls, SLOT(onPositionChanged(qint64, qint64)));
 
     m_layout = new QVBoxLayout();
     m_layout->setMargin(0);
     m_layout->setSpacing(0);
+    m_layout->addWidget(m_menu);
     m_layout->addWidget(m_scrollArea);
     m_layout->addWidget(m_trackView);
     m_trackView->hide();
@@ -72,6 +65,8 @@ MainWindow::MainWindow(const StackedWidget* stackedWidget, QWidget* parent) : Ba
     m_musicLibrary = new MusicLibrary();
 
     m_musicPlayer = new MusicPlayer();
+
+    setMinimumHeight(530);
 }
 
 void MainWindow::onCoverClicked(const Album &album)
@@ -88,12 +83,6 @@ void MainWindow::onFileDropped(const QFileInfo& fileInfo)
 {
     QVariantMap tags = TagUtils::readTags(fileInfo).toMap();
     Track* t = this->m_musicLibrary->addTrack(tags);
-
-
-
-    /*qSort(t->getAlbum()->getTracks()->begin(), t->getAlbum()->getTracks()->end(),
-        [](Track* a, Track* b) -> bool { return a->getTrack() < b->getTrack(); });
-        */
 
     if(t) {
         TrackItem* ti = new TrackItem(t);

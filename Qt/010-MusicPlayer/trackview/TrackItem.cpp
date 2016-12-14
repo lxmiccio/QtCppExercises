@@ -16,7 +16,12 @@ TrackItem::TrackItem(const Track* track, TrackItem* parent)
 
 TrackItem::~TrackItem()
 {
-    qDeleteAll(m_childs);
+    //qDeleteAll(m_childs);
+}
+
+QVariant TrackItem::data(int column) const
+{
+    return m_data.value(column);
 }
 
 TrackItem *TrackItem::parent() const
@@ -30,13 +35,14 @@ int TrackItem::row() const
     {
         return m_parent->m_childs.indexOf(const_cast<TrackItem*>(this));
     }
-
-    return 0;
+    else
+    {
+        return 0;
+    }
 }
 
 TrackItem *TrackItem::child(int row) const
 {
-    return m_childs.at(row);
     return m_childs.value(row);
 }
 
@@ -50,9 +56,9 @@ int TrackItem::rowCount() const
     return m_childs.count();
 }
 
-QVariant TrackItem::data(int column) const
+void TrackItem::prependChild(TrackItem* item)
 {
-    return m_data.value(column);
+    m_childs.prepend(item);
 }
 
 void TrackItem::appendChild(TrackItem* item)
@@ -60,10 +66,34 @@ void TrackItem::appendChild(TrackItem* item)
     m_childs.append(item);
 }
 
-void TrackItem::removeChild(int row)
+void TrackItem::insertChildAt(TrackItem* item, int row)
 {
-    delete m_childs.at(row);
-    m_childs.removeAt(row);
+    m_childs.insert(row, item);
+}
+
+void TrackItem::removeFirstChild()
+{
+    if(!m_childs.isEmpty())
+    {
+        delete m_childs.takeFirst();
+    }
+}
+
+void TrackItem::removeLastChild()
+{
+    if(!m_childs.isEmpty())
+    {
+        delete m_childs.takeLast();
+    }
+}
+
+void TrackItem::removeChildAt(int row)
+{
+    if(row < m_childs.size())
+    {
+        delete m_childs.at(row);
+        m_childs.removeAt(row);
+    }
 }
 
 void TrackItem::clear()

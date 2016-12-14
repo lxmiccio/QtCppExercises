@@ -12,27 +12,26 @@ TrackView::TrackView(QWidget* parent) : QWidget(parent)
 
     m_spacer = new QSpacerItem(16, 0, QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-
     m_model = new TrackModel();
 
-    m_tableList = new TrackList();
-    m_tableList->setModel(m_model);
+    m_trackList = new TrackList();
+    m_trackList->setModel(m_model);
 
-    m_tableList->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_tableList->setShowGrid(false);
-    m_tableList->horizontalHeader()->hide();
-    m_tableList->verticalHeader()->hide();
-    QObject::connect(m_tableList, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
+    m_trackList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_trackList->setShowGrid(false);
+    m_trackList->horizontalHeader()->hide();
+    m_trackList->verticalHeader()->hide();
+    QObject::connect(m_trackList, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onDoubleClicked(const QModelIndex&)));
 
     m_layout = new QHBoxLayout();
     m_layout->setContentsMargins(40, 16, 40, 12);
     m_layout->addWidget(m_albumView);
     m_layout->addItem(m_spacer);
-    m_layout->addWidget(m_tableList);
+    m_layout->addWidget(m_trackList);
     setLayout(m_layout);
 
-    m_delegate = new TrackDelegate(m_tableList);
-    m_tableList->setItemDelegate(m_delegate);
+    m_delegate = new TrackDelegate(m_trackList);
+    m_trackList->setItemDelegate(m_delegate);
 
     m_items = QVector<TrackItem*>();
 
@@ -41,51 +40,39 @@ TrackView::TrackView(QWidget* parent) : QWidget(parent)
 
 TrackView::~TrackView()
 {
-    /*
-    foreach (TrackItem* i_trackItem, m_items)
-        delete i_trackItem;
+#if 0
+    qDeleteAll(m_items);
 
     delete m_model;
-    delete m_tableList;
+    delete m_trackList;
     delete m_layout;
-    */
+#endif
 }
-#include <QDebug>
+
 void TrackView::onAlbumSelected(const Album& album)
 {
     clear();
 
-    qDebug()<<"runaway";
-    static int sdfsdf = 0;
-    if(!sdfsdf++)
+    foreach(Track* i_track, album.tracks())
     {
-        foreach(Track* i_track, album.tracks())
-        {
-            TrackItem* item = new TrackItem(i_track);
-            m_items.push_back(item);
-            m_model->appendItem(i_track);
-        }
-
-        m_albumView->setAlbum(&album);
+        TrackItem* item = new TrackItem(i_track);
+        m_items.push_back(item);
+        m_model->appendItem(i_track);
     }
+
+    m_albumView->setAlbum(&album);
 }
 
 void TrackView::onDoubleClicked(const QModelIndex& index)
 {
-    qDebug()<<"mannaggiaaisanti" << index.row();
-    qDebug()<<"mannaggiaaisantisize" << m_items.size();
-   // const Track* track = m_items.at(index.row())->track();
+    // const Track* track = m_items.at(index.row())->track();
     emit doubleClicked(Track());
 }
 
 void TrackView::clear()
 {
-    /*
-    foreach(TrackItem* i_item, m_items)
-        delete i_item;
-    m_items.clear();*/
-static int fdsd= -1;
-if(fdsd == 0)
+    qDeleteAll(m_items);
+    m_items.clear();
+
     m_model->clear();
-fdsd++;
 }

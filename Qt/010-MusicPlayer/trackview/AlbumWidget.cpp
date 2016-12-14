@@ -35,13 +35,13 @@ AlbumWidget::AlbumWidget(QWidget* parent) : QWidget(parent)
     m_layout->addItem(m_spacer3);
     setLayout(m_layout);
 
-    setMinimumHeight(AlbumWidget::WIDGET_HEIGHT);
     setFixedWidth(AlbumWidget::WIDGET_WIDTH);
+    setMinimumHeight(AlbumWidget::WIDGET_HEIGHT);
 }
 
 AlbumWidget::~AlbumWidget()
 {
-    /*
+#if 0
     delete m_cover;
     delete m_spacer1;
     delete m_albumTitle;
@@ -49,7 +49,7 @@ AlbumWidget::~AlbumWidget()
     delete m_artistName;
     delete m_spacer3;
     delete m_layout;
-    */
+#endif
 }
 
 void AlbumWidget::setAlbum(const Album *album)
@@ -58,5 +58,7 @@ void AlbumWidget::setAlbum(const Album *album)
 
     m_albumTitle->setText(album->title());
     m_artistName->setText(album->artist()->name());
-    m_cover->setPixmap(QPixmap::fromImage(c_album->image().scaled(AlbumWidget::IMAGE_WIDTH, AlbumWidget::IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+
+    QPixmap pixmap(QPixmap::fromImage(c_album->image().scaled(AlbumWidget::IMAGE_WIDTH, AlbumWidget::IMAGE_HEIGHT, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    m_cover->setPixmap(pixmap);
 }

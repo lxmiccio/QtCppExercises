@@ -11,19 +11,13 @@ class TrackList : public QTableView
 
     public:
         explicit TrackList(QWidget* parent = 0);
+        ~TrackList();
 
         static const quint8 TRACK = 0;
         static const quint8 TITLE = 1;
-#if 0
-        static const quint8 ALBUM = 2;
-        static const quint8 ARTIST = 3;
-#endif
         static const quint8 DURATION = 2;
 
         static const quint8 TRACK_WIDTH = 100;
-        static constexpr double TITLE_WIDTH_PERCENTAGE = 0.4;
-        static constexpr double ALBUM_WIDTH_PERCENTAGE = 0.4;
-        static constexpr double ARTIST_WIDTH_PERCENTAGE = 0.2;
         static const quint8 DURATION_WIDTH = 100;
 
         static const quint8 LEFT_MARGIN = 38;

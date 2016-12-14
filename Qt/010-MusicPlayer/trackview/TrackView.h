@@ -1,9 +1,9 @@
 #ifndef TRACKVIEW_H
 #define TRACKVIEW_H
 
+#include <QHBoxLayout>
 #include <QSpacerItem>
 #include <QStandardItemModel>
-#include <QHBoxLayout>
 
 #include "AlbumWidget.h"
 #include "BackgroundWidget.h"
@@ -39,7 +39,7 @@ private:
 
     QSpacerItem* m_spacer;
 
-    TrackList* m_tableList;
+    TrackList* m_trackList;
     TrackModel* m_model;
     TrackDelegate* m_delegate;
 
